@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 //import { Link } from "react-router-dom";
+import axios from "axios";
 
 function TextInputScreen() {
   const [searchInput, setSearchInput] = useState("");
@@ -9,8 +10,14 @@ function TextInputScreen() {
     event.preventDefault();
     console.log("Input URL entered: ", searchInput);
     //sample case
-    var generatedCodeSample = "123456";
-    setGeneratedCode(generatedCodeSample);
+    //var generatedCodeSample = "123456";
+    //setGeneratedCode(generatedCodeSample);
+
+    const valueOfTheURL = searchInput;
+    console.log("value of URL", valueOfTheURL);
+    axios
+      .post("http://localhost:5000/api/code/postthevalue", { valueOfTheURL })
+      .then((response) => console.log(response));
   };
 
   return (
@@ -21,6 +28,7 @@ function TextInputScreen() {
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
+            required
           />
         </div>
         <div>

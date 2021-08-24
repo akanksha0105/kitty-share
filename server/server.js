@@ -10,7 +10,7 @@ var codeRoute = require("./routes/codeRoute");
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use("/api/createcode", codeRoute);
+app.use("/api/code", codeRoute);
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
