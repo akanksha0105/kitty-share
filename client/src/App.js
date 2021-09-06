@@ -1,9 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import HomeScreen from "./HomeScreen";
-import CodeInputScreen from "./CodeInputScreen";
-import TextInputScreen from "./TextInputScreen";
+import HomeScreen from "./screens/HomeScreen";
+import CodeInputScreen from "./screens/CodeInputScreen";
+import TextInputScreen from "./screens/TextInputScreen";
+// import Example from "./screens/Example";
 
 function App() {
   return (
@@ -16,6 +17,10 @@ function App() {
           <Route path="/text">
             <TextInputScreen />
           </Route>
+          {/* <Route path="/trash">
+            <Example />
+          </Route> */}
+
           <Route path="/">
             <HomeScreen />
           </Route>

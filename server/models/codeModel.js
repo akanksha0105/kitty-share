@@ -2,12 +2,13 @@ const mongoose = require("mongoose");
 
 const codeSchema = mongoose.Schema({
   code: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     require: true,
   },
   message: {
     type: String,
     require: true,
+    unique: true,
   },
 });
 

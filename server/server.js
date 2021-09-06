@@ -4,7 +4,9 @@ const bodyParser = require("body-parser");
 const dbconnection = require("./db");
 const path = require("path");
 const cors = require("cors");
-const PORT = 5000;
+const PORT = 8080;
+
+const server = require("http").Server(app);
 
 var codeRoute = require("./routes/codeRoute");
 
