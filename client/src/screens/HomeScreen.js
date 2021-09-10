@@ -27,14 +27,4 @@ class HomeScreen extends Component {
   }
 }
 
-// function HomeScreen() {
-//   return (
-//     <div>
-//       <div class="center">
-//         <h1>kitty-share</h1>
-//       </div>
-//     </div>
-//   );
-// }
-
 export default HomeScreen;

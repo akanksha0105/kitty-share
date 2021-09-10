@@ -26,6 +26,7 @@ function CodeInputScreen() {
     setRetrievedMessage(data);
     console.log("Retrieved Message", retrievedMessage);
   };
+
   return (
     <div>
       {!isDisabled ? (
@@ -43,9 +44,7 @@ function CodeInputScreen() {
             </label>
             <br />
             <Link to="/text">
-              <button type="submit" value="Submit">
-                Move to the Text Input Screen
-              </button>
+              <button>Move to the Text Input Screen</button>
             </Link>
 
             {/* <Link

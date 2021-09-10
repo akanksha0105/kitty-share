@@ -110,3 +110,7 @@ button:focus {
   background-color: white;
   color: #333333;
 }
+
+#input__key__button {
+  align-content: center;
+}

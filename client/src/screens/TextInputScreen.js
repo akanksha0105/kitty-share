@@ -9,12 +9,6 @@ function TextInputScreen() {
   const [searchInput, setSearchInput] = useState("");
   const [generatedCode, setGeneratedCode] = useState("");
 
-  const onToggleGenerateKeyButton = (event) => {
-    event.preventDefault();
-    generateSecretKey();
-    setIsDisabled(!isdisabled);
-  };
-
   const generateSecretKey = async () => {
     const valueOfTheURL = searchInput;
     let res = await axios.post("http://localhost:8080/api/code/postthevalue", {
@@ -28,19 +22,28 @@ function TextInputScreen() {
   };
 
   const onToggleMoveToTextButton = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     setIsDisabled(!isdisabled);
+    console.log("onToggleMoveToTextButton", isdisabled);
     setSearchInput("");
     setGeneratedCode("");
   };
 
+  const onMoveToInputKeyScreen = (event) => {
+    setIsDisabled(!isdisabled);
+    console.log("onMoveToInputKeyScreen", isdisabled);
+  };
+
   const onFormSubmit = (event) => {
     event.preventDefault();
+    generateSecretKey();
+    setIsDisabled(!isdisabled);
+    console.log("onFormSubmit", isdisabled);
   };
 
   return (
     <div>
-      {isdisabled ? (
+      {!isdisabled ? (
         <div className="text__input__form">
           <form onSubmit={onFormSubmit}>
             <label>
@@ -55,14 +58,7 @@ function TextInputScreen() {
               <div class="label-text">Enter the text to be shared</div>
             </label>
             <br />
-            <button type="submit" onClick={onToggleGenerateKeyButton}>
-              Generate the Key
-            </button>
-            <Link to="/code">
-              <button type="submit" value="Submit">
-                Move to the Input Key Screen
-              </button>
-            </Link>
+            <button type="submit">Generate the Key</button>
           </form>
         </div>
       ) : (
@@ -82,21 +78,17 @@ function TextInputScreen() {
 
             {/* <QRCode value={searchInput} /> */}
 
-            <button
-              type="submit"
-              value="Submit"
-              onClick={onToggleMoveToTextButton}
-            >
+            <button type="button" onClick={onToggleMoveToTextButton}>
               Move to the Text Input Screen
             </button>
-            <Link to="/code">
-              <button type="submit" value="Submit">
-                Move to the Input Key Screen
-              </button>
-            </Link>
           </form>
         </div>
       )}
+      <Link to="/code">
+        <button type="button" onClick={onMoveToInputKeyScreen}>
+          Move to the Input Key Screen
+        </button>
+      </Link>
     </div>
   );
 }
