@@ -10,6 +10,10 @@ const codeSchema = mongoose.Schema({
     require: true,
     unique: true,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Codes = mongoose.model("codes", codeSchema);

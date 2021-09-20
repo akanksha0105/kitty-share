@@ -33,6 +33,7 @@ router.post("/postthevalue", (req, res) => {
         const newCodePair = new CodeModel({
           code: code,
           message: message,
+          createdAt: new Date(),
         });
         return newCodePair.save();
       }
