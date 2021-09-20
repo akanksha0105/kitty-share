@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import "./styles.css";
 
 function CodeInputScreen() {
   const [isDisabled, setIsDisabled] = useState(false);
@@ -15,23 +16,27 @@ function CodeInputScreen() {
   const retrieveMessage = async () => {
     const codedMessage = codeInputValue;
 
-    let res = await axios.post(
+    let retrievedMessagePromise = axios.post(
       "http://localhost:8080/api/code/getcodegenerated",
       {
         codedMessage,
       }
     );
 
-    let { data } = res.data;
-    setRetrievedMessage(data);
-    console.log("Retrieved Message", retrievedMessage);
+    retrievedMessagePromise
+      .then((response) => {
+        console.log(response.data.data);
+        setRetrievedMessage(response.data.data);
+        console.log("Retrieved Message", retrievedMessage);
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
-    <div>
+    <div className="code__input__screen">
       {!isDisabled ? (
         <div className="input__key__form">
-          <form>
+          <form onSubmit={onGenerateMessage}>
             <label>
               <input
                 name="name"
@@ -39,24 +44,13 @@ function CodeInputScreen() {
                 type="text"
                 value={codeInputValue}
                 onChange={(event) => setCodeInputValue(event.target.value)}
+                required
               />
               <div class="label-text">Enter the Input Key</div>
             </label>
             <br />
-            <Link to="/text">
-              <button>Move to the Text Input Screen</button>
-            </Link>
 
-            {/* <Link
-          to={{
-            pathname: "/message",
-            state: { retrievedMessage: `${retrievedMessage}` },
-          }}
-        > */}
-            <button type="submit" value="Submit" onClick={onGenerateMessage}>
-              Generate the Message
-            </button>
-            {/* </Link> */}
+            <button type="submit">Generate the Message</button>
           </form>
         </div>
       ) : (
@@ -76,6 +70,9 @@ function CodeInputScreen() {
           </form>
         </div>
       )}
+      <Link to="/text">
+        <button>Move to the Text Input Screen</button>
+      </Link>
     </div>
   );
 }

@@ -20,6 +20,14 @@ form {
   padding: 30px;
 }
 
+.text__input__screen {
+  text-align: center;
+}
+
+.code__input__screen {
+  text-align: center;
+}
+
 label {
   display: block;
   letter-spacing: 4px;

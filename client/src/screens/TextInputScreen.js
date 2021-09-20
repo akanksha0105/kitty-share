@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 // import QRCode from "react-qr-code";
-import "./TextInputScreen.css";
+import "./styles.css";
 import axios from "axios";
 
 function TextInputScreen() {
@@ -10,19 +10,22 @@ function TextInputScreen() {
   const [generatedCode, setGeneratedCode] = useState("");
 
   const generateSecretKey = async () => {
-    const valueOfTheURL = searchInput;
-    let res = await axios.post("http://localhost:8080/api/code/postthevalue", {
-      valueOfTheURL,
-    });
+    let valueOfTheURL = searchInput;
+    let secretKeyPromise = axios.post(
+      "http://localhost:8080/api/code/postthevalue",
+      {
+        valueOfTheURL,
+      }
+    );
 
-    let { data } = res.data;
-    setGeneratedCode(data);
-
-    console.log("Generated Code", generatedCode);
+    secretKeyPromise
+      .then((response) => {
+        console.log(response.data.data);
+        setGeneratedCode(response.data.data);
+      })
+      .catch((error) => console.log(error));
   };
-
   const onToggleMoveToTextButton = (event) => {
-    // event.preventDefault();
     setIsDisabled(!isdisabled);
     console.log("onToggleMoveToTextButton", isdisabled);
     setSearchInput("");
@@ -42,7 +45,7 @@ function TextInputScreen() {
   };
 
   return (
-    <div>
+    <div className="text__input__screen">
       {!isdisabled ? (
         <div className="text__input__form">
           <form onSubmit={onFormSubmit}>
@@ -72,6 +75,7 @@ function TextInputScreen() {
                 value={generatedCode}
                 readOnly={true}
               />
+
               <div class="label-text">Generated Key</div>
             </label>
             <br />
