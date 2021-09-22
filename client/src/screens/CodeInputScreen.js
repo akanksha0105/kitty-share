@@ -9,6 +9,7 @@ function CodeInputScreen() {
   const [retrievedMessage, setRetrievedMessage] = useState("");
   const onGenerateMessage = (event) => {
     event.preventDefault();
+    console.log("Secret key for the URL entered");
     retrieveMessage();
     setIsDisabled(!isDisabled);
   };
@@ -25,11 +26,11 @@ function CodeInputScreen() {
 
     retrievedMessagePromise
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setRetrievedMessage(response.data.data);
-        console.log("Retrieved Message", retrievedMessage);
+        console.log("URL provided by the server", { retrieveMessage });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error.message));
   };
 
   return (

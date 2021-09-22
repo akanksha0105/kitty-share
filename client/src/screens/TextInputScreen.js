@@ -11,6 +11,8 @@ function TextInputScreen() {
 
   const generateSecretKey = async () => {
     let valueOfTheURL = searchInput;
+
+    console.log("URL entered by the user", valueOfTheURL);
     let secretKeyPromise = axios.post(
       "http://localhost:8080/api/code/postthevalue",
       {
@@ -20,28 +22,25 @@ function TextInputScreen() {
 
     secretKeyPromise
       .then((response) => {
-        console.log(response.data.data);
         setGeneratedCode(response.data.data);
+        console.log("Generated Key provided by the server");
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error.message));
   };
-  const onToggleMoveToTextButton = (event) => {
+  const onToggleMoveToTextButton = () => {
     setIsDisabled(!isdisabled);
-    console.log("onToggleMoveToTextButton", isdisabled);
     setSearchInput("");
     setGeneratedCode("");
   };
 
-  const onMoveToInputKeyScreen = (event) => {
+  const onMoveToInputKeyScreen = () => {
     setIsDisabled(!isdisabled);
-    console.log("onMoveToInputKeyScreen", isdisabled);
   };
 
   const onFormSubmit = (event) => {
     event.preventDefault();
     generateSecretKey();
     setIsDisabled(!isdisabled);
-    console.log("onFormSubmit", isdisabled);
   };
 
   return (
