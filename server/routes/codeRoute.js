@@ -11,13 +11,11 @@ router.post("/getcodegenerated", async (req, res) => {
 
   codeGeneratedPromise
     .then((response) => {
-      //console.log("code find response", response);
-      //console.log("To find code", response[0].message);
       res.status(200).json({ data: response[0].message });
     })
     .catch((err) => {
       console.log(err.message);
-      res.status(500).json({ message: "Server was unable to fetch the URL" });
+      res.status(500).send("Server was unable to fetch the URL");
     });
 });
 
@@ -50,10 +48,8 @@ router.post("/postthevalue", (req, res) => {
       res.status(200).json({ data: result.code });
     })
     .catch((err) => {
-      // console.log(err.message);
-      res
-        .status(500)
-        .json({ message: "Server was not able to generate the secret key" });
+      console.log(err.message);
+      res.status(500).send("Server was not able to generate the secret key");
     });
 });
 

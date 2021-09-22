@@ -16,6 +16,6 @@ const codeSchema = mongoose.Schema({
   },
 });
 
-const Codes = mongoose.model("codes", codeSchema);
+const Codes = mongoose.model("Codes", codeSchema);
 
 module.exports = Codes;

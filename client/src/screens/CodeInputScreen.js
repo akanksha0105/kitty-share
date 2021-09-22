@@ -30,7 +30,7 @@ function CodeInputScreen() {
         setRetrievedMessage(response.data.data);
         console.log("URL provided by the server", { retrieveMessage });
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => console.log(error.response.data));
   };
 
   return (
@@ -63,7 +63,7 @@ function CodeInputScreen() {
                 id="name"
                 type="text"
                 value={retrievedMessage}
-                readOnly={true}
+                // readOnly={true}
               />
               <div class="label-text">Generated Message</div>
             </label>

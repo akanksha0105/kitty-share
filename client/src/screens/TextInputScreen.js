@@ -25,7 +25,7 @@ function TextInputScreen() {
         setGeneratedCode(response.data.data);
         console.log("Generated Key provided by the server");
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => console.log(error.response.data));
   };
   const onToggleMoveToTextButton = () => {
     setIsDisabled(!isdisabled);
@@ -72,7 +72,7 @@ function TextInputScreen() {
                 id="name"
                 type="text"
                 value={generatedCode}
-                readOnly={true}
+                // readOnly={true}
               />
 
               <div class="label-text">Generated Key</div>
