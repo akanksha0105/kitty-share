@@ -6,12 +6,16 @@ const ObjectId = require("mongo-objectid");
 
 router.post("/getcodegenerated", async (req, res) => {
   const code = req.body.codedMessage;
+  console.log("code is", code);
   console.log("Server fetching the code...");
   let codeGeneratedPromise = CodeModel.find({ code: code }).exec();
 
+  // console.log("codeGenerated Promise", codeGeneratedPromise);
   codeGeneratedPromise
     .then((response) => {
-      if (response.length < 0) {
+      console.log("response is: ", response);
+      console.log("response length", response.length);
+      if (response.length <= 0) {
         return res.status(404).json({ code: 102, message: "Code not found" });
       }
 
@@ -25,8 +29,8 @@ router.post("/getcodegenerated", async (req, res) => {
     });
 });
 
-const checkOrGenerateCode = (url) => {
-  let codeQueryPromise = CodeModel.find({ message: message }).exec();
+const checkOrGenerateCode = async (url) => {
+  let codeQueryPromise = CodeModel.find({ message: url }).exec();
 
   return codeQueryPromise.then((queryResults) => {
     if (queryResults.length > 0) {
@@ -37,10 +41,11 @@ const checkOrGenerateCode = (url) => {
     const code = id;
     const newCodePair = new CodeModel({
       code: code,
-      message: message,
+      message: url,
       createdAt: new Date(),
     });
     return newCodePair.save().then((record) => {
+      console.log("record is", record);
       return record.code;
     });
   });
@@ -51,11 +56,12 @@ router.post("/postthevalue", (req, res) => {
   console.log("Server checks if the URL is already present in the database");
 
   const codePromise = checkOrGenerateCode(url);
+
   codePromise
     .then((code) => {
       console.log("URL saved by the server");
       console.log("Server generating the secret key for the entered URL...");
-      // console.log(result);
+
       res.status(200).json({ data: code });
     })
     .catch((err) => {

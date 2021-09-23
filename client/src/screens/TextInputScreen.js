@@ -27,7 +27,7 @@ function TextInputScreen() {
       })
       .catch((error) => {
         const { code, message } = error.response.data;
-        if (code == 102) {
+        if (code === 102) {
           return console.error("Code does not exist");
         }
 
