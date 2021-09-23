@@ -11,45 +11,59 @@ router.post("/getcodegenerated", async (req, res) => {
 
   codeGeneratedPromise
     .then((response) => {
+      if (response.length < 0) {
+        return res.status(404).json({ code: 102, message: "Code not found" });
+      }
+
       res.status(200).json({ data: response[0].message });
     })
     .catch((err) => {
       console.log(err.message);
-      res.status(500).send("Server was unable to fetch the URL");
+      res
+        .status(500)
+        .send({ code: 101, message: "Server was unable to fetch the URL" });
     });
 });
 
+const checkOrGenerateCode = (url) => {
+  let codeQueryPromise = CodeModel.find({ message: message }).exec();
+
+  return codeQueryPromise.then((queryResults) => {
+    if (queryResults.length > 0) {
+      return queryResults[0].code;
+    }
+
+    const id = new ObjectId().toString();
+    const code = id;
+    const newCodePair = new CodeModel({
+      code: code,
+      message: message,
+      createdAt: new Date(),
+    });
+    return newCodePair.save().then((record) => {
+      return record.code;
+    });
+  });
+};
+
 router.post("/postthevalue", (req, res) => {
-  const message = req.body.valueOfTheURL;
+  const url = req.body.valueOfTheURL;
   console.log("Server checks if the URL is already present in the database");
-  let messagePostedPromise = CodeModel.find({ message: message }).exec();
-  messagePostedPromise
-    .then((response) => {
-      if (response.length > 0) {
-        console.log("URL already exists");
-      } else {
-        console.log(
-          "URL does not exist in the database. Server saving the URL..."
-        );
-        const id = new ObjectId().toString();
-        const code = id;
-        const newCodePair = new CodeModel({
-          code: code,
-          message: message,
-          createdAt: new Date(),
-        });
-        return newCodePair.save();
-      }
-    })
-    .then((result) => {
+
+  const codePromise = checkOrGenerateCode(url);
+  codePromise
+    .then((code) => {
       console.log("URL saved by the server");
       console.log("Server generating the secret key for the entered URL...");
       // console.log(result);
-      res.status(200).json({ data: result.code });
+      res.status(200).json({ data: code });
     })
     .catch((err) => {
       console.log(err.message);
-      res.status(500).send("Server was not able to generate the secret key");
+      res.status(500).send({
+        code: 201,
+        message: "Server was not able to generate the secret key",
+      });
     });
 });
 

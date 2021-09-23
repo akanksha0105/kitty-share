@@ -25,7 +25,14 @@ function TextInputScreen() {
         setGeneratedCode(response.data.data);
         console.log("Generated Key provided by the server");
       })
-      .catch((error) => console.log(error.response.data));
+      .catch((error) => {
+        const { code, message } = error.response.data;
+        if (code == 102) {
+          return console.error("Code does not exist");
+        }
+
+        console.error("Unable to generate code");
+      });
   };
   const onToggleMoveToTextButton = () => {
     setIsDisabled(!isdisabled);
@@ -57,7 +64,7 @@ function TextInputScreen() {
                 onChange={(e) => setSearchInput(e.target.value)}
                 required
               />
-              <div class="label-text">Enter the text to be shared</div>
+              <div className="label-text">Enter the text to be shared</div>
             </label>
             <br />
             <button type="submit">Generate the Key</button>
@@ -75,7 +82,7 @@ function TextInputScreen() {
                 // readOnly={true}
               />
 
-              <div class="label-text">Generated Key</div>
+              <div className="label-text">Generated Key</div>
             </label>
             <br />
 

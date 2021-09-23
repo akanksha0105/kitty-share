@@ -19,7 +19,7 @@ class HomeScreen extends Component {
     return this.state.redirect ? (
       <Redirect to="/text" />
     ) : (
-      <div class="center">
+      <div className="center">
         {" "}
         <h1>kitty-share</h1>
       </div>

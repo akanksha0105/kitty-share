@@ -47,7 +47,7 @@ function CodeInputScreen() {
                 onChange={(event) => setCodeInputValue(event.target.value)}
                 required
               />
-              <div class="label-text">Enter the Input Key</div>
+              <div className="label-text">Enter the Input Key</div>
             </label>
             <br />
 
@@ -65,7 +65,7 @@ function CodeInputScreen() {
                 value={retrievedMessage}
                 // readOnly={true}
               />
-              <div class="label-text">Generated Message</div>
+              <div className="label-text">Generated Message</div>
             </label>
             <br />
           </form>
