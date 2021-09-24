@@ -9,6 +9,7 @@
     "mongo-objectid": "^1.2.2",
     "mongodb": "^4.1.1",
     "mongoose": "^6.0.3",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.12",
     "objectid": "^3.2.1",
     "socket.io": "^4.2.0"
