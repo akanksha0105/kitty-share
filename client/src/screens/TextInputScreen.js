@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 // import QRCode from "react-qr-code";
 import "./styles.css";
 import axios from "axios";
+import KeyGeneratedScreen from "./KeyGeneratedScreen";
 
 function TextInputScreen() {
   const [isdisabled, setIsDisabled] = useState(false);
@@ -26,7 +27,7 @@ function TextInputScreen() {
         console.log("Generated Key provided by the server");
       })
       .catch((error) => {
-        const { code, message } = error.response.data;
+        const { code } = error.response.data;
         if (code === 102) {
           return console.error("Code does not exist");
         }
@@ -71,28 +72,34 @@ function TextInputScreen() {
           </form>
         </div>
       ) : (
-        <div className="key__generated__form">
-          <form>
-            <label>
-              <input
-                name="name"
-                id="name"
-                type="text"
-                value={generatedCode}
-                // readOnly={true}
-              />
+        // <div className="key__generated__form">
+        //   <form>
+        //     <label>
+        //       <input
+        //         name="name"
+        //         id="name"
+        //         type="text"
+        //         value={generatedCode}
+        //         // readOnly={true}
+        //       />
 
-              <div className="label-text">Generated Key</div>
-            </label>
-            <br />
+        //       <div className="label-text">Generated Key</div>
+        //     </label>
+        //     <br />
 
-            {/* <QRCode value={searchInput} /> */}
+        //     {/* <QRCode value={searchInput} /> */}
 
-            <button type="button" onClick={onToggleMoveToTextButton}>
-              Move to the Text Input Screen
-            </button>
-          </form>
-        </div>
+        //     <button type="button" onClick={onToggleMoveToTextButton}>
+        //       Move to the Text Input Screen
+        //     </button>
+        //   </form>
+        // </div>
+        <>
+          <KeyGeneratedScreen generatedCode={generatedCode} />
+          <button type="button" onClick={onToggleMoveToTextButton}>
+            Move to the Text Input Screen
+          </button>
+        </>
       )}
       <Link to="/code">
         <button type="button" onClick={onMoveToInputKeyScreen}>
