@@ -6,4 +6,5 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
-serviceWorkerRegistration.register();
+serviceWorkerRegistration.main();
+//serviceWorkerRegistration.register();
