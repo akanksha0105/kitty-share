@@ -10,129 +10,121 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://cra.link/PWA
 
-import axios from "axios";
+import axios from 'axios';
 
 const urlBase64ToUint8Array = (base64String) => {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
-  const rawData = atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
+	const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+	const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+	const rawData = atob(base64);
+	const outputArray = new Uint8Array(rawData.length);
+	for (let i = 0; i < rawData.length; ++i) {
+		outputArray[i] = rawData.charCodeAt(i);
+	}
+	return outputArray;
 };
 
 const checkForServiceWorkerAndPushManager = () => {
-  if (!("serviceWorker" in navigator)) {
-    // throw new Error("No Service Worker support!");
-    console.error("No Service Worker Support!");
-    return false;
-  }
-  if (!("PushManager" in window)) {
-    //throw new Error("No Push API Support!");
-    console.error("No Push API Support!");
-    return false;
-  }
-  return true;
+	if (!('serviceWorker' in navigator)) {
+		// throw new Error("No Service Worker support!");
+		console.error('No Service Worker Support!');
+		return false;
+	}
+	if (!('PushManager' in window)) {
+		//throw new Error("No Push API Support!");
+		console.error('No Push API Support!');
+		return false;
+	}
+	return true;
 };
 
 const subscribeToPush = async () => {
-  // The function will return Service Worker Registration Object
-  return navigator.serviceWorker
-    .register("./service-worker.js")
-    .then((registration) => {
-      console.log("Service Worker successfully registered.");
-      console.log("Service Worker registration Object : ", registration);
-      // return registration;
-      const applicationServerKey =
-        "BB2sJzqBookN3vwzqmF8a97ugLitJMqJ4zwio1G2WIbJhNXemBdk9DKiE-gItS0Ra7XBUVcp2zJnqK3qAuqViHQ";
-      const subscribeOptions = {
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(applicationServerKey),
-      };
-      return registration.pushManager.subscribe(subscribeOptions);
-    })
-    .then((pushSubscription) => {
-      console.log(
-        "Received PushSubscription: ",
-        JSON.stringify(pushSubscription)
-      );
-      return pushSubscription;
-    })
-    .catch((err) => {
-      console.error(
-        "Service Worker registration and subscription to push messages issue",
-        err
-      );
-    });
+	// The function will return Service Worker Registration Object
+	return navigator.serviceWorker
+		.register('./service-worker.js')
+		.then((registration) => {
+			console.log('Service Worker successfully registered.');
+			console.log('Service Worker registration Object : ', registration);
+			// return registration;
+			const applicationServerKey =
+				'BB2sJzqBookN3vwzqmF8a97ugLitJMqJ4zwio1G2WIbJhNXemBdk9DKiE-gItS0Ra7XBUVcp2zJnqK3qAuqViHQ';
+			const subscribeOptions = {
+				userVisibleOnly: true,
+				applicationServerKey: urlBase64ToUint8Array(applicationServerKey),
+			};
+			return registration.pushManager.subscribe(subscribeOptions);
+		})
+		.then((pushSubscription) => {
+			console.log(
+				'Received PushSubscription: ',
+				JSON.stringify(pushSubscription),
+			);
+			return pushSubscription;
+		})
+		.catch((err) => {
+			console.error(
+				'Service Worker registration and subscription to push messages issue',
+				err,
+			);
+		});
 };
 
 const askPermissionForNotifications = async () => {
-  return Notification.requestPermission()
-    .then((result) => {
-      console.log("Notification permission result: ", result);
-      if (result !== "granted") {
-        throw new Error("Permission for Notifications not granted");
-      }
-      return result;
-    })
-    .catch((err) => {
-      console.error("Error in seeking notifications permission", err);
-    });
+	return Notification.requestPermission()
+		.then((result) => {
+			console.log('Notification permission result: ', result);
+			if (result !== 'granted') {
+				throw new Error('Permission for Notifications not granted');
+			}
+			return result;
+		})
+		.catch((err) => {
+			console.error('Error in seeking notifications permission', err);
+		});
 };
 
 const sendSubscriptionToTheServer = async (subscription) => {
-  return await axios
-    .post("http://localhost:8080/api/subscription/savesubscription", {
-      body: JSON.stringify(subscription),
-      Headers: {
-        "Content-type": "application/json",
-      },
-      // body: subscription,
-    })
-    .then((response) => {
-      console.log(
-        "Response receieved by sending subscription to the server",
-        response
-      );
-    })
-    .catch((err) => {
-      console.error(
-        "Error in sending subscription to the server from service registration file",
-        err
-      );
-    });
+	return await axios
+		.post('http://localhost:8080/api/subscription/savesubscription', {
+			body: JSON.stringify(subscription),
+			Headers: {
+				'Content-type': 'application/json',
+			},
+			// body: subscription,
+		})
+		.then((response) => {
+			console.log(
+				'Response receieved by sending subscription to the server',
+				response,
+			);
+		})
+		.catch((err) => {
+			console.error(
+				'Error in sending subscription to the server from service registration file',
+				err,
+			);
+		});
 };
 
-const sendNotificationToTheServer = async () => {
-  return await axios
-    .get("http://localhost:8080/api/subscription/sendnotification")
-    .then((res) => {
-      console.log("Trial and Error", res);
-    })
-    .catch((err) => console.error("Error in sending Notification... ", err));
-};
 export const main = async () => {
-  if (checkForServiceWorkerAndPushManager) {
-    const notificationPermissionResult = await askPermissionForNotifications();
-    console.log("notificationPermissionResult", notificationPermissionResult);
+	if (checkForServiceWorkerAndPushManager) {
+		const notificationPermissionResult = await askPermissionForNotifications();
+		console.log('notificationPermissionResult', notificationPermissionResult);
 
-    const subscription = await subscribeToPush();
-    console.log("subscribeToPushNotifications", subscription);
+		const subscription = await subscribeToPush();
+		console.log('subscribeToPushNotifications', subscription);
 
-    const subscriptionSentToServer = await sendSubscriptionToTheServer(
-      subscription
-    );
-    console.log("subscriptionSentToServer", subscriptionSentToServer);
+		const subscriptionSentToServer = await sendSubscriptionToTheServer(
+			subscription,
+		);
+		console.log('subscriptionSentToServer', subscriptionSentToServer);
 
-    const sendNotificationToTheServerValue =
-      await sendNotificationToTheServer();
-    console.log(
-      "sendNotificationToTheServer",
-      sendNotificationToTheServerValue
-    );
-  }
+		const sendNotificationToTheServerValue =
+			await sendNotificationToTheServer();
+		console.log(
+			'sendNotificationToTheServer',
+			sendNotificationToTheServerValue,
+		);
+	}
 };
 
 // const isLocalhost = Boolean(

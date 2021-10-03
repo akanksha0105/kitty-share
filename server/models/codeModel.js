@@ -1,21 +1,26 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const codeSchema = mongoose.Schema({
-  code: {
-    type: String,
-    require: true,
-  },
-  message: {
-    type: String,
-    require: true,
-    unique: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+	deviceId: {
+		type: String,
+		require: true,
+		unique: true,
+	},
+	code: {
+		type: String,
+		require: true,
+	},
+	message: {
+		type: String,
+		require: true,
+		unique: true,
+	},
+	createdAt: {
+		type: Date,
+		default: Date.now,
+	},
 });
 
-const Codes = mongoose.model("Codes", codeSchema);
+const Codes = mongoose.model('Codes', codeSchema);
 
 module.exports = Codes;
