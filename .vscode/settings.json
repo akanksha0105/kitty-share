@@ -1,11 +1,10 @@
 {
     "prettier.jsxBracketSameLine": true,
-    "prettier.jsxSingleQuote": true,
     "prettier.proseWrap": "always",
-    "prettier.singleQuote": true,
     "prettier.trailingComma": "all",
     "prettier.useTabs": true,
     "editor.formatOnSave": true,
     "javascript.format.semicolons": "insert",
-    "typescript.format.semicolons": "insert"
+    "typescript.format.semicolons": "insert",
+    "typescript.preferences.quoteStyle": "double"
 }

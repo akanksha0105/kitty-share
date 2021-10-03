@@ -11,12 +11,14 @@ function TextInputScreen({ currentDeviceId }) {
 
 	const generateSecretKey = async () => {
 		let valueOfTheURL = searchInput;
+		let currentDeviceId = currentDeviceId;
 
 		console.log('URL entered by the user', valueOfTheURL);
 		let secretKeyPromise = axios.post(
 			'http://localhost:8080/api/code/postthevalue',
 			{
 				valueOfTheURL,
+				currentDeviceId,
 			},
 		);
 

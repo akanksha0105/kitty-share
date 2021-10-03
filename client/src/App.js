@@ -1,66 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
-import HomeScreen from './screens/HomeScreen';
-import CodeInputScreen from './screens/CodeInputScreen';
-import TextInputScreen from './screens/TextInputScreen';
-import LinkToDeviceScreen from './screens/LinkToDeviceScreen';
-import axios from 'axios';
-// import Example from "./screens/Example";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import HomeScreen from "./screens/HomeScreen";
+import CodeInputScreen from "./screens/CodeInputScreen";
+import TextInputScreen from "./screens/TextInputScreen";
+import LinkToDeviceScreen from "./screens/LinkToDeviceScreen";
+import axios from "axios";
 
 function App() {
-	const [currentDeviceId, setCurrentDeviceId] = useState('');
-	const checkOrAttachDeviceId = () => {
-		// var deviceId = JSON.parse(localStorage.getItem("device_id"));
-		if (localStorage.getItem('device_id') == null) {
-			var device_id = uuidv4();
-			//console.log(device_id);
-			localStorage.setItem('device_id', JSON.stringify(device_id));
-			//console.log("val", localStorage.getItem("device_id"));
+	//const [currentDeviceId, setCurrentDeviceId] = useState("");
+	const checkOrAttachDeviceId = async () => {
+		let fetchedDeviceId = localStorage.getItem("deviceId");
+		//Case 1: If localStorage does not have deviceId
 
-			let deviceIDSaved = axios.post(
-				'http://localhost:8080/api/devices/newdevice',
-				{
-					device_id,
-				},
-			);
-			deviceIDSaved.then((response) => {
-				console.log(' deviceIDSaved response: ', response);
-			});
+		if (fetchedDeviceId == null) {
+			let newDeviceIdGenerated = uuidv4();
+			localStorage.setItem("deviceId", newDeviceIdGenerated);
+			let senderDeviceId = localStorage.getItem("deviceId");
+
+			axios
+				.post("http://localhost:8080/api/devices/newdevice", {
+					senderDeviceId,
+				})
+				.then((response) => {
+					console.log(" new device saved in database ", response.data.deviceId);
+
+					//setCurrentDeviceId(response.data.deviceId);
+
+					//Call for the subscription object to save the address(endpoint) of the device
+				})
+				.catch((err) => {
+					console.error("new device not stored in database", err);
+				});
 		}
-
-		var current_device_id = JSON.parse(localStorage.getItem('device_id'));
-		console.log('current_device_id', current_device_id);
-		return current_device_id;
 	};
 
-	// const checkOrAttachDeviceName = () => {};
-
 	useEffect(() => {
-		var deviceId = checkOrAttachDeviceId();
-		console.log('deviceId in useEffect', deviceId);
-		// checkOrAttachDeviceName();
-		setCurrentDeviceId(deviceId);
+		checkOrAttachDeviceId();
+		currentDeviceId = localStorage.getItem("deviceId");
+		console.log(currentDeviceId);
 	}, []);
 
 	return (
-		<div className='app'>
+		<div className="app">
 			<Router>
 				<Switch>
-					<Route path='/code'>
+					<Route path="/code">
 						<CodeInputScreen />
 					</Route>
-					<Route path='/text'>
+					<Route path="/text">
 						<TextInputScreen currentDeviceId={currentDeviceId} />
 					</Route>
-					<Route path='/linktoanewdevice'>
+					<Route path="/linktoanewdevice">
 						<LinkToDeviceScreen />
 					</Route>
 					{/* <Route path="/trash">
             <Example />
           </Route> */}
 
-					<Route path='/'>
+					<Route path="/">
 						<HomeScreen />
 					</Route>
 				</Switch>

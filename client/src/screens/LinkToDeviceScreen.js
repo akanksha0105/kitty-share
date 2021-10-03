@@ -21,9 +21,10 @@ function LinkToDeviceScreen() {
 			})
 			.then((deviceIdValidConfirmation) => {
 				console.log('Device id valid confirmation', deviceIdValidConfirmation);
+
 				//For valid device_id
 				//send the notification to the receiver's device
-				sendNotificationToTheServer();
+				//sendNotificationToTheServer();
 				//For invalid device_D
 			})
 			.catch((err) => {
@@ -31,6 +32,13 @@ function LinkToDeviceScreen() {
 					'Error encountered during the checking of device_id',
 					err,
 				);
+
+				// const { code } = error.response.data;
+				// if (code === 102) {
+				// 	return console.error('Code does not exist');
+				// }
+
+				// console.error('Unable to generate code');
 			});
 
 		//send the URL if the device_id is valid
