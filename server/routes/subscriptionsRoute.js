@@ -1,65 +1,69 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const SubscriptionsModel = require('../models/subscriptionsModel');
-var mongoose = require('mongoose');
+const SubscriptionsModel = require("../models/subscriptionsModel");
+var mongoose = require("mongoose");
 
-const webpush = require('web-push');
+const webpush = require("web-push");
 
-router.post('/savesubscription', async (req, res) => {
-	const oldSubscription = req.body.body;
-	console.log('old subscription', oldSubscription);
-	const subscription = JSON.parse(oldSubscription);
+//Route Checked
+router.post("/savesubscription", async (req, res) => {
+	const subscription = req.body.body;
+	console.log("Subscription at server", subscription);
 
-	console.log('Subscription Object at server', subscription);
+	const searchedDeviceId = subscription.subscribedDeviceId;
+	console.log("searchedDeviceEndpoint", searchedDeviceId);
 
-	const searchedDeviceEndpoint = subscription.endpoint;
-	console.log('searchedDeviceEndpoint', searchedDeviceEndpoint);
-	SubscriptionsModel.find({ endpoint: searchedDeviceEndpoint }).then(
-		(response) => {
-			if (response.length <= 0) {
+	SubscriptionsModel.find({ deviceId: searchedDeviceId }).then(
+		(subscriptionsModelRecord) => {
+			console.log("subscriptionsModelRecord", subscriptionsModelRecord);
+			if (subscriptionsModelRecord.length <= 0) {
 				const newSubscription = new SubscriptionsModel({
-					endpoint: subscription.endpoint,
-					expirationTime: subscription.expirationTime,
-					keys: {
-						p256dh: subscription.keys.p256dh,
-						auth: subscription.keys.auth,
+					deviceId: subscription.subscribedDeviceId,
+					subscriptionObject: {
+						endpoint: subscription.subscriptionObject.endpoint,
+						expirationTime: subscription.subscriptionObject.expirationTime,
+						keys: {
+							p256dh: subscription.subscriptionObject.keys.p256dh,
+							auth: subscription.subscriptionObject.keys.auth,
+						},
 					},
 				});
 
 				return newSubscription
 					.save()
 					.then((record) => {
-						console.log('Subscription saved in Database');
+						console.log("Subscription saved in Database");
 						console.log(record);
 						res.status(200).json({
 							data: record,
-							message: 'Subscription saved in Database',
+							message: "Subscription saved in Database",
 						});
 					})
 					.catch((err) => {
 						console.error(
-							'Server unable to store the subscription object',
+							"Server unable to store the subscription object",
 							err,
 						);
 						res.status(500).json({
-							message: 'Server unable to store the subscription object',
+							message: "Server unable to store the subscription object",
 						});
 					});
 			}
 
 			const newUpdatedSubscription = {
-				expirationTime: response.expirationTime,
+				expirationTime:
+					subscriptionsModelRecord[0].subscriptionObject.expirationTime,
 				keys: {
-					p256dh: response.keys.p256dh,
-					auth: response.keys.auth,
+					p256dh: subscriptionsModelRecord[0].subscriptionObject.keys.p256dh,
+					auth: subscriptionsModelRecord[0].subscriptionObject.keys.auth,
 				},
 			};
 
 			const newValues = {
-				expirationTime: subscription.expirationTime,
+				expirationTime: subscription.subscriptionObject.expirationTime,
 				keys: {
-					p256dh: subscription.keys.p256dh,
-					auth: subscription.keys.auth,
+					p256dh: subscription.subscriptionObject.keys.p256dh,
+					auth: subscription.subscriptionObject.keys.auth,
 				},
 			};
 
@@ -68,29 +72,32 @@ router.post('/savesubscription', async (req, res) => {
 			})
 				.then((updatedSubscription) => {
 					console.log(
-						'Subscription model successfully updated',
+						"Subscription model successfully updated",
 						updatedSubscription,
 					);
 					res
 						.status(200)
-						.json({ data: 'Subscription updated and saved in database' });
+						.json({ data: "Subscription updated and saved in database" });
 				})
 				.catch((err) => {
-					console.error('Unable to update SubscriptionModel', err);
+					console.error("Unable to update SubscriptionModel", err);
 					res.status(500).json({
 						message:
-							'Unable to update the subscription in Subscriptions database',
+							"Unable to update the subscription in Subscriptions database",
 					});
 				});
 		},
 	);
 });
 
-router.post('/sendnotification', async (req, res) => {
-	console.log('Reaching send Notification route...');
-	const senderDeviceId = req.body.currentDeviceId;
+router.post("/sendnotification", async (req, res) => {
+	console.log("Reaching send Notification route...");
+	// console.log(req.body.currentDeviceId);
+	console.log(req.body);
+	const senderDeviceId = req.body.currentDeviceId.currentDeviceId;
+	console.log(senderDeviceId);
 	const receiverDeviceID = req.body.receiverDeviceID;
-	const urlTobeShared = req.body.urlTobeShared;
+	const urlTobeShared = req.body.urlTobeShared.searchInput;
 
 	const subscription = SubscriptionsModel.find({ deviceId: receiverDeviceID });
 	subscription
@@ -100,20 +107,23 @@ router.post('/sendnotification', async (req, res) => {
 				subscriptionsModelRecord,
 			);
 
+			//This block of syntax can be avoided
 			if (subscriptionsModelRecord.length <= 0) {
 				return res
 					.status(404)
-					.json({ message: 'No receiver_id exists like this...' });
+					.json({ message: "No receiver_id exists like this..." });
 			}
 
+			//console.log(subscriptionsModelRecord[0].subscriptionObject.endpoint);
 			const pushSubscriptionObject = {
-				endpoint: subscriptionsModelRecord.endpoint,
-				expirationTime: subscriptionsModelRecord.expirationTime,
-				keys: subscriptionsModelRecord.keys,
+				endpoint: subscriptionsModelRecord[0].subscriptionObject.endpoint,
+				expirationTime:
+					subscriptionsModelRecord[0].subscriptionObject.expirationTime,
+				keys: subscriptionsModelRecord[0].subscriptionObject.keys,
 			};
 
 			console.log(
-				'pushSubscriptionObject in sendnotifications route',
+				"pushSubscriptionObject in sendnotifications route",
 				pushSubscriptionObject,
 			);
 
@@ -124,47 +134,17 @@ router.post('/sendnotification', async (req, res) => {
 			webpush
 				.sendNotification(pushSubscriptionObject, payload)
 				.then((webpushNotificationResponse) => {
-					console.log('webpush Notification sent', webpushNotificationResponse);
-					res.setHeader('Content-Type', 'application/json');
-					res.json({ message: 'message sent' });
+					console.log("webpush Notification sent", webpushNotificationResponse);
+					res.setHeader("Content-Type", "application/json");
+					res.json({ message: "message sent" });
 				})
 				.catch((err) => {
-					console.error('Error in webpush', err);
+					console.error("Error in webpush", err);
 				});
 		})
 		.catch((err) => {
-			console.error('Unable to fetch subscription from database', err);
+			console.error("Unable to fetch subscription from database", err);
 		});
-
-	// subscription
-	// 	.then((queryResults) => {
-	// 		console.log('queryResults', queryResults);
-	// 		const pushSubscriptionObject = {
-	// 			endpoint: queryResults.endpoint,
-	// 			expirationTime: queryResults.expirationTime,
-	// 			keys: queryResults.keys,
-	// 		};
-
-	// 		console.log(
-	// 			'pushSubscriptionObject in sendnotifications route',
-	// 			pushSubscriptionObject,
-	// 		);
-
-	// 		const payload = JSON.stringify({ title: 'Your Push Payload Text' });
-	// 		webpush
-	// 			.sendNotification(pushSubscriptionObject, payload)
-	// 			.then((webpushNotificationResponse) => {
-	// 				console.log('webpush Notification sent', webpushNotificationResponse);
-	// 				res.setHeader('Content-Type', 'application/json');
-	// 				res.json({ message: 'message sent' });
-	// 			})
-	// 			.catch((err) => {
-	// 				console.error('Error in webpush', err);
-	// 			});
-	// 	})
-	// 	.catch((err) => {
-	// 		console.error('Unable to fetch subscription from database', err);
-	// 	});
 });
 
 module.exports = router;

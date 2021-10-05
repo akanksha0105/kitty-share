@@ -1,15 +1,16 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const DevicesModel = require('../models/devicesModel');
-var mongoose = require('mongoose');
+const DevicesModel = require("../models/devicesModel");
+var mongoose = require("mongoose");
 
-router.post('/newdevice', (req, res) => {
-	console.log('In route for registering of new device');
+//Route checked
+router.post("/newdevice", (req, res) => {
+	console.log("In route for registering of new device");
 
 	const deviceId = req.body.senderDeviceId;
 	//   const deviceName = req.body.deviceName;
 
-	console.log('req.body.senderDeviceId', req.body.senderDeviceId);
+	console.log("req.body.senderDeviceId", req.body.senderDeviceId);
 	const newDevicePair = new DevicesModel({
 		deviceId: deviceId,
 		// deviceName: deviceName,
@@ -18,8 +19,8 @@ router.post('/newdevice', (req, res) => {
 	newDevicePair
 		.save()
 		.then((record) => {
-			console.log('record is', record);
-			console.log('record.deviceId', record.deviceId);
+			console.log("record is", record);
+			console.log("record.deviceId", record.deviceId);
 			res.status(200).json({ deviceId: record.deviceId });
 		})
 		.catch((err) => {
@@ -30,33 +31,34 @@ router.post('/newdevice', (req, res) => {
 		});
 });
 
-router.post('/deviceidvalid', (req, res) => {
-	console.log('In the deviceidvalid route');
+//Route checked
+router.post("/deviceidvalid", (req, res) => {
+	console.log("In the deviceidvalid route");
 	const deviceIdToBeChecked = req.body.deviceIdToBeChecked;
-	console.log('device id to be checked', deviceIdToBeChecked);
+	console.log("device id to be checked", deviceIdToBeChecked);
 	DevicesModel.find({ deviceId: deviceIdToBeChecked })
 		.exec()
 		.then((deviceIdRecord) => {
-			console.log('deviceIdRecord', deviceIdRecord);
+			console.log("deviceIdRecord", deviceIdRecord);
 			if (deviceIdRecord.length <= 0) {
 				//No such device_id is present
 				return res
 					.status(404)
-					.json({ code: 102, message: 'No such device_id exist' });
+					.json({ code: 102, message: "No such device_id exist" });
 			}
 
 			//Later on we will be adding device name in the message
 
-			res.status(200).json({ message: 'receiver device exists' });
+			res.status(200).json({ message: "receiver device exists" });
 		})
 		.catch((err) => {
 			console.error(
-				'Server unable to check for device_id in the devices database',
+				"Server unable to check for device_id in the devices database",
 				err,
 			);
 			res.status(500).json({
 				code: 101,
-				message: 'Server unable to check for device_id in the devices database',
+				message: "Server unable to check for device_id in the devices database",
 			});
 		});
 });

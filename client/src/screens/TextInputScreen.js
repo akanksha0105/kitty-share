@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './styles.css';
-import axios from 'axios';
-import KeyGeneratedScreen from './KeyGeneratedScreen';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./styles.css";
+import axios from "axios";
+import KeyGeneratedScreen from "./KeyGeneratedScreen";
 
 function TextInputScreen({ currentDeviceId }) {
 	const [isdisabled, setIsDisabled] = useState(false);
-	const [searchInput, setSearchInput] = useState('');
-	const [generatedCode, setGeneratedCode] = useState('');
+	const [searchInput, setSearchInput] = useState("");
+	const [generatedCode, setGeneratedCode] = useState("");
 
+	console.log("In the textInput", currentDeviceId);
 	const generateSecretKey = async () => {
 		let valueOfTheURL = searchInput;
 		let currentDeviceId = currentDeviceId;
 
-		console.log('URL entered by the user', valueOfTheURL);
+		console.log("URL entered by the user", valueOfTheURL);
 		let secretKeyPromise = axios.post(
-			'http://localhost:8080/api/code/postthevalue',
+			"http://localhost:8080/api/code/postthevalue",
 			{
 				valueOfTheURL,
 				currentDeviceId,
@@ -25,21 +26,21 @@ function TextInputScreen({ currentDeviceId }) {
 		secretKeyPromise
 			.then((response) => {
 				setGeneratedCode(response.data.data);
-				console.log('Generated Key provided by the server');
+				console.log("Generated Key provided by the server");
 			})
 			.catch((error) => {
 				const { code } = error.response.data;
 				if (code === 102) {
-					return console.error('Code does not exist');
+					return console.error("Code does not exist");
 				}
 
-				console.error('Unable to generate code');
+				console.error("Unable to generate code");
 			});
 	};
 	const onToggleMoveToTextButton = () => {
 		setIsDisabled(!isdisabled);
-		setSearchInput('');
-		setGeneratedCode('');
+		setSearchInput("");
+		setGeneratedCode("");
 	};
 
 	const onMoveToInputKeyScreen = () => {
@@ -53,47 +54,60 @@ function TextInputScreen({ currentDeviceId }) {
 	};
 
 	return (
-		<div className='text__input__screen'>
+		<div className="text__input__screen">
 			{!isdisabled ? (
-				<div className='text__input__form'>
+				<div className="text__input__form">
 					<form onSubmit={onFormSubmit}>
 						<label>
 							<input
-								name='name'
-								id='name'
-								type='text'
+								name="name"
+								id="name"
+								type="text"
 								value={searchInput}
 								onChange={(e) => setSearchInput(e.target.value)}
 								required
 							/>
-							<div className='label-text'>Enter the text to be shared</div>
+							<div className="label-text">Enter the text to be shared</div>
 						</label>
 						<br />
 
 						<Link
 							to={{
-								pathname: '/linktoanewdevice',
+								pathname: "/linktoanewdevice",
 								state: {
 									url: { searchInput },
 									currentDeviceId: { currentDeviceId },
 								},
 							}}>
-							<button>Link to the New Device</button>
+							{searchInput.length > 0 ? (
+								<button>Link to the New Device</button>
+							) : null}
 						</Link>
-						<button>Send to Connections</button>
-						<button type='submit'>Generate the Key</button>
+						<Link
+							to={{
+								pathname: "/sendtoconnections",
+								state: {
+									url: { searchInput },
+									currentDeviceId: { currentDeviceId },
+								},
+							}}>
+							{searchInput.length > 0 ? (
+								<button>Send to Connections</button>
+							) : null}
+						</Link>
+						<button type="submit">Generate the Key</button>
 					</form>
 				</div>
 			) : (
 				<>
 					<KeyGeneratedScreen generatedCode={generatedCode} />
-					<button type='button' onClick={onToggleMoveToTextButton}>
+					<button type="button" onClick={onToggleMoveToTextButton}>
 						Move to the Text Input Screen
 					</button>
 				</>
 			)}
-			<Link to='/code'>
-				<button type='button' onClick={onMoveToInputKeyScreen}>
+			<Link to="/code">
+				<button type="button" onClick={onMoveToInputKeyScreen}>
 					Move to the Input Key Screen
 				</button>
 			</Link>

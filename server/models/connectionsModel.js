@@ -1,23 +1,22 @@
 const mongoose = require("mongoose");
 
-const connectionsSchema = mongoose.Schema({
-  device_id: {
-    type: String,
-    require: true,
-    unique: true,
-  },
-
-  connections: [
-    {
-      device_id: {
-        type: String,
-        require: true,
-        unique: true,
-      },
-    },
-  ],
+const deviceSchema = mongoose.Schema({
+	deviceId: {
+		type: String,
+		require: true,
+		unique: true,
+	},
+	connections: [
+		{
+			deviceId: {
+				type: String,
+				require: true,
+				unique: true,
+			},
+		},
+	],
 });
 
-const Connections = mongoose.model("Devices", connectionsSchema);
+const Connections = mongoose.model("Connections", deviceSchema);
 
 module.exports = Connections;
