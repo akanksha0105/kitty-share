@@ -28,7 +28,7 @@ function CodeInputScreen() {
 			.then((response) => {
 				// console.log(response.data.data);
 				setRetrievedMessage(response.data.data);
-				console.log("URL provided by the server", { retrieveMessage });
+				console.log("URL provided by the server", retrievedMessage);
 				console.log(response.data.message);
 			})
 			.catch((error) => console.log(error.response.data));

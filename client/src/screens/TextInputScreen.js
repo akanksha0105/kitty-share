@@ -12,14 +12,16 @@ function TextInputScreen({ currentDeviceId }) {
 	console.log("In the textInput", currentDeviceId);
 	const generateSecretKey = async () => {
 		let valueOfTheURL = searchInput;
-		let currentDeviceId = currentDeviceId;
+		let senderDeviceId = currentDeviceId;
+
+		console.log("current device id in textinput screen", senderDeviceId);
 
 		console.log("URL entered by the user", valueOfTheURL);
 		let secretKeyPromise = axios.post(
 			"http://localhost:8080/api/code/postthevalue",
 			{
 				valueOfTheURL,
-				currentDeviceId,
+				senderDeviceId,
 			},
 		);
 

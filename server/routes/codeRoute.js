@@ -20,12 +20,10 @@ router.post("/getcodegenerated", async (req, res) => {
 				return res.status(404).json({ code: 102, message: "Code not found" });
 			}
 
-			res
-				.status(200)
-				.json({
-					data: response[0].message,
-					message: `Do you want to add ${response[0].deviceId} as a new connection ?`,
-				});
+			res.status(200).json({
+				data: response[0].message,
+				message: `Do you want to add ${response[0].deviceId} as a new connection ?`,
+			});
 		})
 		.catch((err) => {
 			console.log(err.message);
@@ -60,7 +58,7 @@ const checkOrGenerateCode = async (url, currentDeviceId) => {
 
 router.post("/postthevalue", (req, res) => {
 	const url = req.body.valueOfTheURL;
-	const currentDeviceId = req.body.currentDeviceId;
+	const currentDeviceId = req.body.senderDeviceId;
 	console.log("Server checks if the URL is already present in the database");
 
 	const codePromise = checkOrGenerateCode(url, currentDeviceId);

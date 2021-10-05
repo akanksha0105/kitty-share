@@ -5,6 +5,42 @@ var mongoose = require("mongoose");
 
 const webpush = require("web-push");
 
+router.get("/subscribeddevice/:deviceid", (req, res) => {
+	console.log(
+		"In susbscriptionsRoute.js for checking whether the receiver device is subscribed to notifications",
+	);
+	const device_id = req.params.deviceid;
+
+	SubscriptionsModel.find({ deviceId: device_id })
+		.then((subscriptionsModelResponse) => {
+			console.log("subscriptionsModelResponse", subscriptionsModelResponse);
+
+			if (subscriptionsModelResponse.length <= 0) {
+				console.log("The receiver device is not subscribed to notifications");
+				res.status(404).json({
+					code: 102,
+					message: "The receiver device is not subscribed to notifications",
+				});
+			}
+
+			return res.status(200).json({
+				code: 101,
+				message: "The receiver's device is subscribed to notifications",
+			});
+		})
+		.catch((err) => {
+			console.error(
+				"Encountered problem on server side in checking the receiver's device validation of subscriptions Modal",
+				err,
+			);
+			res.status(500).json({
+				code: 101,
+				message:
+					"Encountered problem on server side in checking the receiver's device validation of subscriptions Modal ",
+			});
+		});
+});
+
 //Route Checked
 router.post("/savesubscription", async (req, res) => {
 	const subscription = req.body.body;

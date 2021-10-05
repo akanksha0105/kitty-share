@@ -28,5 +28,5 @@
   "bugs": {
     "url": "https://gitlab.com/mittalakanksha0105/kitty-share/issues"
   },
-  "homepage": "https://gitlab.com/mittalakanksha0105/kitty-share#readme"
+  "homepage": "../client/build"
 }

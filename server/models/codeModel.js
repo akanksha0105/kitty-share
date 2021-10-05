@@ -1,10 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const codeSchema = mongoose.Schema({
 	deviceId: {
 		type: String,
 		require: true,
-		unique: true,
 	},
 	code: {
 		type: String,
@@ -21,6 +20,6 @@ const codeSchema = mongoose.Schema({
 	},
 });
 
-const Codes = mongoose.model('Codes', codeSchema);
+const Codes = mongoose.model("Codes", codeSchema);
 
 module.exports = Codes;

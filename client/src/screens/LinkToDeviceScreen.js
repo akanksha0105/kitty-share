@@ -9,35 +9,54 @@ function LinkToDeviceScreen() {
 	const currentDeviceId = location.state?.currentDeviceId;
 	const [receiverDeviceID, setReceiverDeviceID] = useState("");
 
-	//User enters the device_id of the other device to send the URL
+	//Event handler for sending the URL to the receiver's device
 	const onSendingToOtherDevice = () => {
 		//check whether the entered device_id is valid or not
-		console.log("Receiver's device id", receiverDeviceID);
-
+		// Later discovered process : It is better to check the receiver's device in the subscriptions Model list - because if it is not subscribed to notifications,
+		//we are not anyway sending it
+		// console.log("Receiver's device id", receiverDeviceID);
 		const deviceIdToBeChecked = receiverDeviceID;
 		axios
-			.post("http://localhost:8080/api/devices/deviceidvalid", {
-				deviceIdToBeChecked,
+			.get(
+				`http://localhost:8080/api/subscription/subscribeddevice/${deviceIdToBeChecked}`,
+			)
+			.then((isDeviceSubscribedResponse) => {
+				console.log(
+					"Checking if entered receiver's device id is subscribed to notifications or not ",
+					isDeviceSubscribedResponse,
+				);
 			})
-			.then((deviceIdValidConfirmation) => {
-				console.log("Device id valid confirmation", deviceIdValidConfirmation);
-				console.log(deviceIdValidConfirmation.data.message);
-				//For valid device_id
-
-				//Also add this receiver's device to the sending device connections list
-				addReceiverToTheDeviceConnectionList();
-				//send the notification to the receiver's device
-				sendNotificationToTheServer();
-			})
-			.catch((error) => {
-				console.log("Unexxpected error", error);
-				const { code } = error.response;
-				if (code === 102) {
-					return console.error("No such device with this device_id exists");
-				}
-
-				console.error("Unable to check for device_id in the devices database");
+			.catch((err) => {
+				console.error(
+					"Encountered issue in checking the receiver's id validation for subscription of notifications",
+					err,
+				);
 			});
+
+		// const deviceIdToBeChecked = receiverDeviceID;
+		// axios
+		// 	.post("http://localhost:8080/api/devices/deviceidvalid", {
+		// 		deviceIdToBeChecked,
+		// 	})
+		// 	.then((deviceIdValidConfirmation) => {
+		// 		console.log("Device id valid confirmation", deviceIdValidConfirmation);
+		// 		console.log(deviceIdValidConfirmation.data.message);
+		// 		//For valid device_id
+
+		// 		//Also add this receiver's device to the sending device connections list
+		// 		addReceiverToTheDeviceConnectionList();
+		// 		//send the notification to the receiver's device
+		// 		sendNotificationToTheServer();
+		// 	})
+		// 	.catch((error) => {
+		// 		console.log("Unexxpected error", error);
+		// 		const { code } = error.response;
+		// 		if (code === 102) {
+		// 			return console.error("No such device with this device_id exists");
+		// 		}
+
+		// 		console.error("Unable to check for device_id in the devices database");
+		// 	});
 	};
 
 	const addReceiverToTheDeviceConnectionList = () => {
