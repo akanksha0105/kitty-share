@@ -4,6 +4,7 @@ const CodeModel = require("../models/codeModel");
 var mongoose = require("mongoose");
 const ObjectId = require("mongo-objectid");
 
+//Router for retrieving the URL
 router.post("/getcodegenerated", async (req, res) => {
 	const code = req.body.codedMessage;
 	console.log("code is", code);
@@ -19,7 +20,12 @@ router.post("/getcodegenerated", async (req, res) => {
 				return res.status(404).json({ code: 102, message: "Code not found" });
 			}
 
-			res.status(200).json({ data: response[0].message });
+			res
+				.status(200)
+				.json({
+					data: response[0].message,
+					message: `Do you want to add ${response[0].deviceId} as a new connection ?`,
+				});
 		})
 		.catch((err) => {
 			console.log(err.message);
