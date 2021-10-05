@@ -25,6 +25,15 @@ function TextInputScreen({ currentDeviceId }) {
 			},
 		);
 
+		console.log("URL entered by the user", valueOfTheURL);
+		let secretKeyPromise = axios.post(
+			"http://localhost:8080/api/code/postthevalue",
+			{
+				valueOfTheURL,
+				senderDeviceId,
+			},
+		);
+
 		secretKeyPromise
 			.then((response) => {
 				setGeneratedCode(response.data.data);
