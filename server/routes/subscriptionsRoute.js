@@ -25,7 +25,7 @@ router.get("/subscribeddevice/:deviceid", (req, res) => {
 
 			return res.status(200).json({
 				code: 101,
-				message: "The receiver's device is subscribed to notifications",
+				message: "The receiver's device is already subscribed to notifications",
 			});
 		})
 		.catch((err) => {

@@ -80,20 +80,39 @@ router.post("/:deviceId", (req, res) => {
 				})
 
 					.then((checking) => {
-						if (checking.length <= 0) {
-							return ConnectionsModel.updateOne(
-								{
-									deviceId: currentDeviceId,
-								},
-								{
-									$addToSet: {
-										connections: {
-											deviceId: receiverDeviceID,
-										},
+						// if (checking.length <= 0) {
+						// 	return ConnectionsModel.updateOne(
+						// 		{
+						// 			deviceId: currentDeviceId,
+						// 		},
+						// 		{
+						// 			$addToSet: {
+						// 				connections: {
+						// 					deviceId: receiverDeviceID,
+						// 				},
+						// 			},
+						// 		},
+						// 	);
+						// }
+
+						if (checking.length > 0) {
+							//What status code needs be here
+							return res
+								.status(200)
+								.json({ data: "Connection already exists in the device list" });
+						}
+						return ConnectionsModel.updateOne(
+							{
+								deviceId: currentDeviceId,
+							},
+							{
+								$addToSet: {
+									connections: {
+										deviceId: receiverDeviceID,
 									},
 								},
-							);
-						}
+							},
+						);
 					})
 
 					.then((updatedConnectionRecord) => {
@@ -101,12 +120,15 @@ router.post("/:deviceId", (req, res) => {
 							"Connection model successfully updated",
 							updatedConnectionRecord,
 						);
-						res
+						return res
 							.status(200)
-							.json({ data: "Connection updated and saved in database" });
+							.json({ data: "New Connection updated and saved in database" });
 					})
 					.catch((err) => {
 						console.error("error in saving the connection in database", err);
+						return res
+							.status(500)
+							.json({ data: "error in saving the connection in database" });
 					});
 			}
 		},

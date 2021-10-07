@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { Modal, Button } from "react-bootstrap";
+import MessageHeader from "../Message";
+
 //import './styles.css';
 
 function LinkToDeviceScreen() {
@@ -8,15 +11,57 @@ function LinkToDeviceScreen() {
 	const urlTobeShared = location.state?.url;
 	const currentDeviceId = location.state?.currentDeviceId;
 	const [receiverDeviceID, setReceiverDeviceID] = useState("");
+	const [messageHeader, setMessageHeader] = useState("");
+	const [messageContent, setMessageContent] = useState("");
 
 	//Event handler for sending the URL to the receiver's device
 	const onSendingToOtherDevice = () => {
+		checkReceiverDeviceIsSubscribed()
+			.then((response) => {
+				console.log("response in checkReceiverDeviceIsSubscribed", response);
+
+				if (response == true) return addReceiverToTheDeviceConnectionList();
+			})
+			.then((addReceiverToTheDeviceConnectionListResponse) => {
+				console.log(
+					"ddReceiverToTheDeviceConnectionListResponse",
+					addReceiverToTheDeviceConnectionListResponse,
+				);
+
+				return sendNotificationToTheServer();
+			})
+			.then((sendMessageToDevice) => {
+				console.log(sendMessageToDevice);
+				setMessageContent("Hooray!!! URL has been sent to the receiver");
+				console.log("Hooray!!! URL has been sent to the receiver");
+			})
+			.catch((err) => {
+				console.error(
+					"Error encountered in sending the url to the other device",
+					err,
+				);
+			});
+		return successOrFailureMessage();
+	};
+
+	const successOrFailureMessage = () => {
+		return (
+			<Link to="/success">
+				<Message
+					messageHeader={messageHeader}
+					messageContent={messageContent}
+				/>
+			</Link>
+		);
+	};
+	const checkReceiverDeviceIsSubscribed = async () => {
 		//check whether the entered device_id is valid or not
 		// Later discovered process : It is better to check the receiver's device in the subscriptions Model list - because if it is not subscribed to notifications,
 		//we are not anyway sending it
-		// console.log("Receiver's device id", receiverDeviceID);
+
 		const deviceIdToBeChecked = receiverDeviceID;
-		axios
+		let messageTitle;
+		return axios
 			.get(
 				`http://localhost:8080/api/subscription/subscribeddevice/${deviceIdToBeChecked}`,
 			)
@@ -25,56 +70,47 @@ function LinkToDeviceScreen() {
 					"Checking if entered receiver's device id is subscribed to notifications or not ",
 					isDeviceSubscribedResponse,
 				);
+				messageTitle = isDeviceSubscribedResponse.data.message;
+				setMessageHeader(messageTitle);
+				return true;
 			})
 			.catch((err) => {
+				const { code } = err.response.data;
+				if (code === 102) {
+					console.error("Device not subscribed to notifications");
+					messageTitle = "Device not subscribed to notifications";
+					setMessageHeader(messageTitle);
+					return false;
+				}
+
 				console.error(
-					"Encountered issue in checking the receiver's id validation for subscription of notifications",
-					err,
+					"Unable to check if device is subscribed to notifications",
 				);
 			});
-
-		// const deviceIdToBeChecked = receiverDeviceID;
-		// axios
-		// 	.post("http://localhost:8080/api/devices/deviceidvalid", {
-		// 		deviceIdToBeChecked,
-		// 	})
-		// 	.then((deviceIdValidConfirmation) => {
-		// 		console.log("Device id valid confirmation", deviceIdValidConfirmation);
-		// 		console.log(deviceIdValidConfirmation.data.message);
-		// 		//For valid device_id
-
-		// 		//Also add this receiver's device to the sending device connections list
-		// 		addReceiverToTheDeviceConnectionList();
-		// 		//send the notification to the receiver's device
-		// 		sendNotificationToTheServer();
-		// 	})
-		// 	.catch((error) => {
-		// 		console.log("Unexxpected error", error);
-		// 		const { code } = error.response;
-		// 		if (code === 102) {
-		// 			return console.error("No such device with this device_id exists");
-		// 		}
-
-		// 		console.error("Unable to check for device_id in the devices database");
-		// 	});
 	};
 
-	const addReceiverToTheDeviceConnectionList = () => {
+	const addReceiverToTheDeviceConnectionList = async () => {
 		console.log("addReceiverToTheDeviceConnectionList");
 		let device_id = currentDeviceId.currentDeviceId;
 		console.log("device_id in addReceiverToTheDeviceConnectionList", device_id);
-		axios
+
+		return axios
 			.post(`http://localhost:8080/api/connections/${device_id}`, {
 				receiverDeviceID,
 			})
-			.then((addReceiverToListRespnse) => {
-				console.log(addReceiverToListRespnse);
-				console.log(
-					"Receiver's device successfully addded to the sender's device connection list",
-				);
+			.then((addReceiverToListResponse) => {
+				console.log(addReceiverToListResponse);
+				console.log(addReceiverToListResponse.data.data);
+				// console.log(
+				// 	"Receiver's device successfully addded to the sender's device connection list",
+				// );
+				return addReceiverToListResponse.data.data;
 			})
 			.catch((err) => {
-				console.error("Issue in saving the device to list", err);
+				console.error(
+					"Issue in saving the device to the connections list",
+					err,
+				);
 			});
 	};
 	const sendNotificationToTheServer = async () => {
@@ -116,8 +152,34 @@ function LinkToDeviceScreen() {
 					</button>
 				) : null}
 			</form>
+			<div></div>
 		</div>
 	);
 }
 
 export default LinkToDeviceScreen;
+
+// const deviceIdToBeChecked = receiverDeviceID;
+// axios
+// 	.post("http://localhost:8080/api/devices/deviceidvalid", {
+// 		deviceIdToBeChecked,
+// 	})
+// 	.then((deviceIdValidConfirmation) => {
+// 		console.log("Device id valid confirmation", deviceIdValidConfirmation);
+// 		console.log(deviceIdValidConfirmation.data.message);
+// 		//For valid device_id
+
+// 		//Also add this receiver's device to the sending device connections list
+// 		addReceiverToTheDeviceConnectionList();
+// 		//send the notification to the receiver's device
+// 		sendNotificationToTheServer();
+// 	})
+// 	.catch((error) => {
+// 		console.log("Unexxpected error", error);
+// 		const { code } = error.response;
+// 		if (code === 102) {
+// 			return console.error("No such device with this device_id exists");
+// 		}
+
+// 		console.error("Unable to check for device_id in the devices database");
+// 	});
