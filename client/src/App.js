@@ -7,6 +7,7 @@ import TextInputScreen from "./screens/TextInputScreen";
 import LinkToDeviceScreen from "./screens/LinkToDeviceScreen";
 import axios from "axios";
 import SendToConnections from "./screens/SendToConnections";
+import Message from "./Message";
 
 function App() {
 	const [currentDeviceId, setCurrentDeviceId] = useState("");
@@ -55,9 +56,13 @@ function App() {
 					<Route path="/linktoanewdevice">
 						<LinkToDeviceScreen />
 					</Route>
+					<Route path="/success">
+						<Message />
+					</Route>
 					<Route path="/sendtoconnections">
 						<SendToConnections />
 					</Route>
+
 					<Route path="/">
 						<HomeScreen />
 					</Route>

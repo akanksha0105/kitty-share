@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
-import MessageHeader from "../Message";
+import Message from "../Message";
 
 //import './styles.css';
 
@@ -20,7 +20,9 @@ function LinkToDeviceScreen() {
 			.then((response) => {
 				console.log("response in checkReceiverDeviceIsSubscribed", response);
 
-				if (response == true) return addReceiverToTheDeviceConnectionList();
+				if (response == false) return;
+
+				return addReceiverToTheDeviceConnectionList();
 			})
 			.then((addReceiverToTheDeviceConnectionListResponse) => {
 				console.log(
@@ -34,26 +36,30 @@ function LinkToDeviceScreen() {
 				console.log(sendMessageToDevice);
 				setMessageContent("Hooray!!! URL has been sent to the receiver");
 				console.log("Hooray!!! URL has been sent to the receiver");
+				//return successOrFailureMessage();
 			})
+			// .then((response) => {
+			// 	console.log("Message successfully logged on screen ", response);
+			// })
 			.catch((err) => {
 				console.error(
 					"Error encountered in sending the url to the other device",
 					err,
 				);
 			});
-		return successOrFailureMessage();
 	};
 
-	const successOrFailureMessage = () => {
-		return (
-			<Link to="/success">
-				<Message
-					messageHeader={messageHeader}
-					messageContent={messageContent}
-				/>
-			</Link>
-		);
-	};
+	// const successOrFailureMessage = () => {
+	// 	console.log("In successOrFailure function");
+	// 	return (
+	// 		<Link to="/success">
+	// 			<Message
+	// 				messageHeader={messageHeader}
+	// 				messageContent={messageContent}
+	// 			/>
+	// 		</Link>
+	// 	);
+	// };
 	const checkReceiverDeviceIsSubscribed = async () => {
 		//check whether the entered device_id is valid or not
 		// Later discovered process : It is better to check the receiver's device in the subscriptions Model list - because if it is not subscribed to notifications,
@@ -151,7 +157,17 @@ function LinkToDeviceScreen() {
 						Send
 					</button>
 				) : null}
+
+				{messageContent ? (
+					<Link to="/success">
+						<Message
+							messageHeader={messageHeader}
+							messageContent={messageContent}
+						/>
+					</Link>
+				) : null}
 			</form>
+
 			<div></div>
 		</div>
 	);

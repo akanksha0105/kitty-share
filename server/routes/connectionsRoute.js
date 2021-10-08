@@ -18,11 +18,11 @@ router.get("/:deviceId", (req, res) => {
 				res.status(404).json({ code: 102, message: "No connnections found" });
 			}
 
-			let numberOfConnections = connectionsModelResponse[0].connections.length;
+			//let numberOfConnections = connectionsModelResponse[0].connections.length;
+			let connectionsList = connectionsModelResponse[0].connections;
+			console.log(connectionsList);
 
-			return res
-				.status(200)
-				.json({ code: 101, message: `${numberOfConnections} Found !!!` });
+			return res.status(200).json({ code: 101, message: connectionsList });
 		})
 		.catch((err) => {
 			console.error("Problem in connections", err);
