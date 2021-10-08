@@ -8,6 +8,7 @@ const ConnectionsRow = (props) => {
 	console.log("currentdEviceId", currentDeviceId);
 
 	const sendNotificationToTheServer = async () => {
+		console.log("sendNotificationToTheServer in ConnectionRow component");
 		return await axios
 			.post("http://localhost:8080/api/subscription/sendnotification", {
 				currentDeviceId,

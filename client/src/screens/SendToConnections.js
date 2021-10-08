@@ -25,17 +25,6 @@ function SendToConnections() {
 				//	console.log(data);
 				//	console.log({ data });
 				setConnectionsList({ data });
-				//console.log(connectionsList);
-				// const array = [
-				// 	...getConnectionsResponse.data.message.map((connection) => {
-				// 		return connection.deviceId;
-				// 	}),
-				// ];
-
-				// //return getConnectionsResponse.data.message;
-				// return array;
-
-				//getConnectionsResponse.data.mes;
 			})
 			.catch((err) => {
 				console.error(
@@ -46,11 +35,6 @@ function SendToConnections() {
 	};
 	useEffect(() => {
 		onGetConnections();
-		// onGetConnections().then((connectionsList) => {
-		// 	console.log("connectionsArraylist", connectionsList);
-		// 	setConnectionsList({ connectionsList });
-		// 	console.log("Finally", typeof [...connectionsList]);
-		// });
 	}, []);
 
 	return (
@@ -64,12 +48,6 @@ function SendToConnections() {
 						urlTobeShared={urlTobeShared}
 					/>
 				))}
-
-			{/* {[
-				...connectionsList.map((item) => {
-					return <div>{item} </div>;
-				}),
-			]} */}
 		</div>
 	);
 }

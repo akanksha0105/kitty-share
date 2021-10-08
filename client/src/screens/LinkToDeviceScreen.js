@@ -15,51 +15,86 @@ function LinkToDeviceScreen() {
 	const [messageContent, setMessageContent] = useState("");
 
 	//Event handler for sending the URL to the receiver's device
+	// const onSendingToOtherDevice = () => {
+	// 	console.log("In onSendingToOtherDevice in LinkToDeviceScreen component");
+	// 	checkReceiverDeviceIsSubscribed()
+	// 		.then((response) => {
+	// 			console.log("response in checkReceiverDeviceIsSubscribed", response);
+
+	// 			if (response == false) {
+	// 				throw new Error("Abort promise chain");
+	// 			} else {
+	// 				return addReceiverToTheDeviceConnectionList();
+	// 			}
+
+	// 			// throw new Error("Device not subscribed to notifications");
+	// 		})
+	// 		.then((addReceiverToTheDeviceConnectionListResponse) => {
+	// 			console.log(
+	// 				"addReceiverToTheDeviceConnectionListResponse",
+	// 				addReceiverToTheDeviceConnectionListResponse,
+	// 			);
+
+	// 			if (addReceiverToTheDeviceConnectionListResponse)
+	// 				return sendNotificationToTheServer();
+	// 		})
+	// 		.then((sendMessageToDevice) => {
+	// 			console.log(sendMessageToDevice);
+	// 			setMessageContent("Hooray!!! URL has been sent to the receiver");
+	// 			console.log("Hooray!!! URL has been sent to the receiver");
+	// 			//return successOrFailureMessage();
+	// 		})
+
+	// 		.catch((err) => {
+	// 			console.error(
+	// 				"Error encountered in sending the url to the other device",
+	// 				err,
+	// 			);
+	// 		});
+	// };
+
 	const onSendingToOtherDevice = () => {
+		console.log("In onSendingToOtherDevice in LinkToDeviceScreen component");
 		checkReceiverDeviceIsSubscribed()
 			.then((response) => {
-				console.log("response in checkReceiverDeviceIsSubscribed", response);
+				//	console.log("response in checkReceiverDeviceIsSubscribed", response);
 
-				if (response == false) return;
-
+				if (!response)
+					throw new Error("Device not subscribed to notifications");
 				return addReceiverToTheDeviceConnectionList();
 			})
 			.then((addReceiverToTheDeviceConnectionListResponse) => {
 				console.log(
-					"ddReceiverToTheDeviceConnectionListResponse",
+					"addReceiverToTheDeviceConnectionListResponse",
 					addReceiverToTheDeviceConnectionListResponse,
 				);
 
+				if (!addReceiverToTheDeviceConnectionListResponse)
+					throw new Error("Issue in saving the device to the connections list");
 				return sendNotificationToTheServer();
 			})
 			.then((sendMessageToDevice) => {
 				console.log(sendMessageToDevice);
+
+				if (!sendMessageToDevice) {
+					throw new Error("Unable to send notification to the server ");
+				}
+
 				setMessageContent("Hooray!!! URL has been sent to the receiver");
 				console.log("Hooray!!! URL has been sent to the receiver");
 				//return successOrFailureMessage();
 			})
-			// .then((response) => {
-			// 	console.log("Message successfully logged on screen ", response);
-			// })
+
 			.catch((err) => {
-				console.error(
-					"Error encountered in sending the url to the other device",
-					err,
-				);
+				// if (err)
+				// 	console.error(
+				// 		"Error encountered in sending the url to the other device",
+				// 		err.message,
+				// 	);
+				console.error(err.message);
 			});
 	};
 
-	// const successOrFailureMessage = () => {
-	// 	console.log("In successOrFailure function");
-	// 	return (
-	// 		<Link to="/success">
-	// 			<Message
-	// 				messageHeader={messageHeader}
-	// 				messageContent={messageContent}
-	// 			/>
-	// 		</Link>
-	// 	);
-	// };
 	const checkReceiverDeviceIsSubscribed = async () => {
 		//check whether the entered device_id is valid or not
 		// Later discovered process : It is better to check the receiver's device in the subscriptions Model list - because if it is not subscribed to notifications,
@@ -79,25 +114,25 @@ function LinkToDeviceScreen() {
 				messageTitle = isDeviceSubscribedResponse.data.message;
 				setMessageHeader(messageTitle);
 				return true;
-			})
-			.catch((err) => {
-				const { code } = err.response.data;
-				if (code === 102) {
-					console.error("Device not subscribed to notifications");
-					messageTitle = "Device not subscribed to notifications";
-					setMessageHeader(messageTitle);
-					return false;
-				}
-
-				console.error(
-					"Unable to check if device is subscribed to notifications",
-				);
 			});
+		// .catch((err) => {
+		// 	const { code } = err.response.data;
+		// 	if (code === 102) {
+		// 		console.error("Device not subscribed to notifications");
+		// 		messageTitle = "Device not subscribed to notifications";
+		// 		setMessageHeader(messageTitle);
+		// 	}
+
+		// 	console.error(
+		// 		"Unable to check if device is subscribed to notifications",
+		// 	);
+		// });
 	};
 
 	const addReceiverToTheDeviceConnectionList = async () => {
 		console.log("addReceiverToTheDeviceConnectionList");
 		let device_id = currentDeviceId.currentDeviceId;
+
 		console.log("device_id in addReceiverToTheDeviceConnectionList", device_id);
 
 		return axios
@@ -107,23 +142,22 @@ function LinkToDeviceScreen() {
 			.then((addReceiverToListResponse) => {
 				console.log(addReceiverToListResponse);
 				console.log(addReceiverToListResponse.data.data);
-				// console.log(
-				// 	"Receiver's device successfully addded to the sender's device connection list",
-				// );
+
 				return addReceiverToListResponse.data.data;
-			})
-			.catch((err) => {
-				console.error(
-					"Issue in saving the device to the connections list",
-					err,
-				);
 			});
+		// .catch((err) => {
+		// 	console.error(
+		// 		"Issue in saving the device to the connections list",
+		// 		err,
+		// 	);
+		// });
 	};
 	const sendNotificationToTheServer = async () => {
+		let receiverDeviceId = receiverDeviceID;
 		return await axios
 			.post("http://localhost:8080/api/subscription/sendnotification", {
 				currentDeviceId,
-				receiverDeviceID,
+				receiverDeviceId,
 				urlTobeShared,
 			})
 			.then((sendNotificationToTheServerResponse) => {
@@ -131,10 +165,11 @@ function LinkToDeviceScreen() {
 					"URL is shared with the receiver : ",
 					sendNotificationToTheServerResponse,
 				);
-			})
-			.catch((err) =>
-				console.error("Error in sending URL to the user.. ", err),
-			);
+				return true;
+			});
+		// .catch((err) =>
+		// 	console.error("Error in sending URL to the user.. ", err),
+		// );
 	};
 	return (
 		<div className="link__to__a__device__screen">

@@ -17,7 +17,7 @@ router.get("/subscribeddevice/:deviceid", (req, res) => {
 
 			if (subscriptionsModelResponse.length <= 0) {
 				console.log("The receiver device is not subscribed to notifications");
-				res.status(404).json({
+				return res.status(404).json({
 					code: 102,
 					message: "The receiver device is not subscribed to notifications",
 				});
@@ -33,7 +33,7 @@ router.get("/subscribeddevice/:deviceid", (req, res) => {
 				"Encountered problem on server side in checking the receiver's device validation of subscriptions Modal",
 				err,
 			);
-			res.status(500).json({
+			return res.status(500).json({
 				code: 101,
 				message:
 					"Encountered problem on server side in checking the receiver's device validation of subscriptions Modal ",
@@ -132,8 +132,9 @@ router.post("/sendnotification", async (req, res) => {
 	console.log(req.body);
 	const senderDeviceId = req.body.currentDeviceId.currentDeviceId;
 	console.log(senderDeviceId);
-	const receiverDeviceID = req.body.receiverDeviceID;
+	const receiverDeviceID = req.body.receiverDeviceId;
 	const urlTobeShared = req.body.urlTobeShared.searchInput;
+	console.log("receiverDeviceId", receiverDeviceID);
 
 	const subscription = SubscriptionsModel.find({ deviceId: receiverDeviceID });
 	subscription
