@@ -91,6 +91,7 @@ function LinkToDeviceScreen() {
 				// 		"Error encountered in sending the url to the other device",
 				// 		err.message,
 				// 	);
+
 				console.error(err.message);
 			});
 	};

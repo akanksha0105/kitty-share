@@ -48,7 +48,7 @@ function App() {
 			<Router>
 				<Switch>
 					<Route path="/code">
-						<CodeInputScreen />
+						<CodeInputScreen currentDeviceId={currentDeviceId} />
 					</Route>
 					<Route path="/text">
 						<TextInputScreen currentDeviceId={currentDeviceId} />

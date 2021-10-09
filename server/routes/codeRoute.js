@@ -22,6 +22,7 @@ router.post("/getcodegenerated", async (req, res) => {
 
 			res.status(200).json({
 				data: response[0].message,
+				device: response[0].deviceId,
 				message: `Do you want to add ${response[0].deviceId} as a new connection ?`,
 			});
 		})
