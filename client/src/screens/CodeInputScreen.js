@@ -39,24 +39,18 @@ function CodeInputScreen(props) {
 				console.log(response);
 				//Setting the URL derived fron the backend
 				setRetrievedMessage(response.data.data);
-				console.log("URL provided by the server", retrievedMessage);
-				console.log(response.data.device);
-				console.log(response.data.message);
-				setAddDeviceMessage(response.data.message);
+
 				setDeviceToBeAdded(response.data.device);
-				console.log(currentDeviceId);
-				var x = JSON.stringify(currentDeviceId);
-				var y = deviceToBeAdded;
-				console.log(x);
-				console.log(y);
-				// if (x.localeCompare(y)) {
-				// 	console.log("The sender and the receiver devices are same");
-				// 	setShow(false);
-				// } else {
-				setShow(true);
-				// }
+				setAddDeviceMessage(response.data.message);
+				console.log(currentDeviceId.localeCompare(deviceToBeAdded));
+				if (currentDeviceId.localeCompare(deviceToBeAdded) == 0) {
+					console.log("The sender and the receiver devices are same");
+					setShow(false);
+				} else {
+					setShow(true);
+				}
 			})
-			.catch((error) => console.log(error.response.data));
+			.catch((error) => console.log(error));
 	};
 
 	//Event handler for adding the device that stored the code to the connections

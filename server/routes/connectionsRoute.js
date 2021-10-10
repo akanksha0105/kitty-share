@@ -33,15 +33,15 @@ router.get("/:deviceId", (req, res) => {
 		});
 });
 
-const updateConnections = async (currentDeviceId, receiverDeviceID) => {
+const updateConnections = async (currentDeviceId, receiverDeviceID, data) => {
 	return ConnectionsModel.find({
 		connections: { $elemMatch: { deviceId: receiverDeviceID } },
 	}).then((checking) => {
 		if (checking.length > 0) {
 			//What status code needs be here
-			return res.status(200).json({
-				data: "Connection already exists in the device list",
-			});
+
+			data = "Connection already exists in the device list";
+			return data;
 		} else {
 			return ConnectionsModel.updateOne(
 				{
@@ -59,15 +59,36 @@ const updateConnections = async (currentDeviceId, receiverDeviceID) => {
 					"Connection model successfully updated",
 					updatedConnectionRecord,
 				);
-				return res
-					.status(200)
-					.json({ data: "New Connection updated and saved in database" });
+				data = "New Connection updated and saved in database";
+				return data;
 			});
 		}
 	});
 };
 
-const saveNewConnection = async (currentDeviceId, receiverDeviceID) => {
+const updateOrSaveConnection = async (currentDeviceId, receiverDeviceID) => {
+	console.log("In updateOrSaveConnection function");
+	let data;
+	return ConnectionsModel.find({ deviceId: currentDeviceId })
+		.then((connectionsModelResponse) => {
+			console.log("connectionsModelResponse", connectionsModelResponse);
+
+			if (connectionsModelResponse.length <= 0) {
+				return saveNewConnection(currentDeviceId, receiverDeviceID, data);
+			} else {
+				return updateConnections(currentDeviceId, receiverDeviceID, data);
+			}
+		})
+		.then((updateOrSaveConnectionResponse) => {
+			console.log(
+				"updateOrSaveConnectionResponse",
+				updateOrSaveConnectionResponse,
+			);
+			return updateOrSaveConnectionResponse;
+		});
+};
+
+const saveNewConnection = async (currentDeviceId, receiverDeviceID, data) => {
 	let connectionsArray = [];
 	connectionsArray.push({ deviceId: receiverDeviceID });
 	console.log("connections Array", connectionsArray);
@@ -77,12 +98,9 @@ const saveNewConnection = async (currentDeviceId, receiverDeviceID) => {
 	});
 
 	return newDeviceConnections.save().then((record) => {
-		console.log("new Device's Connections saved in Database");
-		console.log(record);
-		return res.status(200).json({
-			data: record,
-			message: " new Device's Connections saved in Database saved in Database",
-		});
+		console.log("new Device's Connections saved in Database", record);
+		data = "new Device's Connections saved in Database";
+		return data;
 	});
 };
 
@@ -94,24 +112,29 @@ router.post("/:deviceId", (req, res) => {
 	const currentDeviceId = req.params.deviceId;
 	const receiverDeviceID = req.body.receiverDeviceID;
 
-	ConnectionsModel.find({ deviceId: currentDeviceId })
-		.then((connectionsModelResponse) => {
-			console.log("connectionsModelResponse", connectionsModelResponse);
-
-			if (connectionsModelResponse.length <= 0) {
-				return saveNewConnection(currentDeviceId, receiverDeviceID);
-			} else {
-				return updateConnections(currentDeviceId, receiverDeviceID);
-			}
-		})
-		.then((hey) => {
-			console.log(hey);
+	const updateOrSaveConnectionPromise = updateOrSaveConnection(
+		currentDeviceId,
+		receiverDeviceID,
+	);
+	updateOrSaveConnectionPromise
+		.then((updateOrSaveConnectionPromiseResponse) => {
+			console.log(
+				"In updateOrSaveConnectionPromiseResponse",
+				updateOrSaveConnectionPromiseResponse,
+			);
+			//console.log(updateOrSaveConnectionPromiseResponse);
+			//res.status(200).json({data : u})
 		})
 		.catch((err) => {
-			console.error("error in saving the connection in database", err);
+			console.error(
+				"error in saving or updating the connection in database",
+				err,
+			);
 			return res
 				.status(500)
-				.json({ data: "error in saving the connection in database" });
+				.json({
+					data: "error in saving or updating the connection in database",
+				});
 		});
 });
 
