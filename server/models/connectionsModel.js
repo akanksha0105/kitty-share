@@ -11,7 +11,6 @@ const deviceSchema = mongoose.Schema({
 			deviceId: {
 				type: String,
 				require: true,
-				unique: true,
 			},
 		},
 	],

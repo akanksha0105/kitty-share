@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import ConnectionsRow from "../ConnectionsRow";
+import ConnectionsRow from "../components/ConnectionsRow";
+import { getConnections } from "../functions/sendToConnectionsScreenFunctions";
 
 function SendToConnections() {
 	const location = useLocation();
@@ -12,25 +13,19 @@ function SendToConnections() {
 
 	const onGetConnections = async () => {
 		let device_id = location.state?.currentDeviceId.currentDeviceId;
+		getConnections(device_id)
+			.then((getConnectionsPromiseResponse) => {
+				const { data, connectionsExists } = getConnectionsPromiseResponse;
+				if (connectionsExists === false) {
+					console.log("No connections");
+					//Make a no connections component
+					return;
+				}
 
-		return await axios
-			.get(`http://localhost:8080/api/connections/${device_id} `)
-			.then((getConnectionsResponse) => {
-				console.log(
-					"In getting connections on client side in sendToConnections component",
-					getConnectionsResponse,
-				);
-
-				var data = getConnectionsResponse.data.message;
-				//	console.log(data);
-				//	console.log({ data });
-				setConnectionsList({ data });
+				setConnectionsList(data);
 			})
 			.catch((err) => {
-				console.error(
-					"Error encountered in getting connections on client side in sendToConnections component",
-					err,
-				);
+				console.error(err);
 			});
 	};
 	useEffect(() => {
@@ -39,8 +34,8 @@ function SendToConnections() {
 
 	return (
 		<div>
-			{connectionsList.data &&
-				connectionsList.data.map((item) => (
+			{connectionsList &&
+				connectionsList.map((item) => (
 					<ConnectionsRow
 						key={item.deviceId}
 						receiverDeviceId={item.deviceId}

@@ -34,6 +34,8 @@ label {
 	letter-spacing: 4px;
 	padding-top: 30px;
 	text-align: center;
+	margin-top: 30px;
+	color: white;
 }
 
 /* animation for the text to float up */
@@ -122,4 +124,10 @@ button:focus {
 
 #input__key__button {
 	align-content: center;
+}
+
+.modal {
+	margin-top: 20px;
+	color: white !important;
+	text-align: center !important;
 }

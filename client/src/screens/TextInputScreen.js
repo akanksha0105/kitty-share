@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./styles.css";
+import "../styles/styles.css";
 import axios from "axios";
 import KeyGeneratedScreen from "./KeyGeneratedScreen";
 

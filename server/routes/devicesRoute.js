@@ -63,20 +63,4 @@ router.post("/deviceidvalid", (req, res) => {
 		});
 });
 
-// router.post('/getconnections', (req, res) => {
-// 	const deviceId = req.body.deviceId;
-// 	DevicesModel.find({ deviceId: deviceId })
-// 		.exec()
-// 		.then((connectionsQueryResults) => {
-// 			console.log('Connections record with given device_id', connectionsQueryResults);
-// 			if (connectionsRecord.length <= 0) {
-// 				return res
-// 					.status(404)
-// 					.json({ message: 'No existing connections of the given device' });
-// 			}
-
-//       res.status(200).json({})
-// 		});
-// });
-
 module.exports = router;

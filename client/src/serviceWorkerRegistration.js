@@ -124,31 +124,3 @@ export const main = async () => {
 		console.log("subscriptionSentToServer", subscriptionSentToServer);
 	}
 };
-
-// let senderDeviceId;
-// let fetchedDeviceId = localStorage.getItem("deviceId");
-
-// if (fetchedDeviceId == null) {
-// 	let newDeviceIdGenerated = uuidv4();
-// 	senderDeviceId = newDeviceIdGenerated;
-// 	localStorage.setItem("deviceId", newDeviceIdGenerated);
-// 	checkOrAttachDeviceId(senderDeviceId);
-// } else {
-// 	senderDeviceId = fetchedDeviceId;
-// }
-// //const sendingDeviceId = checkOrAttachDeviceId();
-// console.log("sending device id", senderDeviceId);
-
-// const checkOrAttachDeviceId = async (senderDeviceId) => {
-// 	return await axios
-// 		.post("http://localhost:8080/api/devices/newdevice", {
-// 			senderDeviceId,
-// 		})
-// 		.then((response) => {
-// 			console.log(" new device saved in database ", response.data.deviceId);
-// 			//Call for the subscription object to save the address(endpoint) of the device
-// 		})
-// 		.catch((err) => {
-// 			console.error("new device not stored in database", err);
-// 		});
-// };

@@ -1,13 +1,11 @@
 import React from "react";
-import "./ConnectionsRow.css";
+import "../styles/ConnectionsRow.css";
 import axios from "axios";
 
 const ConnectionsRow = (props) => {
 	const { receiverDeviceId, currentDeviceId, urlTobeShared } = props;
-	console.log("receiverDeviceId", receiverDeviceId);
-	console.log("currentdEviceId", currentDeviceId);
 
-	const sendNotificationToTheServer = async () => {
+	const onSendNotificationToTheServer = async () => {
 		console.log("sendNotificationToTheServer in ConnectionRow component");
 		return await axios
 			.post("http://localhost:8080/api/subscription/sendnotification", {
@@ -20,13 +18,14 @@ const ConnectionsRow = (props) => {
 					"URL is shared with the receiver : ",
 					sendNotificationToTheServerResponse,
 				);
+				const { message } = sendNotificationToTheServerResponse.data;
+
+				//Message sent component
 			})
-			.catch((err) =>
-				console.error("Error in sending URL to the user.. ", err),
-			);
+			.catch((err) => console.error("Error in sending URL to the user", err));
 	};
 	return (
-		<div className="connections__row" onClick={sendNotificationToTheServer}>
+		<div className="connections__row" onClick={onSendNotificationToTheServer}>
 			<div>
 				<h1>{props.receiverDeviceId}</h1>
 			</div>

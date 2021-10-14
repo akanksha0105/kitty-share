@@ -7,7 +7,6 @@ import TextInputScreen from "./screens/TextInputScreen";
 import LinkToDeviceScreen from "./screens/LinkToDeviceScreen";
 import axios from "axios";
 import SendToConnections from "./screens/SendToConnections";
-import Message from "./Message";
 
 function App() {
 	const [currentDeviceId, setCurrentDeviceId] = useState("");
@@ -19,7 +18,7 @@ function App() {
 			let newDeviceIdGenerated = uuidv4();
 			localStorage.setItem("deviceId", newDeviceIdGenerated);
 			let senderDeviceId = localStorage.getItem("deviceId");
-			axios
+			return await axios
 				.post("http://localhost:8080/api/devices/newdevice", {
 					senderDeviceId,
 				})
@@ -28,6 +27,7 @@ function App() {
 
 					setCurrentDeviceId(response.data.deviceId);
 
+					//return senderDeviceId;
 					//Call for the subscription object to save the address(endpoint) of the device
 				})
 				.catch((err) => {
@@ -35,13 +35,16 @@ function App() {
 				});
 		} else {
 			setCurrentDeviceId(localStorage.getItem("deviceId"));
+			//return localStorage.getItem("deviceId");
 		}
 	};
 
 	useEffect(() => {
 		checkOrAttachDeviceId();
 		console.log("currentDeviceId", currentDeviceId);
-	});
+	}, []);
+
+	if (currentDeviceId === "") return <div>Loading device...</div>;
 
 	return (
 		<div className="app">
@@ -56,9 +59,7 @@ function App() {
 					<Route path="/linktoanewdevice">
 						<LinkToDeviceScreen />
 					</Route>
-					<Route path="/success">
-						<Message />
-					</Route>
+
 					<Route path="/sendtoconnections">
 						<SendToConnections />
 					</Route>

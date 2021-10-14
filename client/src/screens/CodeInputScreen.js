@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
-import "./styles.css";
-//import MessageGeneratedScreen from "./MessageGeneratedScreen";
+import "../styles/styles.css";
+import {
+	retrieveMessage,
+	checkIfDeviceCanBeAddedAsConnection,
+	checkDeviceIsAnExistingConnection,
+} from "../functions/codeInputScreenFunctions";
 
 function CodeInputScreen(props) {
 	const { currentDeviceId } = props;
@@ -11,73 +15,81 @@ function CodeInputScreen(props) {
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [codeInputValue, setCodeInputValue] = useState("");
 	const [retrievedMessage, setRetrievedMessage] = useState("");
-	const [addDeviceMessage, setAddDeviceMessage] = useState("");
 	const [deviceToBeAdded, setDeviceToBeAdded] = useState("");
+	const [addDeviceMessage, setAddDeviceMessage] = useState("");
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
 
 	const onGenerateMessage = (event) => {
 		event.preventDefault();
-		console.log("Secret key for the URL entered");
-		retrieveMessage();
-		setIsDisabled(!isDisabled);
-	};
+		console.log("Code key entered for the URL retrieval", codeInputValue);
+		let newDevice;
 
-	const retrieveMessage = async () => {
-		const codedMessage = codeInputValue;
-
-		let retrievedMessagePromise = axios.post(
-			"http://localhost:8080/api/code/getcodegenerated",
-			{
-				codedMessage,
-			},
-		);
-
-		retrievedMessagePromise
-			.then((response) => {
-				console.log(response);
-				//Setting the URL derived fron the backend
-				setRetrievedMessage(response.data.data);
-
-				setDeviceToBeAdded(response.data.device);
-				setAddDeviceMessage(response.data.message);
-				console.log(currentDeviceId.localeCompare(deviceToBeAdded));
-				if (currentDeviceId.localeCompare(deviceToBeAdded) == 0) {
-					console.log("The sender and the receiver devices are same");
-					setShow(false);
-				} else {
-					setShow(true);
+		retrieveMessage(codeInputValue)
+			.then((retrieveMessageResponse) => {
+				console.log("retrieveMessageResponse", retrieveMessageResponse);
+				if (retrieveMessageResponse.messageRetrieved === false) {
+					setRetrievedMessage(retrieveMessageResponse.data);
+					return false;
 				}
+
+				const { data, device } = retrieveMessageResponse;
+				newDevice = device;
+				setDeviceToBeAdded(device);
+				setRetrievedMessage(data);
+				setIsDisabled(!isDisabled);
+
+				return checkIfDeviceCanBeAddedAsConnection(currentDeviceId, device);
 			})
-			.catch((error) => console.log(error));
+			.then((checkIfDeviceCanBeAddedAsConnectionResponse) => {
+				console.log(
+					"checkIfDeviceCanBeAddedAsConnectionResponse",
+					checkIfDeviceCanBeAddedAsConnectionResponse,
+				);
+
+				if (checkIfDeviceCanBeAddedAsConnectionResponse === false) {
+					return;
+				}
+
+				setShow(true);
+				setAddDeviceMessage(
+					`Do you want to add ${newDevice} to your connections ? `,
+				);
+			})
+			.catch((err) => {
+				console.error(
+					"Unable to generate the message and connect new device",
+					err,
+				);
+				setRetrievedMessage("Unable to retrieve the message ");
+			});
 	};
 
 	//Event handler for adding the device that stored the code to the connections
-	const addDevice = async () => {
+	const addDevice = () => {
 		//Here,  receiverDeviceId= The device that stored the code
-		// senderDeviceId = current deviceId
 
 		handleClose();
 		console.log("In addToDevice function of CodeInputScreen component");
 
-		console.log(
-			"currentDeviceId in codeInputScreen Component",
-			currentDeviceId,
-		);
-
 		let device_id = currentDeviceId;
 		let receiverDeviceID = deviceToBeAdded;
 
+		console.log(
+			"deviceToBeAdded in codeInputScreen Component",
+			deviceToBeAdded,
+		);
+
 		console.log("device_id in addReceiverToTheDeviceConnectionList", device_id);
 
-		return axios
+		axios
 			.post(`http://localhost:8080/api/connections/${device_id}`, {
 				receiverDeviceID,
 			})
 			.then((addReceiverToListResponse) => {
 				console.log(addReceiverToListResponse);
-				// console.log(addReceiverToListResponse.data.data);
+				console.log(addReceiverToListResponse.data.data);
+				//Need to display the above thing
 			})
 			.catch((err) => {
 				console.error(
@@ -117,18 +129,20 @@ function CodeInputScreen(props) {
 						</label>
 						<br />
 					</form>
-					<Modal show={show} onHide={handleClose}>
-						<Modal.Body>{addDeviceMessage}</Modal.Body>
-						<Modal.Footer>
-							<Button variant="secondary" onClick={handleClose}>
-								No
-							</Button>
-							{/* <Button variant="primary" onClick={handleClose}> */}
-							<Button variant="primary" onClick={addDevice}>
-								Yes
-							</Button>
-						</Modal.Footer>
-					</Modal>
+					<div className="modal">
+						<Modal show={show} onHide={handleClose}>
+							<Modal.Body>{addDeviceMessage}</Modal.Body>
+							<Modal.Footer>
+								<Button variant="secondary" onClick={handleClose}>
+									No
+								</Button>
+								{/* <Button variant="primary" onClick={handleClose}> */}
+								<Button variant="primary" onClick={addDevice}>
+									Yes
+								</Button>
+							</Modal.Footer>
+						</Modal>
+					</div>
 				</div>
 			)}
 			<Link to="/text">

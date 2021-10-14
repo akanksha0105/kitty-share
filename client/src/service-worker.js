@@ -1,5 +1,4 @@
-const { register } = require("./serviceWorkerRegistration");
-
+let url;
 const ignored = self.__WB_MANIFEST;
 console.log("I am there. My name is Service Worker");
 
@@ -19,6 +18,7 @@ self.addEventListener("push", (event) => {
 		console.log(data.title);
 		console.log("Push event!! ", data);
 
+		url = data.content;
 		const options = {
 			body: data.content,
 			requireInteraction: true,
@@ -30,10 +30,10 @@ self.addEventListener("push", (event) => {
 	}
 });
 
-self.addEventListener("notificationclick", function (event) {
-	const clickedNotification = event.notification;
-	clickedNotification.close();
+self.addEventListener("notificationclick", (event) => {
+	console.log("On notification click");
 
-	// const promiseChain = ;
-	// event.waitUntil(promiseChain);
+	event.notification.close();
+
+	clients.openWindow(url);
 });

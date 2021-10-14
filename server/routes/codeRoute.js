@@ -4,33 +4,30 @@ const CodeModel = require("../models/codeModel");
 var mongoose = require("mongoose");
 const ObjectId = require("mongo-objectid");
 
-//Router for retrieving the URL
-router.post("/getcodegenerated", async (req, res) => {
-	const code = req.body.codedMessage;
+//Router for retrieving the URL - need to give the code to get the url
+router.get("/geturl/:codedMessage", (req, res) => {
+	const code = req.params.codedMessage;
 	console.log("code is", code);
 	console.log("Server fetching the code...");
 	let codeGeneratedPromise = CodeModel.find({ code: code }).exec();
 
-	// console.log("codeGenerated Promise", codeGeneratedPromise);
 	codeGeneratedPromise
 		.then((response) => {
-			console.log("response is: ", response);
-			console.log("response length", response.length);
 			if (response.length <= 0) {
-				return res.status(404).json({ code: 102, message: "Code not found" });
+				return res.status(404).json({ code: 102, data: "Code not found" });
 			}
 
 			res.status(200).json({
 				data: response[0].message,
 				device: response[0].deviceId,
-				message: `Do you want to add ${response[0].deviceId} as a new connection ?`,
+				//message: `Do you want to add ${response[0].deviceId} as a new connection ?`,
 			});
 		})
 		.catch((err) => {
-			console.log(err.message);
+			console.error(err.message);
 			res
 				.status(500)
-				.send({ code: 101, message: "Server was unable to fetch the URL" });
+				.send({ code: 101, data: "Server was unable to fetch the URL" });
 		});
 });
 
@@ -119,4 +116,33 @@ module.exports = router;
 //       });
 //     }
 //   });
+// });
+
+// router.post("/getcodegenerated", async (req, res) => {
+// 	const code = req.body.codedMessage;
+// 	console.log("code is", code);
+// 	console.log("Server fetching the code...");
+// 	let codeGeneratedPromise = CodeModel.find({ code: code }).exec();
+
+// 	// console.log("codeGenerated Promise", codeGeneratedPromise);
+// 	codeGeneratedPromise
+// 		.then((response) => {
+// 			console.log("response is: ", response);
+// 			console.log("response length", response.length);
+// 			if (response.length <= 0) {
+// 				return res.status(404).json({ code: 102, message: "Code not found" });
+// 			}
+
+// 			res.status(200).json({
+// 				data: response[0].message,
+// 				device: response[0].deviceId,
+// 				message: `Do you want to add ${response[0].deviceId} as a new connection ?`,
+// 			});
+// 		})
+// 		.catch((err) => {
+// 			console.log(err.message);
+// 			res
+// 				.status(500)
+// 				.send({ code: 101, message: "Server was unable to fetch the URL" });
+// 		});
 // });

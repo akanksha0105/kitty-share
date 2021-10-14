@@ -1,0 +1,13 @@
+.message {
+	background-color: #1d2227;
+	height: 200px;
+	width: 50%;
+	display: block;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	font-family: sans-serif;
+	margin-top: 20px;
+	text-align: center;
+	/* border: 1px solid white; */
+}
