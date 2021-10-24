@@ -58,35 +58,27 @@ export const checkDeviceIsAnExistingConnection = async (
 		" receiverDeviceIDin the checktheConnection function on client side",
 		receiverDeviceID,
 	);
-	return (
-		axios
-			.get(
-				`http://localhost:8080/api/connections/checkifconnected/${device_id}/${receiverDeviceID}`,
-			)
+	return axios
+		.get(
+			`http://localhost:8080/api/connections/checkifconnected/${device_id}/${receiverDeviceID}`,
+		)
 
-			// .post(
-			// 	`http://localhost:8080/api/connections/checkifconnected/${device_id}`,
-			// 	{
-			// 		receiverDeviceID,
-			// 	},
-			// )
-			.then((connectionExistsResponse) => {
-				console.log(
-					"connectionExistsResponse on client side in checktheConnection function ",
-					connectionExistsResponse,
-				);
-				if (
-					connectionExistsResponse.data.checked == true &&
-					connectionExistsResponse.data.connectionexists == true
-				) {
-					return true;
-				}
+		.then((connectionExistsResponse) => {
+			console.log(
+				"connectionExistsResponse on client side in checktheConnection function ",
+				connectionExistsResponse,
+			);
+			if (
+				connectionExistsResponse.data.checked == true &&
+				connectionExistsResponse.data.connectionexists == true
+			) {
+				return true;
+			}
 
-				return false;
-			})
-			.catch((err) => {
-				console.error("Unable to check if both the devices are connected", err);
-				return false;
-			})
-	);
+			return false;
+		})
+		.catch((err) => {
+			console.error("Unable to check if both the devices are connected", err);
+			return false;
+		});
 };

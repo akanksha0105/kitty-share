@@ -15,7 +15,9 @@ router.get("/:deviceId", (req, res) => {
 
 			if (connectionsModelResponse.length <= 0) {
 				console.log("No connections found");
-				res.status(404).json({ code: 102, message: "No connnections found" });
+				return res
+					.status(404)
+					.json({ code: 102, message: "No connnections found" });
 			}
 
 			//let numberOfConnections = connectionsModelResponse[0].connections.length;
@@ -165,7 +167,7 @@ const saveNewConnection = async (currentDeviceId, receiverDeviceID, data) => {
 
 	return newDeviceConnections.save().then((record) => {
 		console.log("new Device's Connections saved in Database", record);
-		data = "new Device's Connections saved in Database";
+		data = "New connection created";
 		return data;
 	});
 };

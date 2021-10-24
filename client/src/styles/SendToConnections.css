@@ -1,0 +1,9 @@
+.connections__list {
+	/* border: 1px solid red; */
+	margin-top: 200px;
+	display: flex;
+	/* width: 900px; */
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}

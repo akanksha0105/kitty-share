@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const CodeModel = require("../models/codeModel");
+const KeysModel = require("../models/keysModel");
 var mongoose = require("mongoose");
 const ObjectId = require("mongo-objectid");
 
@@ -30,6 +31,12 @@ router.get("/geturl/:codedMessage", (req, res) => {
 				.send({ code: 101, data: "Server was unable to fetch the URL" });
 		});
 });
+
+// const generateNewSecretKey = () => {
+
+// 	let newSecretKeyPromise = KeysModel.findOneAndUpdate({status : 'unused'}).exec();
+
+// };
 
 const checkOrGenerateCode = async (url, currentDeviceId) => {
 	let codeQueryPromise = CodeModel.find({ message: url }).exec();

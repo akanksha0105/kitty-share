@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/styles.css";
+// import "../styles/styles.css";
+import "../styles/TextInputScreen.css";
+
 import axios from "axios";
 import KeyGeneratedScreen from "./KeyGeneratedScreen";
 
@@ -8,8 +10,20 @@ function TextInputScreen({ currentDeviceId }) {
 	const [isdisabled, setIsDisabled] = useState(false);
 	const [searchInput, setSearchInput] = useState("");
 	const [generatedCode, setGeneratedCode] = useState("");
+	const [disabledValue, setDisabledValue] = useState(true);
 
 	console.log("In the textInput", currentDeviceId);
+
+	const checkButtonDisabled = () => {
+		if (searchInput.length > 0) {
+			setDisabledValue(true);
+			return true;
+		} else {
+			setDisabledValue(false);
+			return false;
+		}
+	};
+
 	const generateSecretKey = async () => {
 		let valueOfTheURL = searchInput;
 		let senderDeviceId = currentDeviceId;
@@ -60,6 +74,16 @@ function TextInputScreen({ currentDeviceId }) {
 			{!isdisabled ? (
 				<div className="text__input__form">
 					<form onSubmit={onFormSubmit}>
+						{/* <input
+							name="name"
+							id="name"
+							type="text"
+							value={searchInput}
+							placeholder="Enter the text to be shared"
+							onChange={(e) => setSearchInput(e.target.value)}
+							required
+						/> */}
+
 						<label>
 							<input
 								name="name"
@@ -73,46 +97,31 @@ function TextInputScreen({ currentDeviceId }) {
 						</label>
 						<br />
 
-						<Link
-							to={{
-								pathname: "/linktoanewdevice",
-								state: {
-									url: { searchInput },
-									currentDeviceId: { currentDeviceId },
-								},
-							}}>
-							{searchInput.length > 0 ? (
-								<button>Link to the New Device</button>
-							) : null}
-						</Link>
-						<Link
-							to={{
-								pathname: "/sendtoconnections",
-								state: {
-									url: { searchInput },
-									currentDeviceId: { currentDeviceId },
-								},
-							}}>
-							{searchInput.length > 0 ? (
+						{/* <div className="text__input__screen__buttons"> */}
+						<div>
+							<button type="submit" disabled={checkButtonDisabled}>
+								Generate the Key
+							</button>
+						</div>
+						<div>
+							<Link
+								to={{
+									pathname: "/sendtoconnections",
+									state: {
+										url: { searchInput },
+										currentDeviceId: { currentDeviceId },
+									},
+								}}>
+								{" "}
 								<button>Send to Connections</button>
-							) : null}
-						</Link>
-						<button type="submit">Generate the Key</button>
+							</Link>
+						</div>
+						{/* </div> */}
 					</form>
 				</div>
 			) : (
-				<>
-					<KeyGeneratedScreen generatedCode={generatedCode} />
-					<button type="button" onClick={onToggleMoveToTextButton}>
-						Move to the Text Input Screen
-					</button>
-				</>
+				<KeyGeneratedScreen generatedCode={generatedCode} />
 			)}
-			<Link to="/code">
-				<button type="button" onClick={onMoveToInputKeyScreen}>
-					Move to the Input Key Screen
-				</button>
-			</Link>
 		</div>
 	);
 }

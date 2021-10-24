@@ -1,5 +1,5 @@
 body {
-	background-color: #1d2227;
+	/* background-color: #1d2227; */
 	/* background-color: white; */
 	height: 100vh;
 	font-family: "Montserrat", sans-serif;
@@ -15,10 +15,19 @@ div.container {
 
 /* form design */
 
+.text__input__screen__buttons a {
+	text-decoration: none;
+}
 form {
 	margin-top: 200px;
 	text-align: center;
 	padding: 30px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	/* border: 1px solid red; */
 }
 
 .text__input__screen {
@@ -29,20 +38,31 @@ form {
 	text-align: center;
 }
 
-label {
+/* label {
 	display: block;
 	letter-spacing: 4px;
 	padding-top: 30px;
 	text-align: center;
 	margin-top: 30px;
 	color: white;
-}
+} */
 
+label input {
+	border: #a1a7b5;
+	background-color: transparent;
+	border-radius: 2px;
+	color: #a1a7b5;
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+}
 /* animation for the text to float up */
 
-label .label-text {
+/* label .label-text {
 	color: #9b9b9b;
-	cursor: text;
+	/* color: #273652; */
+/* cursor: text;
 	font-size: 15px;
 	line-height: 20px;
 	text-transform: uppercase;
@@ -50,12 +70,13 @@ label .label-text {
 	-ms-transform: translateY(-34px);
 	-webkit-transform: translateY(-34px);
 	transform: translateY(-34px);
-	transition: all 0.3s;
-}
-
+	transition: all 0.3s; */
+/* } */
+/* background-color: #273652; */
 /* remove the input box styling */
-label input {
+/* label input {
 	background-color: transparent;
+
 	border: 0;
 	border-bottom: 2px solid #4a4a4a;
 	color: white;
@@ -65,19 +86,19 @@ label input {
 	padding: 5px 20px;
 	text-align: center;
 	transition: all 0.3s;
-	width: 200px;
-}
+	width: 400px;
+} */
 
 /* once you click in the input the input width box animates */
-
+/* 
 label input:focus {
 	max-width: 100%;
 	width: 400px;
-}
+} */
 
 /* the text floats up and turns white */
 
-label input:focus + .label-text {
+/* label input:focus + .label-text {
 	color: #f0f0f0;
 	font-size: 13px;
 	margin-top: 10px;
@@ -87,7 +108,7 @@ label input:focus + .label-text {
 	transform: translateY(-74px);
 }
 
-/* the text floats up during form validation */
+
 
 label input:valid + .label-text {
 	font-size: 13px;
@@ -96,16 +117,22 @@ label input:valid + .label-text {
 	-ms-transform: translateY(-74px);
 	-webkit-transform: translateY(-74px);
 	transform: translateY(-74px);
-}
+} */
 
 /* button styling */
 
 button {
 	background: transparent;
 	color: #f0f0f0;
-	border: 2px solid #f0f0f0;
-	font-size: 15px;
-	letter-spacing: 2px;
+	background-color: #0da5cc;
+
+	border-radius: 3px;
+	font-family: "Open Sans Condensed", sans-serif;
+	font-weight: bolder;
+	border: none;
+	/* border: 2px solid #f0f0f0; */
+	font-size: 17px;
+	letter-spacing: 3px;
 	padding: 20px 75px;
 	text-transform: uppercase;
 	cursor: pointer;
@@ -115,7 +142,20 @@ button {
 	-moz-transition: all 0.4s;
 	transition: all 0.4s;
 }
-
+.text__input__screen__buttons {
+	position: relative;
+	/* vertical-align: middle; */
+	text-align: center;
+	display: block;
+	justify-content: center;
+}
+.text__input__screen__buttons button {
+	align-items: center;
+	text-align: center;
+	width: 25%;
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
 button:hover,
 button:focus {
 	background-color: white;
@@ -124,10 +164,4 @@ button:focus {
 
 #input__key__button {
 	align-content: center;
-}
-
-.modal {
-	margin-top: 20px;
-	color: white !important;
-	text-align: center !important;
 }

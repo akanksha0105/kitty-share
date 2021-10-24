@@ -37,7 +37,9 @@ export const addReceiverToTheDeviceConnectionList = async (
 	currentDeviceId,
 	receiverDeviceID,
 ) => {
-	let device_id = currentDeviceId.currentDeviceId;
+	console.log("currentDeviceId in functions.js", currentDeviceId);
+	let device_id = currentDeviceId;
+	console.log(device_id);
 
 	return axios
 		.post(`http://localhost:8080/api/connections/${device_id}`, {

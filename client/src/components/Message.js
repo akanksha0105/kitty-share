@@ -1,10 +1,13 @@
 import React from "react";
 import "../styles/Message.css";
 function Message(props) {
-	console.log("In message component");
 	const { message } = props;
 
-	return <div className="message">{message}</div>;
+	return (
+		<div className="message">
+			<div className="message__content">{message}</div>
+		</div>
+	);
 }
 
 export default Message;

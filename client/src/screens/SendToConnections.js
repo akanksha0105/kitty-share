@@ -3,6 +3,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import ConnectionsRow from "../components/ConnectionsRow";
 import { getConnections } from "../functions/sendToConnectionsScreenFunctions";
+import "../styles/SendToConnections.css";
 
 function SendToConnections() {
 	const location = useLocation();
@@ -33,16 +34,17 @@ function SendToConnections() {
 	}, []);
 
 	return (
-		<div>
-			{connectionsList &&
-				connectionsList.map((item) => (
-					<ConnectionsRow
-						key={item.deviceId}
-						receiverDeviceId={item.deviceId}
-						currentDeviceId={currentDeviceId}
-						urlTobeShared={urlTobeShared}
-					/>
-				))}
+		<div className="connections__list">
+			{connectionsList
+				? connectionsList.map((item) => (
+						<ConnectionsRow
+							key={item.deviceId}
+							receiverDeviceId={item.deviceId}
+							currentDeviceId={currentDeviceId}
+							urlTobeShared={urlTobeShared}
+						/>
+				  ))
+				: null}
 		</div>
 	);
 }

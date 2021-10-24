@@ -1,27 +1,34 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { Modal, Button } from "react-bootstrap";
-import "../styles/styles.css";
+import "../styles/CodeInputScreen.css";
 import {
 	retrieveMessage,
 	checkIfDeviceCanBeAddedAsConnection,
-	checkDeviceIsAnExistingConnection,
 } from "../functions/codeInputScreenFunctions";
+import "../styles/Modal.css";
+import Message from "../components/Message";
+import axios from "axios";
+import RetrievedMessageScreen from "./RetrievedMessageScreen";
 
-function CodeInputScreen(props) {
-	const { currentDeviceId } = props;
+function CodeInputScreen({ currentDeviceId }) {
+	console.log("In CodeInputScreen Component");
+	console.log(currentDeviceId);
 
-	const [isDisabled, setIsDisabled] = useState(false);
 	const [codeInputValue, setCodeInputValue] = useState("");
 	const [retrievedMessage, setRetrievedMessage] = useState("");
+	const [isDisabled, setIsDisabled] = useState(false);
 	const [deviceToBeAdded, setDeviceToBeAdded] = useState("");
 	const [addDeviceMessage, setAddDeviceMessage] = useState("");
 	const [show, setShow] = useState(false);
-	const handleClose = () => setShow(false);
+	const [errorMessage, setErrorMessage] = useState("");
+
+	const hideModal = () => {
+		setShow(false);
+	};
 
 	const onGenerateMessage = (event) => {
 		event.preventDefault();
+		console.log("Form submitted");
+
 		console.log("Code key entered for the URL retrieval", codeInputValue);
 		let newDevice;
 
@@ -30,6 +37,7 @@ function CodeInputScreen(props) {
 				console.log("retrieveMessageResponse", retrieveMessageResponse);
 				if (retrieveMessageResponse.messageRetrieved === false) {
 					setRetrievedMessage(retrieveMessageResponse.data);
+					setErrorMessage(retrieveMessageResponse.data);
 					return false;
 				}
 
@@ -52,6 +60,7 @@ function CodeInputScreen(props) {
 				}
 
 				setShow(true);
+
 				setAddDeviceMessage(
 					`Do you want to add ${newDevice} to your connections ? `,
 				);
@@ -69,7 +78,7 @@ function CodeInputScreen(props) {
 	const addDevice = () => {
 		//Here,  receiverDeviceId= The device that stored the code
 
-		handleClose();
+		// handleClose();
 		console.log("In addToDevice function of CodeInputScreen component");
 
 		let device_id = currentDeviceId;
@@ -98,9 +107,11 @@ function CodeInputScreen(props) {
 				);
 			});
 	};
-
 	return (
-		<div className="code__input__screen">
+		<div
+			className={
+				!isDisabled ? "code__input__screen " : "message__retrieval__screen"
+			}>
 			{!isDisabled ? (
 				<div className="input__key__form">
 					<form onSubmit={onGenerateMessage}>
@@ -119,35 +130,29 @@ function CodeInputScreen(props) {
 
 						<button type="submit">Generate the Message</button>
 					</form>
+					{errorMessage ? <Message message={errorMessage} /> : null}
 				</div>
 			) : (
-				<div className="message__generated__form">
-					<form>
-						<label>
-							{retrievedMessage}
-							<div className="label-text">Generated Message</div>
-						</label>
-						<br />
-					</form>
-					<div className="modal">
-						<Modal show={show} onHide={handleClose}>
-							<Modal.Body>{addDeviceMessage}</Modal.Body>
-							<Modal.Footer>
-								<Button variant="secondary" onClick={handleClose}>
-									No
-								</Button>
-								{/* <Button variant="primary" onClick={handleClose}> */}
-								<Button variant="primary" onClick={addDevice}>
-									Yes
-								</Button>
-							</Modal.Footer>
-						</Modal>
-					</div>
-				</div>
+				// <div className="message__generated__form">
+				// 	<div className="generated__message__label">Generated Message</div>
+				// 	<div className="generated__message"> {retrievedMessage} </div>
+
+				// 	<br />
+				// </div>
+				<RetrievedMessageScreen retrievedMessage={retrievedMessage} />
 			)}
-			<Link to="/text">
-				<button>Move to the Text Input Screen</button>
-			</Link>
+
+			<div className={show ? "modal display-block" : "modal display-none"}>
+				<div className="modal__message">{addDeviceMessage}</div>
+				<div className="modal__options">
+					<button type="button" onClick={hideModal}>
+						No
+					</button>
+					<button type="button" onClick={addDevice}>
+						Yes
+					</button>
+				</div>
+			</div>
 		</div>
 	);
 }

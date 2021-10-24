@@ -6,12 +6,7 @@ import {
 	addReceiverToTheDeviceConnectionList,
 } from "../functions/functions";
 
-//import './styles.css';
-
-function LinkToDeviceScreen() {
-	const location = useLocation();
-	const urlTobeShared = location.state?.url;
-	const currentDeviceId = location.state?.currentDeviceId;
+function LinkToDeviceScreen({ currentDeviceId }) {
 	const [receiverDeviceID, setReceiverDeviceID] = useState("");
 	const [message, setMessage] = useState("");
 
@@ -20,7 +15,14 @@ function LinkToDeviceScreen() {
 			"In onSendingToOtherDevice event handler in LinkToDeviceScreen component",
 		);
 
-		checkReceiverDeviceIsSubscribed(receiverDeviceID)
+		console.log(currentDeviceId);
+
+		if (currentDeviceId.localeCompare(receiverDeviceID) === 0) {
+			setMessage("Sender device cannot be same as Receiver Device");
+			return;
+		}
+
+		return checkReceiverDeviceIsSubscribed(receiverDeviceID)
 			.then((checkReceiverDeviceIsSubscribedResponse) => {
 				console.log(
 					"response in checkReceiverDeviceIsSubscribed",
@@ -29,6 +31,7 @@ function LinkToDeviceScreen() {
 				if (checkReceiverDeviceIsSubscribedResponse.isSubscribed === false) {
 					return checkReceiverDeviceIsSubscribedResponse.message;
 				}
+
 				return addReceiverToTheDeviceConnectionList(
 					currentDeviceId,
 					receiverDeviceID,
@@ -43,6 +46,8 @@ function LinkToDeviceScreen() {
 				setMessage("Unable to link to a new device");
 			});
 	};
+
+	if (currentDeviceId === "" || undefined) return <div>Loading device...</div>;
 
 	return (
 		<div className="link__to__a__device__screen">

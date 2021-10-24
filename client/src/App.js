@@ -7,6 +7,8 @@ import TextInputScreen from "./screens/TextInputScreen";
 import LinkToDeviceScreen from "./screens/LinkToDeviceScreen";
 import axios from "axios";
 import SendToConnections from "./screens/SendToConnections";
+import Header from "./components/Header";
+import Loading from "./screens/Loading";
 
 function App() {
 	const [currentDeviceId, setCurrentDeviceId] = useState("");
@@ -44,30 +46,33 @@ function App() {
 		console.log("currentDeviceId", currentDeviceId);
 	}, []);
 
-	if (currentDeviceId === "") return <div>Loading device...</div>;
+	if (currentDeviceId === "") return <Loading />;
 
 	return (
 		<div className="app">
 			<Router>
-				<Switch>
-					<Route path="/code">
-						<CodeInputScreen currentDeviceId={currentDeviceId} />
-					</Route>
-					<Route path="/text">
-						<TextInputScreen currentDeviceId={currentDeviceId} />
-					</Route>
-					<Route path="/linktoanewdevice">
-						<LinkToDeviceScreen />
-					</Route>
+				<Header />
+				{currentDeviceId ? (
+					<Switch>
+						<Route path="/code">
+							<CodeInputScreen currentDeviceId={currentDeviceId} />
+						</Route>
+						<Route path="/text">
+							<TextInputScreen currentDeviceId={currentDeviceId} />
+						</Route>
+						<Route path="/linktoanewdevice">
+							<LinkToDeviceScreen currentDeviceId={currentDeviceId} />
+						</Route>
 
-					<Route path="/sendtoconnections">
-						<SendToConnections />
-					</Route>
+						<Route path="/sendtoconnections">
+							<SendToConnections />
+						</Route>
 
-					<Route path="/">
-						<HomeScreen />
-					</Route>
-				</Switch>
+						<Route path="/">
+							<HomeScreen />
+						</Route>
+					</Switch>
+				) : null}
 			</Router>
 		</div>
 	);

@@ -1,43 +1,31 @@
-/* form = container__screen
-label = output__box
-label text = output__text
-label input =  */
-
 .container__screen {
-  margin-top: 200px;
-  text-align: center;
-  padding: 30px;
-}
-
-.output__box {
-  display: block;
-  letter-spacing: 4px;
-  padding-top: 30px;
-  text-align: center;
-
-  background-color: transparent;
-  border: 0;
-  border-bottom: 2px solid #4a4a4a;
-  color: white;
-  font-size: 20px;
-
-  outline: 0;
-  padding: 5px 20px;
-  text-align: center;
-
-  width: 200px;
-}
-
-.output__box .output__text {
-  color: #9b9b9b;
-  cursor: text;
-  font-size: 15px;
-  line-height: 20px;
-  text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-top: 200px;
+	text-align: center;
+	padding: 30px;
 }
 
 .output__text {
-  color: #f0f0f0;
-  font-size: 13px;
-  margin-top: 10px;
+	font-size: 30px;
+	/* border: 1px solid red; */
+	background-color: #1d2227;
+	color: #ebedf2;
+	font-family: "Libre Baskerville", serif;
+	padding: 20px;
+	border-radius: 3px;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ebedf2;
+}
+
+.output__box {
+	color: #0da5cc;
+	font-size: 40px;
+	padding: 20px;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	letter-spacing: 4px;
 }
