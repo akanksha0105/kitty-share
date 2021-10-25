@@ -1,6 +1,6 @@
 .modal {
-	margin-top: 70px;
-	margin-bottom: 20px;
+	margin-top: 30px;
+	margin-bottom: 30px;
 	width: 500px;
 	border: 1px solid white;
 	text-align: center;
@@ -11,7 +11,7 @@
 
 .modal__options {
 	margin-bottom: 10px;
-	border: 1px solid red;
+
 	justify-content: space-between;
 	display: flex;
 	margin-left: 10px;

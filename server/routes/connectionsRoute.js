@@ -54,10 +54,12 @@ router.get("/checkifconnected/:deviceId/:receiverdeviceId", (req, res) => {
 				"checkIfConnectionExistsPromise Response on server side",
 				result,
 			);
-			if (result == true)
-				return res.status(200).json({ checked: true, connectionexists: true });
+			// if (result == true)
+			// 	return res
+			// 		.status(200)
+			// 		.json({ checked: true, connectionexists: result });
 
-			return res.status(200).json({ checked: true, connectionexists: false });
+			return res.status(200).json({ checked: true, connectionexists: result });
 		})
 		.catch((err) => {
 			console.error(
@@ -88,7 +90,7 @@ const checkIfConnectionExists = async (currentDeviceId, receiverDeviceID) => {
 	).then((checking) => {
 		console.log("checking", checking);
 
-		if (checking.length > 0) {
+		if (checking.length > 0 && checking[0].connections.length > 0) {
 			//What status code needs be here
 
 			console.log("Connection already exists in the device list");

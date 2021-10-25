@@ -7,10 +7,6 @@ function Header() {
 	return (
 		<div className="header">
 			<div className="header__left">
-				<Link to="/text">
-					<div className="header__left__option">Dashboard </div>
-				</Link>
-
 				{/* <Link to="/sendtoconnections">
 					<div className="header__left__option"> Connections</div>
 				</Link> */}
@@ -23,7 +19,10 @@ function Header() {
 				</Link>
 			</div>
 
-			<div className="logo">kittyshare</div>
+			<Link to="/text">
+				<div className="logo">kittyshare</div>
+			</Link>
+
 			<div className="header__right">
 				<div>
 					<Avatar
@@ -32,7 +31,6 @@ function Header() {
 					/>{" "}
 				</div>{" "}
 				<div> Device Name </div>
-				<div> Notifications</div>
 				{/* <div>Settings</div> */}
 			</div>
 		</div>

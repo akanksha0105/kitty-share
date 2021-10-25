@@ -47,10 +47,15 @@
 	flex: 0.3;
 	align-items: center;
 	justify-content: center;
-	font-size: 40px;
+	font-size: 4em;
 	font-family: "Cookie", cursive;
+	color: #e7e7ec;
+
 	/* border: 1px solid white; */
 	/* font-family: "Open Sans Condensed", sans-serif; */
+}
+.logo a {
+	text-decoration: none;
 }
 .header__right {
 	display: flex;

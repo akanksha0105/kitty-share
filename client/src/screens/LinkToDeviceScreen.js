@@ -65,11 +65,12 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 					</label>
 				</div>
 
-				{receiverDeviceID.length > 0 ? (
-					<button type="button" onClick={onLinkToNewDevice}>
-						Link
-					</button>
-				) : null}
+				<button
+					type="button"
+					disabled={receiverDeviceID.length > 0 ? false : true}
+					onClick={onLinkToNewDevice}>
+					Link
+				</button>
 
 				{message ? <Message message={message} /> : null}
 			</form>

@@ -20,6 +20,7 @@ function CodeInputScreen({ currentDeviceId }) {
 	const [addDeviceMessage, setAddDeviceMessage] = useState("");
 	const [show, setShow] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
+	const [newDeviceAdded, setNewDeviceAdded] = useState("");
 
 	const hideModal = () => {
 		setShow(false);
@@ -79,6 +80,7 @@ function CodeInputScreen({ currentDeviceId }) {
 		//Here,  receiverDeviceId= The device that stored the code
 
 		// handleClose();
+		hideModal();
 		console.log("In addToDevice function of CodeInputScreen component");
 
 		let device_id = currentDeviceId;
@@ -96,15 +98,15 @@ function CodeInputScreen({ currentDeviceId }) {
 				receiverDeviceID,
 			})
 			.then((addReceiverToListResponse) => {
-				console.log(addReceiverToListResponse);
 				console.log(addReceiverToListResponse.data.data);
-				//Need to display the above thing
+				setNewDeviceAdded("New connection created");
 			})
 			.catch((err) => {
 				console.error(
 					"Issue in saving the device to the connections list",
 					err,
 				);
+				setNewDeviceAdded("Issue in saving the device to the connections list");
 			});
 	};
 	return (
@@ -128,31 +130,29 @@ function CodeInputScreen({ currentDeviceId }) {
 						</label>
 						<br />
 
-						<button type="submit">Generate the Message</button>
+						<button type="submit">Retrieve the Message</button>
 					</form>
 					{errorMessage ? <Message message={errorMessage} /> : null}
 				</div>
 			) : (
-				// <div className="message__generated__form">
-				// 	<div className="generated__message__label">Generated Message</div>
-				// 	<div className="generated__message"> {retrievedMessage} </div>
+				<>
+					<RetrievedMessageScreen retrievedMessage={retrievedMessage} />
 
-				// 	<br />
-				// </div>
-				<RetrievedMessageScreen retrievedMessage={retrievedMessage} />
+					<div className={show ? "modal display-block" : "modal display-none"}>
+						<div className="modal__message">{addDeviceMessage}</div>
+						<div className="modal__options">
+							<button type="button" onClick={hideModal}>
+								No
+							</button>
+							<button type="button" onClick={addDevice}>
+								Yes
+							</button>
+						</div>
+					</div>
+
+					{newDeviceAdded ? <Message message={newDeviceAdded} /> : null}
+				</>
 			)}
-
-			<div className={show ? "modal display-block" : "modal display-none"}>
-				<div className="modal__message">{addDeviceMessage}</div>
-				<div className="modal__options">
-					<button type="button" onClick={hideModal}>
-						No
-					</button>
-					<button type="button" onClick={addDevice}>
-						Yes
-					</button>
-				</div>
-			</div>
 		</div>
 	);
 }

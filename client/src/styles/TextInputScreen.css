@@ -95,7 +95,7 @@ label input:valid + .label-text {
 
 /* button styling */
 
-button {
+/* button {
 	background: transparent;
 	color: #f0f0f0;
 	border: 2px solid #f0f0f0;
@@ -109,7 +109,7 @@ button {
 	-webkit-transition: all 0.4s;
 	-moz-transition: all 0.4s;
 	transition: all 0.4s;
-}
+} */
 
 button:hover,
 button:focus {
@@ -132,32 +132,8 @@ button:focus {
 	/* border: 1px solid red; */
 }
 
-/* input {
-	margin-top: 20px;
-	margin-bottom: 10px;
-	border: 1px solid #5b5b5b;
-	background-color: transparent;
-	border-radius: 5px;
-	color: #a1a7b5;
-	padding-top: 10px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-bottom: 10px;
-	flex: 1;
-	font-size: 18px;
-	
-	width: 350px;
-	height: auto; 
-}
-/* 
-input:focus {
-	outline: none;
-	border: 1px solid #0da5cc;
-	background-color: transparent;
-	color: #ebedf2;
-}
-*/
-button {
+.button__1,
+.button__2 {
 	background: transparent;
 	color: #f0f0f0;
 	background-color: #0da5cc;
@@ -181,8 +157,17 @@ button {
 	transition: all 0.4s;
 }
 
-button[disabled] {
+.button__2 {
 	background-color: tomato;
+}
+
+.button__1[disabled] {
+	background-color: lightblue;
+	color: #262626;
+}
+.button__2[disabled] {
+	background-color: #ffa190;
+	color: #262626;
 }
 
 .link__to__a__device__screen {
