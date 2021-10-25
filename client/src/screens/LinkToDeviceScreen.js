@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+
 import Message from "../components/Message";
 import {
 	checkReceiverDeviceIsSubscribed,
@@ -66,6 +66,7 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 				</div>
 
 				<button
+					className="button__1"
 					type="button"
 					disabled={receiverDeviceID.length > 0 ? false : true}
 					onClick={onLinkToNewDevice}>

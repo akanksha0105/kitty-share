@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import ConnectionsRow from "../components/ConnectionsRow";
 import Message from "../components/Message";
 import { getConnections } from "../functions/sendToConnectionsScreenFunctions";
 import "../styles/SendToConnections.css";
 
-function SendToConnections() {
-	const location = useLocation();
+function SendToConnections(props) {
+	// const location = useLocation();
+	// const urlTobeShared = location.state?.url;
+	// const currentDeviceId = location.state?.currentDeviceId;
 
-	const urlTobeShared = location.state?.url;
-	const currentDeviceId = location.state?.currentDeviceId;
+	const { currentDeviceId, sharedInput } = props;
 	const [connectionsList, setConnectionsList] = useState([]);
 	const [errorMessage, setErrorMessage] = useState("");
 
 	const onGetConnections = async () => {
-		let device_id = location.state?.currentDeviceId.currentDeviceId;
+		// let device_id = location.state?.currentDeviceId.currentDeviceId;
+		let device_id = currentDeviceId;
+		console.log("device_id in sendToConnections component", device_id);
 		getConnections(device_id)
 			.then((getConnectionsPromiseResponse) => {
 				const { data, connectionsExists } = getConnectionsPromiseResponse;
@@ -38,19 +40,6 @@ function SendToConnections() {
 	}, []);
 
 	return (
-		// <div className="connections__list">
-		// 	{connectionsList
-		// 		? connectionsList.map((item) => (
-		// 				<ConnectionsRow
-		// 					key={item.deviceId}
-		// 					receiverDeviceId={item.deviceId}
-		// 					currentDeviceId={currentDeviceId}
-		// 					urlTobeShared={urlTobeShared}
-		// 				/>
-		// 		  ))
-		// 		: null}
-		// </div>
-
 		<div className="connections__list">
 			{connectionsList ? (
 				connectionsList.map((item) => (
@@ -58,7 +47,7 @@ function SendToConnections() {
 						key={item.deviceId}
 						receiverDeviceId={item.deviceId}
 						currentDeviceId={currentDeviceId}
-						urlTobeShared={urlTobeShared}
+						urlTobeShared={sharedInput}
 					/>
 				))
 			) : (

@@ -57,9 +57,9 @@ function App() {
 						<Route path="/code">
 							<CodeInputScreen currentDeviceId={currentDeviceId} />
 						</Route>
-						<Route path="/text">
+						{/* <Route path="/text">
 							<TextInputScreen currentDeviceId={currentDeviceId} />
-						</Route>
+						</Route> */}
 						<Route path="/linktoanewdevice">
 							<LinkToDeviceScreen currentDeviceId={currentDeviceId} />
 						</Route>
@@ -69,7 +69,7 @@ function App() {
 						</Route>
 
 						<Route path="/">
-							<HomeScreen />
+							<TextInputScreen currentDeviceId={currentDeviceId} />
 						</Route>
 					</Switch>
 				) : null}

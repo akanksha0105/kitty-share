@@ -19,7 +19,7 @@ function Header() {
 				</Link>
 			</div>
 
-			<Link to="/text">
+			<Link className="header__link" to="/">
 				<div className="logo">kittyshare</div>
 			</Link>
 

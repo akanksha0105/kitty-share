@@ -176,3 +176,7 @@ button:focus {
 	align-items: center;
 	justify-content: center;
 }
+
+.display-none {
+	display: none;
+}

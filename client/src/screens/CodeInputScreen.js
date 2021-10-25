@@ -130,7 +130,12 @@ function CodeInputScreen({ currentDeviceId }) {
 						</label>
 						<br />
 
-						<button type="submit">Retrieve the Message</button>
+						<button
+							className="button__1"
+							type="submit"
+							disabled={codeInputValue.length > 0 ? false : true}>
+							Retrieve the Message
+						</button>
 					</form>
 					{errorMessage ? <Message message={errorMessage} /> : null}
 				</div>

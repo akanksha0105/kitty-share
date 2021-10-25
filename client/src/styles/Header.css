@@ -57,6 +57,10 @@
 .logo a {
 	text-decoration: none;
 }
+
+.header__link {
+	text-decoration: none;
+}
 .header__right {
 	display: flex;
 	flex: 0.35;
