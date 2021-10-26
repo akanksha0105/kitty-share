@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import HomeScreen from "./screens/HomeScreen";
 import CodeInputScreen from "./screens/CodeInputScreen";
 import TextInputScreen from "./screens/TextInputScreen";
 import LinkToDeviceScreen from "./screens/LinkToDeviceScreen";
 import axios from "axios";
 import SendToConnections from "./screens/SendToConnections";
 import Header from "./components/Header";
-import Loading from "./screens/Loading";
+import Loading from "./components/Loading";
 
 function App() {
 	const [currentDeviceId, setCurrentDeviceId] = useState("");
 	const checkOrAttachDeviceId = async () => {
 		let fetchedDeviceId = localStorage.getItem("deviceId");
-		//Case 1: If localStorage does not have deviceId
 
 		if (fetchedDeviceId == null) {
 			let newDeviceIdGenerated = uuidv4();
@@ -28,16 +26,12 @@ function App() {
 					console.log(" new device saved in database ", response.data.deviceId);
 
 					setCurrentDeviceId(response.data.deviceId);
-
-					//return senderDeviceId;
-					//Call for the subscription object to save the address(endpoint) of the device
 				})
 				.catch((err) => {
 					console.error("new device not stored in database", err);
 				});
 		} else {
 			setCurrentDeviceId(localStorage.getItem("deviceId"));
-			//return localStorage.getItem("deviceId");
 		}
 	};
 
@@ -54,21 +48,13 @@ function App() {
 				<Header />
 				{currentDeviceId ? (
 					<Switch>
-						<Route path="/code">
-							<CodeInputScreen currentDeviceId={currentDeviceId} />
-						</Route>
-						{/* <Route path="/text">
-							<TextInputScreen currentDeviceId={currentDeviceId} />
-						</Route> */}
 						<Route path="/linktoanewdevice">
 							<LinkToDeviceScreen currentDeviceId={currentDeviceId} />
 						</Route>
-
-						<Route path="/sendtoconnections">
-							<SendToConnections />
+						<Route path="/loading">
+							<Loading />
 						</Route>
-
-						<Route path="/">
+						<Route PATH="/">
 							<TextInputScreen currentDeviceId={currentDeviceId} />
 						</Route>
 					</Switch>

@@ -130,10 +130,11 @@ router.post("/sendnotification", async (req, res) => {
 	console.log("Reaching send Notification route...");
 	// console.log(req.body.currentDeviceId);
 	console.log(req.body);
-	const senderDeviceId = req.body.currentDeviceId.currentDeviceId;
+	// const senderDeviceId = req.body.currentDeviceId.currentDeviceId;
+	const senderDeviceId = req.body.currentDeviceId;
 	console.log(senderDeviceId);
 	const receiverDeviceID = req.body.receiverDeviceId;
-	const urlTobeShared = req.body.urlTobeShared.searchInput;
+	const urlTobeShared = req.body.urlTobeShared;
 	console.log("receiverDeviceId", receiverDeviceID);
 
 	const subscription = SubscriptionsModel.find({ deviceId: receiverDeviceID });

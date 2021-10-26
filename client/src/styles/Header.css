@@ -22,15 +22,20 @@
 
 	/* justify-content: space-evenly; */
 	/* border: 1px solid white; */
-	gap: 25px;
-	justify-content: flex-start;
+	/* gap: 25px; */
+	/* justify-content: left; */
 	align-items: center;
-	margin-left: 35px;
+	padding-left: 35px;
+	font-weight: bold;
 	/* letter-spacing: 4px; */
 }
 
 .header__left a {
 	text-decoration: none;
+}
+
+.header__link__left :active {
+	text-decoration: white;
 }
 .header__left > div {
 	color: #e7e7ec;
@@ -71,4 +76,5 @@
 	/* padding-right: 10px;
 	padding-left: 10px; */
 	/* border: 1px solid white; */
+	font-weight: bold;
 }

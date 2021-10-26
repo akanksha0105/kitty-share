@@ -7,15 +7,8 @@ function Header() {
 	return (
 		<div className="header">
 			<div className="header__left">
-				{/* <Link to="/sendtoconnections">
-					<div className="header__left__option"> Connections</div>
-				</Link> */}
-
-				<Link to="linktoanewdevice">
+				<Link className="header__link__left" to="linktoanewdevice">
 					<div className="header__left__option"> Add Device</div>
-				</Link>
-				<Link to="/code">
-					<div className="header__left__option"> Input Key</div>
 				</Link>
 			</div>
 
@@ -31,7 +24,6 @@ function Header() {
 					/>{" "}
 				</div>{" "}
 				<div> Device Name </div>
-				{/* <div>Settings</div> */}
 			</div>
 		</div>
 	);

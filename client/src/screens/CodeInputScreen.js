@@ -4,6 +4,8 @@ import {
 	retrieveMessage,
 	checkIfDeviceCanBeAddedAsConnection,
 } from "../functions/codeInputScreenFunctions";
+
+import { linkDevices } from "../functions/functions";
 import "../styles/Modal.css";
 import Message from "../components/Message";
 import axios from "axios";
@@ -15,7 +17,7 @@ function CodeInputScreen({ currentDeviceId }) {
 
 	const [codeInputValue, setCodeInputValue] = useState("");
 	const [retrievedMessage, setRetrievedMessage] = useState("");
-	const [isDisabled, setIsDisabled] = useState(false);
+
 	const [deviceToBeAdded, setDeviceToBeAdded] = useState("");
 	const [addDeviceMessage, setAddDeviceMessage] = useState("");
 	const [show, setShow] = useState(false);
@@ -38,7 +40,7 @@ function CodeInputScreen({ currentDeviceId }) {
 				console.log("retrieveMessageResponse", retrieveMessageResponse);
 				if (retrieveMessageResponse.messageRetrieved === false) {
 					setRetrievedMessage(retrieveMessageResponse.data);
-					setErrorMessage(retrieveMessageResponse.data);
+					// setErrorMessage(retrieveMessageResponse.data);
 					return false;
 				}
 
@@ -46,7 +48,6 @@ function CodeInputScreen({ currentDeviceId }) {
 				newDevice = device;
 				setDeviceToBeAdded(device);
 				setRetrievedMessage(data);
-				setIsDisabled(!isDisabled);
 
 				return checkIfDeviceCanBeAddedAsConnection(currentDeviceId, device);
 			})
@@ -77,87 +78,65 @@ function CodeInputScreen({ currentDeviceId }) {
 
 	//Event handler for adding the device that stored the code to the connections
 	const addDevice = () => {
-		//Here,  receiverDeviceId= The device that stored the code
-
-		// handleClose();
 		hideModal();
 		console.log("In addToDevice function of CodeInputScreen component");
 
-		let device_id = currentDeviceId;
 		let receiverDeviceID = deviceToBeAdded;
 
-		console.log(
-			"deviceToBeAdded in codeInputScreen Component",
-			deviceToBeAdded,
-		);
-
-		console.log("device_id in addReceiverToTheDeviceConnectionList", device_id);
-
-		axios
-			.post(`http://localhost:8080/api/connections/${device_id}`, {
-				receiverDeviceID,
-			})
-			.then((addReceiverToListResponse) => {
-				console.log(addReceiverToListResponse.data.data);
-				setNewDeviceAdded("New connection created");
+		linkDevices(currentDeviceId, receiverDeviceID)
+			.then((linkDevicesResponse) => {
+				console.log("linkDevicesResponse", linkDevicesResponse);
+				console.log("Both the devices are connected");
+				// setMessage("Both the devices are linked");
+				setNewDeviceAdded("Both the devices are connected");
 			})
 			.catch((err) => {
-				console.error(
-					"Issue in saving the device to the connections list",
-					err,
-				);
-				setNewDeviceAdded("Issue in saving the device to the connections list");
+				console.error("Unable to link both the devices", err);
+				// setMessage("Unable to link both the devices");
+				setNewDeviceAdded("Unable to link both the devices");
 			});
 	};
 	return (
-		<div
-			className={
-				!isDisabled ? "code__input__screen " : "message__retrieval__screen"
-			}>
-			{!isDisabled ? (
-				<div className="input__key__form">
-					<form onSubmit={onGenerateMessage}>
-						<label>
-							<input
-								name="name"
-								id="name"
-								type="text"
-								value={codeInputValue}
-								onChange={(event) => setCodeInputValue(event.target.value)}
-								required
-							/>
-							<div className="label-text">Enter the Input Key</div>
-						</label>
-						<br />
+		<div className="code__input__screen">
+			<div className="input__key__form">
+				<form onSubmit={onGenerateMessage}>
+					<label>
+						<input
+							name="name"
+							id="name"
+							type="text"
+							value={codeInputValue}
+							onChange={(event) => setCodeInputValue(event.target.value)}
+							required
+						/>
+						<div className="label-text">Enter the Input Key</div>
+					</label>
+					<br />
 
-						<button
-							className="button__1"
-							type="submit"
-							disabled={codeInputValue.length > 0 ? false : true}>
-							Retrieve the Message
-						</button>
-					</form>
-					{errorMessage ? <Message message={errorMessage} /> : null}
+					<button
+						className="button__1"
+						type="submit"
+						disabled={codeInputValue.length > 0 ? false : true}>
+						Retrieve the Message
+					</button>
+				</form>
+				{/* {errorMessage ? <Message message={errorMessage} /> : null} */}
+			</div>
+			{retrievedMessage ? (
+				<RetrievedMessageScreen retrievedMessage={retrievedMessage} />
+			) : null}
+			<div className={show ? "modal display-block" : "modal display-none"}>
+				<div className="modal__message">{addDeviceMessage}</div>
+				<div className="modal__options">
+					<button type="button" className="button__1" onClick={hideModal}>
+						No
+					</button>
+					<button type="button" className="button__1" onClick={addDevice}>
+						Yes
+					</button>
 				</div>
-			) : (
-				<>
-					<RetrievedMessageScreen retrievedMessage={retrievedMessage} />
-
-					<div className={show ? "modal display-block" : "modal display-none"}>
-						<div className="modal__message">{addDeviceMessage}</div>
-						<div className="modal__options">
-							<button type="button" onClick={hideModal}>
-								No
-							</button>
-							<button type="button" onClick={addDevice}>
-								Yes
-							</button>
-						</div>
-					</div>
-
-					{newDeviceAdded ? <Message message={newDeviceAdded} /> : null}
-				</>
-			)}
+			</div>
+			{newDeviceAdded ? <Message message={newDeviceAdded} /> : null}
 		</div>
 	);
 }

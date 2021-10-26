@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-
 import Message from "../components/Message";
-import {
-	checkReceiverDeviceIsSubscribed,
-	addReceiverToTheDeviceConnectionList,
-} from "../functions/functions";
+import { linkDevices } from "../functions/functions";
 
 function LinkToDeviceScreen({ currentDeviceId }) {
 	const [receiverDeviceID, setReceiverDeviceID] = useState("");
@@ -15,35 +11,20 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 			"In onSendingToOtherDevice event handler in LinkToDeviceScreen component",
 		);
 
-		console.log(currentDeviceId);
-
 		if (currentDeviceId.localeCompare(receiverDeviceID) === 0) {
 			setMessage("Sender device cannot be same as Receiver Device");
 			return;
 		}
 
-		return checkReceiverDeviceIsSubscribed(receiverDeviceID)
-			.then((checkReceiverDeviceIsSubscribedResponse) => {
-				console.log(
-					"response in checkReceiverDeviceIsSubscribed",
-					checkReceiverDeviceIsSubscribedResponse,
-				);
-				if (checkReceiverDeviceIsSubscribedResponse.isSubscribed === false) {
-					return checkReceiverDeviceIsSubscribedResponse.message;
-				}
-
-				return addReceiverToTheDeviceConnectionList(
-					currentDeviceId,
-					receiverDeviceID,
-				);
-			})
-			.then((linkedToADeviceResponse) => {
-				console.log("linkedToADeviceResponse", linkedToADeviceResponse);
-				setMessage(linkedToADeviceResponse);
+		linkDevices(currentDeviceId, receiverDeviceID)
+			.then((linkDevicesResponse) => {
+				console.log("linkDevicesResponse", linkDevicesResponse);
+				console.log("Both the devices are connected");
+				setMessage("Both the devices are linked");
 			})
 			.catch((err) => {
-				console.error("Unable to link to a new device", err);
-				setMessage("Unable to link to a new device");
+				console.error("Unable to link both the devices", err);
+				setMessage("Unable to link both the devices");
 			});
 	};
 

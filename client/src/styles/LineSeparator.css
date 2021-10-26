@@ -1,0 +1,15 @@
+.line__separator {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #8c827c;
+	margin-top: 60px;
+	margin-bottom: 20px;
+}
+
+.line__on__side {
+	border: 1px solid #8c827c;
+	width: 250px;
+	margin-left: 10px;
+	margin-right: 10px;
+}

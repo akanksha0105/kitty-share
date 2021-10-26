@@ -4,7 +4,7 @@ export const retrieveMessage = async (codeInputValue) => {
 	const codedMessage = codeInputValue;
 
 	return axios
-		.get(`http://localhost:8080/api/code/geturl/${codedMessage}`)
+		.get(`/api/code/geturl/${codedMessage}`)
 		.then((retrievedMessagePromiseResponse) => {
 			console.log(
 				"retrievedMessagePromiseResponse",

@@ -180,7 +180,7 @@ router.post("/:deviceId", (req, res) => {
 	);
 	console.log("In connectionsRoute.js for adding connections");
 	const currentDeviceId = req.params.deviceId;
-	const receiverDeviceID = req.body.receiverDeviceID;
+	const receiverDeviceID = req.body.receivingDeviceId;
 
 	const updateOrSaveConnectionPromise = updateOrSaveConnection(
 		currentDeviceId,
