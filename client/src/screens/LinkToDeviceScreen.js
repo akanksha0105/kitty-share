@@ -19,8 +19,12 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 		linkDevices(currentDeviceId, receiverDeviceID)
 			.then((linkDevicesResponse) => {
 				console.log("linkDevicesResponse", linkDevicesResponse);
-				console.log("Both the devices are connected");
-				setMessage("Both the devices are linked");
+				if (linkDevicesResponse.linked === true) {
+					setMessage("Both devices are linked");
+					return;
+				}
+
+				setMessage(linkDevicesResponse.message);
 			})
 			.catch((err) => {
 				console.error("Unable to link both the devices", err);

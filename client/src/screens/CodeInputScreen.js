@@ -8,7 +8,7 @@ import {
 import { linkDevices } from "../functions/functions";
 import "../styles/Modal.css";
 import Message from "../components/Message";
-import axios from "axios";
+
 import RetrievedMessageScreen from "./RetrievedMessageScreen";
 
 function CodeInputScreen({ currentDeviceId }) {
@@ -32,6 +32,8 @@ function CodeInputScreen({ currentDeviceId }) {
 		event.preventDefault();
 		console.log("Form submitted");
 
+		setNewDeviceAdded("");
+
 		console.log("Code key entered for the URL retrieval", codeInputValue);
 		let newDevice;
 
@@ -46,6 +48,7 @@ function CodeInputScreen({ currentDeviceId }) {
 
 				const { data, device } = retrieveMessageResponse;
 				newDevice = device;
+
 				setDeviceToBeAdded(device);
 				setRetrievedMessage(data);
 
@@ -86,13 +89,15 @@ function CodeInputScreen({ currentDeviceId }) {
 		linkDevices(currentDeviceId, receiverDeviceID)
 			.then((linkDevicesResponse) => {
 				console.log("linkDevicesResponse", linkDevicesResponse);
-				console.log("Both the devices are connected");
-				// setMessage("Both the devices are linked");
-				setNewDeviceAdded("Both the devices are connected");
+
+				if (linkDevicesResponse.linked === true) {
+					setNewDeviceAdded("Both the devices are connected");
+					return;
+				}
 			})
 			.catch((err) => {
 				console.error("Unable to link both the devices", err);
-				// setMessage("Unable to link both the devices");
+
 				setNewDeviceAdded("Unable to link both the devices");
 			});
 	};

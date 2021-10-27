@@ -110,7 +110,8 @@ const updateConnections = async (currentDeviceId, receiverDeviceID, data) => {
 		if (checking[0].connections.length > 0) {
 			//What status code needs be here
 
-			data = "Connection already exists in the device list";
+			let message = "Connection already exists in the device list";
+			data = { message: message, connected: false };
 			return data;
 		} else {
 			return ConnectionsModel.updateOne(
@@ -129,7 +130,8 @@ const updateConnections = async (currentDeviceId, receiverDeviceID, data) => {
 					"Connection model successfully updated",
 					updatedConnectionRecord,
 				);
-				data = "New Connection updated and saved in database";
+				let message = "New Connection updated and saved in database";
+				data = { message: message, connected: true };
 				return data;
 			});
 		}
@@ -169,7 +171,8 @@ const saveNewConnection = async (currentDeviceId, receiverDeviceID, data) => {
 
 	return newDeviceConnections.save().then((record) => {
 		console.log("new Device's Connections saved in Database", record);
-		data = "New connection created";
+		let message = "New connection created";
+		data = { message: message, connected: true };
 		return data;
 	});
 };
@@ -193,7 +196,12 @@ router.post("/:deviceId", (req, res) => {
 				updateOrSaveConnectionPromiseResponse,
 			);
 			//console.log(updateOrSaveConnectionPromiseResponse);
-			res.status(200).json({ data: updateOrSaveConnectionPromiseResponse });
+			res
+				.status(200)
+				.json({
+					data: updateOrSaveConnectionPromiseResponse.message,
+					connected: updateOrSaveConnectionPromiseResponse.connected,
+				});
 		})
 		.catch((err) => {
 			console.error(
@@ -202,6 +210,7 @@ router.post("/:deviceId", (req, res) => {
 			);
 			return res.status(500).json({
 				data: "error in saving or updating the connection in database",
+				connected: false,
 			});
 		});
 });
