@@ -1,9 +1,6 @@
-.header {
+/* .header {
 	color: #e7e7ec;
-	/* margin-top: 5px; */
 	display: flex;
-	/* align-items: center; */
-	/* border: 1px solid white; */
 	justify-content: space-evenly;
 	margin-top: 10px;
 }
@@ -11,41 +8,20 @@
 .header__left__option {
 	color: #e7e7ec;
 	text-decoration: none;
-	/* text-decoration-color: #273652; */
 }
 
 .header__left {
 	display: flex;
 	flex: 0.35;
-	/* align-items: flex-start; */
 	color: #e7e7ec;
-
-	/* justify-content: space-evenly; */
-	/* border: 1px solid white; */
-	/* gap: 25px; */
-	/* justify-content: left; */
 	align-items: center;
 	padding-left: 35px;
 	font-weight: bold;
-	/* letter-spacing: 4px; */
-}
-
-.header__left a {
-	text-decoration: none;
-}
-
-.header__link__left :active {
-	text-decoration: white;
-}
-.header__left > div {
-	color: #e7e7ec;
 }
 
 .header__right > .MuiSvgIcon-root {
 	margin-left: auto;
 	border: #e7e7ec;
-
-	/* size: 22px !important; */
 }
 .logo {
 	display: flex;
@@ -55,17 +31,8 @@
 	font-size: 4em;
 	font-family: "Cookie", cursive;
 	color: #e7e7ec;
-
-	/* border: 1px solid white; */
-	/* font-family: "Open Sans Condensed", sans-serif; */
-}
-.logo a {
-	text-decoration: none;
 }
 
-.header__link {
-	text-decoration: none;
-}
 .header__right {
 	display: flex;
 	flex: 0.35;
@@ -73,8 +40,57 @@
 	justify-content: flex-end;
 	align-items: center;
 	margin-right: 35px;
-	/* padding-right: 10px;
-	padding-left: 10px; */
-	/* border: 1px solid white; */
 	font-weight: bold;
+} */
+
+.header {
+	display: flex;
+	align-items: center;
+	color: #e7e7ec;
+}
+
+.header__link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #e7e7ec;
+	flex: 0.4;
+	font-size: 4em;
+	font-family: "Cookie", cursive;
+}
+.header__left {
+	display: flex;
+	align-items: center;
+	color: #e7e7ec;
+	flex: 0.3;
+	padding-left: 25px;
+	font-weight: bold;
+}
+
+.header__right {
+	display: flex;
+	align-items: center;
+	color: #e7e7ec;
+	flex: 0.3;
+	font-weight: bold;
+	justify-content: flex-end;
+	gap: 25px;
+	padding-right: 25px;
+}
+
+.header__left__option {
+	color: #e7e7ec;
+}
+
+.header__link__left {
+	text-decoration: none;
+}
+
+.clicked {
+	/* text-decoration: underline; */
+
+	padding-bottom: 3px;
+	border-bottom-style: solid;
+	text-decoration-color: white;
+	border-color: white;
 }

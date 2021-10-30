@@ -1,14 +1,25 @@
 import React, { useState } from "react";
 import "../styles/ConnectionsRow.css";
 import axios from "axios";
-import { Avatar } from "@material-ui/core";
 
 const ConnectionsRow = (props) => {
 	const { receiverDeviceId, currentDeviceId, urlTobeShared } = props;
 
-	const onSendNotificationToTheServer = async () => {
-		console.log("sendNotificationToTheServer in ConnectionRow component");
-		return await axios
+	console.log(
+		`currentDeviceId is ${currentDeviceId},  receiverDeviceId is ${receiverDeviceId}, urlToBeShared is ${urlTobeShared}`,
+	);
+	const onSendNotificationToTheServer = (event) => {
+		// event.preventDefault();
+
+		console.log(
+			"In onSendNotificationToTheServer event handler in ConnectionsRow component ",
+		);
+
+		console.log(
+			`In onSendNotificationToServer, currentDeviceId is ${currentDeviceId},  receiverDeviceId is ${receiverDeviceId}, urlToBeShared is ${urlTobeShared}`,
+		);
+
+		axios
 			.post("http://localhost:8080/api/subscription/sendnotification", {
 				currentDeviceId,
 				receiverDeviceId,
@@ -27,13 +38,11 @@ const ConnectionsRow = (props) => {
 	};
 	return (
 		<div className="connections__row">
-			{/* <h1>{props.receiverDeviceId}</h1> */}
-			{/* <div className="receiver__avatar">
-					<Avatar sx={{ width: 12, height: 12 }} />
-				</div> */}
-			{/* <span className="receiver__name">Happy Panda</span> */}
 			<div className="receiver__id">{receiverDeviceId}</div>
-			<button onClick={onSendNotificationToTheServer}> Send</button>
+			<button type="button" onClick={onSendNotificationToTheServer}>
+				{" "}
+				Send
+			</button>
 		</div>
 	);
 };

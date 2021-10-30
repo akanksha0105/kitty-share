@@ -132,10 +132,8 @@ router.post("/sendnotification", async (req, res) => {
 	console.log(req.body);
 	// const senderDeviceId = req.body.currentDeviceId.currentDeviceId;
 	const senderDeviceId = req.body.currentDeviceId;
-	console.log(senderDeviceId);
 	const receiverDeviceID = req.body.receiverDeviceId;
 	const urlTobeShared = req.body.urlTobeShared;
-	console.log("receiverDeviceId", receiverDeviceID);
 
 	const subscription = SubscriptionsModel.find({ deviceId: receiverDeviceID });
 	subscription
@@ -156,7 +154,8 @@ router.post("/sendnotification", async (req, res) => {
 			const pushSubscriptionObject = {
 				endpoint: subscriptionsModelRecord[0].subscriptionObject.endpoint,
 				expirationTime:
-					subscriptionsModelRecord[0].subscriptionObject.expirationTime,
+					// subscriptionsModelRecord[0].subscriptionObject.expirationTime,
+					null,
 				keys: subscriptionsModelRecord[0].subscriptionObject.keys,
 			};
 
@@ -169,6 +168,8 @@ router.post("/sendnotification", async (req, res) => {
 				title: `Notification by ${senderDeviceId}`,
 				content: urlTobeShared,
 			});
+
+			console.log("payload here", payload);
 			webpush
 				.sendNotification(pushSubscriptionObject, payload)
 				.then((webpushNotificationResponse) => {

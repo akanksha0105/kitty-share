@@ -5,6 +5,7 @@ const dbconnection = require("./db");
 const path = require("path");
 const cors = require("cors");
 const webpush = require("web-push");
+
 // const webpush = require("web-push");
 const PORT = 8080;
 
@@ -19,8 +20,8 @@ var connectionsRoute = require("./routes/connectionsRoute");
 // const vapidKeys = webpush.generateVAPIDKeys();
 const vapidKeys = {
 	publicKey:
-		"BB2sJzqBookN3vwzqmF8a97ugLitJMqJ4zwio1G2WIbJhNXemBdk9DKiE-gItS0Ra7XBUVcp2zJnqK3qAuqViHQ",
-	privateKey: "N5-Tlo3cjNcQab5lTuG64PfYZZIzw3OZV_pE4_ilVRU",
+		"BHMKkSsulVHdqMkkdLM3wkbxA2_c7JV5oQ5f8WAiUHTrp_XrNgjQC5dA1HHSqrSTTGNOGrj_1V-qZ5lv8QAgrGc",
+	privateKey: "MgIq6o5nZTzMnyBVeBIDT2yw_GuFX-WkMz6KaFOEDCM",
 };
 
 webpush.setVapidDetails(

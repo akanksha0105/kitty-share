@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const keysSchema = mongoose.Schema({
 	code: {
 		type: String,
-
 		unique: true,
 	},
 

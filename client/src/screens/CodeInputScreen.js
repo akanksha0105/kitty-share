@@ -21,7 +21,7 @@ function CodeInputScreen({ currentDeviceId }) {
 	const [deviceToBeAdded, setDeviceToBeAdded] = useState("");
 	const [addDeviceMessage, setAddDeviceMessage] = useState("");
 	const [show, setShow] = useState(false);
-	const [errorMessage, setErrorMessage] = useState("");
+	// const [errorMessage, setErrorMessage] = useState("");
 	const [newDeviceAdded, setNewDeviceAdded] = useState("");
 
 	const hideModal = () => {

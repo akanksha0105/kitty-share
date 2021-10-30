@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import CodeInputScreen from "./screens/CodeInputScreen";
 import TextInputScreen from "./screens/TextInputScreen";
 import LinkToDeviceScreen from "./screens/LinkToDeviceScreen";
 import axios from "axios";
-import SendToConnections from "./screens/SendToConnections";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
 

@@ -13,7 +13,6 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("push", (event) => {
 	if (event.data) {
 		const data = event.data.json();
-
 		console.log("What the heck is event object here");
 		console.log(data.title);
 		console.log("Push event!! ", data);
@@ -33,7 +32,7 @@ self.addEventListener("push", (event) => {
 self.addEventListener("notificationclick", (event) => {
 	console.log("On notification click");
 
-	event.notification.close();
+	// event.notification.close();
 
 	clients.openWindow(url);
 });

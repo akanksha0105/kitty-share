@@ -16,8 +16,10 @@ function SendToConnections(props) {
 
 	const onGetConnections = async () => {
 		// let device_id = location.state?.currentDeviceId.currentDeviceId;
+		console.log("In get onConnections");
 		let device_id = currentDeviceId;
 		console.log("device_id in sendToConnections component", device_id);
+		console.log("sharedInput in sendToConnections", sharedInput);
 		getConnections(device_id)
 			.then((getConnectionsPromiseResponse) => {
 				const { data, connectionsExists } = getConnectionsPromiseResponse;
