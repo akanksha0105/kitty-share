@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const CodeModel = require("../models/codeModel");
-const KeysModel = require("../models/keysModel");
+const Keys = require("../models/keysModel");
+const generateCodes = require("../generateCodes");
 var mongoose = require("mongoose");
 const ObjectId = require("mongo-objectid");
 
@@ -49,18 +50,30 @@ const checkOrGenerateCode = async (url, currentDeviceId) => {
 			return queryResults[0].code;
 		}
 
-		const id = new ObjectId().toString();
-		const code = id;
-		const newCodePair = new CodeModel({
-			deviceId: currentDeviceId,
-			code: code,
-			message: url,
-			createdAt: new Date(),
-		});
-		return newCodePair.save().then((record) => {
-			console.log("record is", record);
-			return record.code;
-		});
+		// const id = new ObjectId().toString();
+
+		return generateCodes
+			.getUnusedCode()
+			.then((generateIdPromiseResponse) => {
+				console.log("generateIdPromiseResponse", generateIdPromiseResponse);
+
+				// if(generateIdPromiseResponse.combinationGenerated === true)
+
+				const newCodePair = new CodeModel({
+					deviceId: currentDeviceId,
+					code: generateIdPromiseResponse.code,
+					message: url,
+					createdAt: new Date(),
+				});
+				return newCodePair.save();
+			})
+			.then((newCodePairSavedResponse) => {
+				console.log("new codePair saved", newCodePairSavedResponse);
+				return newCodePairSavedResponse.code;
+			})
+			.catch((err) => {
+				console.error("Error in checking and generating code in route", err);
+			});
 	});
 };
 
@@ -83,7 +96,19 @@ router.post("/postthevalue", (req, res) => {
 			);
 
 			res.status(200).json({ data: code });
+			// return code;
 		})
+		// .then((generatedCodeResponse) => {
+		// 	//return Keys.updateOne(codeOldStatus, { $set: codeNewStatus });
+		// 	//return Keys.find({ code: x });
+		// 	return Keys.updateOne(
+		// 		{ code: generatedCodeResponse },
+		// 		{ $set: { status: "used" } },
+		// 	);
+		// })
+		// .then((updatedResponse) => {
+		// 	console.log("updatedResponse", updatedResponse);
+		// })
 		.catch((err) => {
 			console.error(
 				"Server was not able to generate the secret code for the URL",
@@ -97,3 +122,27 @@ router.post("/postthevalue", (req, res) => {
 });
 
 module.exports = router;
+
+// const checkOrGenerateCode = async (url, currentDeviceId) => {
+// 	let codeQueryPromise = CodeModel.find({ message: url }).exec();
+
+// 	return codeQueryPromise.then((queryResults) => {
+// 		if (queryResults.length > 0) {
+// 			return queryResults[0].code;
+// 		}
+
+// 		const id = new ObjectId().toString();
+
+// 		const code = id;
+// 		const newCodePair = new CodeModel({
+// 			deviceId: currentDeviceId,
+// 			code: code,
+// 			message: url,
+// 			createdAt: new Date(),
+// 		});
+// 		return newCodePair.save().then((record) => {
+// 			console.log("record is", record);
+// 			return record.code;
+// 		});
+// 	});
+// };

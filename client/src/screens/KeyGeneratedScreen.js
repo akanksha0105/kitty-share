@@ -10,5 +10,4 @@ function KeyGeneratedScreen({ generatedCode }) {
 		</div>
 	);
 }
-
 export default KeyGeneratedScreen;

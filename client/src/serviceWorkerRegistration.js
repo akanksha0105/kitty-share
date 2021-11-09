@@ -37,6 +37,36 @@ const checkForServiceWorkerAndPushManager = () => {
 	return true;
 };
 
+export const unsubscribeTopushNotifications = async () => {
+	return navigator.serviceWorker.ready.then(async (reg) => {
+		// const pushSubscription = reg.pushManager.getSubscription();
+		// console.log("unsubscription SUB", pushSubscription);
+
+		return reg.pushManager
+			.getSubscription()
+			.then((pushSubscription) => {
+				console.log(
+					"pushSubscription object in serviceWorker registration file",
+					pushSubscription,
+				);
+
+				return pushSubscription.unsubscribe();
+			})
+			.then((unsubscriptionToPushNotificationsResponse) => {
+				console.log(
+					"unsubscriptionToPushNotificationsResponse",
+					unsubscriptionToPushNotificationsResponse,
+				);
+				console.log("Successfully unsubscribed");
+				return true;
+			})
+			.catch((err) => {
+				console.error("Unsubscription failed", err);
+				return false;
+			});
+	});
+};
+
 const isSubscribeToPush = async () => {
 	// The function will return Service Worker Registration Object
 	return navigator.serviceWorker
@@ -70,22 +100,6 @@ const isSubscribeToPush = async () => {
 			);
 
 			return { pushSubscription: null, isSubscribeToPush: false };
-		});
-};
-
-const grantedPermissionForNotifications = async () => {
-	//Handle the default case of permission
-	return Notification.requestPermission()
-		.then((result) => {
-			console.log("Notification permission result : ", result);
-			if (result !== "granted") {
-				throw new Error("Permission for Notifications not granted");
-			}
-			return true;
-		})
-		.catch((err) => {
-			console.error("Error in seeking notifications permission : ", err);
-			return false;
 		});
 };
 
@@ -133,50 +147,47 @@ export const main = async () => {
 			"checkForServiceWorkerAndPushManager Function Response : ",
 			checkForServiceWorkerAndPushManagerResponse,
 		);
-
 		console.log("Service worker is present");
-		return grantedPermissionForNotifications()
-			.then((grantedPermissionForNotificationsResponse) => {
-				console.log(
-					"grantedPermissionForNotificationsResponse : ",
-					grantedPermissionForNotificationsResponse,
-				);
-
-				if (grantedPermissionForNotifications === false) {
-					console.log(
-						"Unable to send and Receive Notifications due to no subscription",
-					);
-					return false;
-				}
-
-				return isSubscribeToPush();
-			})
-			.then((subscribeTopushResponse) => {
-				console.log("subscribetoPushResponse", subscribeTopushResponse);
-				if (subscribeTopushResponse.isSubscribeToPush === false) {
-					console.log("Unable to subscribe to push notifications");
-					return false;
-				}
-
-				return sendSubscriptionToTheServer(
-					subscribeTopushResponse.pushSubscription,
-				);
-			})
-			.then((sendSubscriptionToTheServerResponse) => {
-				console.log(
-					"sendSubscriptionToTheServerResponse",
-					sendSubscriptionToTheServerResponse,
-				);
-			})
-			.catch((err) =>
-				console.error(
-					"Error in granting permission for sending notifications : ",
-					err,
-				),
-			);
+		localStorage.setItem("notificationsServicePossible", true);
 	} else {
 		console.log(
 			" The current device will not be able to receive notifications since no service worker is present",
 		);
+		localStorage.setItem("notificationsServicePossible", false);
 	}
+};
+
+export const subscribeToPushNotifications = async () => {
+	console.log(
+		"In subscribeToPushNotifications function of service worker registration file ",
+	);
+
+	return isSubscribeToPush()
+		.then((subscribeTopushResponse) => {
+			console.log("subscribetoPushResponse", subscribeTopushResponse);
+			if (subscribeTopushResponse.isSubscribeToPush === false) {
+				console.log("Unable to subscribe to push notifications");
+				return false;
+			}
+
+			return sendSubscriptionToTheServer(
+				subscribeTopushResponse.pushSubscription,
+			);
+		})
+		.then((sendSubscriptionToTheServerResponse) => {
+			console.log(
+				"sendSubscriptionToTheServerResponse",
+				sendSubscriptionToTheServerResponse,
+			);
+
+			if (sendSubscriptionToTheServer === false) return false;
+			return true;
+		})
+		.catch((err) => {
+			console.error(
+				"Error in granting permission for sending notifications : ",
+				err,
+			);
+			return false;
+		});
 };

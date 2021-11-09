@@ -43,7 +43,7 @@ function App() {
 	return (
 		<div className="app">
 			<Router>
-				<Header />
+				<Header currentDeviceId={currentDeviceId} />
 				{currentDeviceId ? (
 					<Switch>
 						<Route path="/linktoanewdevice">

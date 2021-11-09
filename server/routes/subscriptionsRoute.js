@@ -41,6 +41,37 @@ router.get("/subscribeddevice/:deviceid", (req, res) => {
 		});
 });
 
+router.delete("/subscribeddevice/:subscriptionId", async (req, res) => {
+	console.log("In delete subscription route");
+	const subscriptionId = req.params.subscriptionId;
+	console.log("subscriptionId", subscriptionId);
+	SubscriptionsModel.findOneAndDelete({ deviceId: subscriptionId })
+		.then((deletedSubscription) => {
+			console.log(
+				"Subscription deleted from the database",
+				deletedSubscription,
+			);
+
+			if (deletedSubscription)
+				return res.status(200).json({
+					message: "subscription Deleted from the database",
+					isSubscriptionDeleted: true,
+				});
+
+			return res.status(404).json({
+				message: "Subscription not found",
+				isSubscriptionDeleted: false,
+			});
+		})
+		.catch((err) => {
+			console.error(err);
+			return res.status(500).json({
+				message: "Unable to delete the subscription from the database",
+				isSubscriptionDeleted: false,
+			});
+		});
+});
+
 //Route Checked
 router.post("/savesubscription", async (req, res) => {
 	const subscription = req.body.body;

@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { checkDeviceIsSubscribed } from "../functions/functions";
 export const retrieveMessage = async (codeInputValue) => {
 	const codedMessage = codeInputValue;
 
@@ -36,12 +36,68 @@ export const checkIfDeviceCanBeAddedAsConnection = (
 ) => {
 	if (currentDeviceId.localeCompare(device) === 0) return false;
 
-	return checkDeviceIsAnExistingConnection(currentDeviceId, device).then(
-		(checkDeviceIsAnExistingConnectionResponse) => {
-			if (checkDeviceIsAnExistingConnectionResponse === false) return true;
+	// check if there is a connection already present between both the devices
+	return checkDeviceIsAnExistingConnection(currentDeviceId, device)
+		.then((checkDeviceIsAnExistingConnectionResponse) => {
+			console.log(
+				"checkDeviceIsAnExistingConnectionResponse",
+				checkDeviceIsAnExistingConnectionResponse,
+			);
+			if (checkDeviceIsAnExistingConnectionResponse === true) return false;
+			return areBothSenderAndReceiverSubscribed(currentDeviceId, device);
+		})
+		.then((areBothSenderAndReceiverSubscribedResponse) => {
+			console.log(
+				"areBothSenderAndReceiverSubscribedResponse",
+				areBothSenderAndReceiverSubscribedResponse,
+			);
+			return areBothSenderAndReceiverSubscribedResponse;
+		})
+		.catch((err) => {
+			console.error(err);
 			return false;
-		},
-	);
+		});
+
+	//check if both the sending and the receiving devices are subscribed to notifications
+};
+
+const areBothSenderAndReceiverSubscribed = async (currentDeviceId, device) => {
+	return checkDeviceIsSubscribed(currentDeviceId)
+		.then((checkDeviceIsSubscribedResponse) => {
+			console.log(
+				"CheckDeviceIsSubscribedResponse - Here it is the sender device",
+				checkDeviceIsSubscribedResponse,
+			);
+
+			if (checkDeviceIsSubscribedResponse.isSubscribed === false) {
+				console.log("The sending device is not subscribed to notifications");
+				return false;
+			}
+			return checkReceiverDeviceIsSubscribed(device);
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+};
+
+const checkReceiverDeviceIsSubscribed = async (device) => {
+	return checkDeviceIsSubscribed(device)
+		.then((checkDeviceIsSubscribedResponse) => {
+			console.log(
+				"Receiver device subscription to notifications response",
+				checkDeviceIsSubscribedResponse,
+			);
+
+			if (checkDeviceIsSubscribedResponse.isSubscribed === false) {
+				console.log("The receiving device is not subscribed to notifications");
+				return false;
+			}
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+		});
 };
 
 export const checkDeviceIsAnExistingConnection = async (

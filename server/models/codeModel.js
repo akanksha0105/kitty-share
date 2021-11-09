@@ -8,6 +8,7 @@ const codeSchema = mongoose.Schema({
 	code: {
 		type: String,
 		require: true,
+		unique: true,
 	},
 	message: {
 		type: String,

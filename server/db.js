@@ -1,3 +1,5 @@
+// const e = require("cors");
+const { response } = require("express");
 const mongoose = require("mongoose");
 const generateCodes = require("./generateCodes");
 var mongoDBURL =
@@ -14,35 +16,32 @@ dbconnect.on("error", () => {
 	console.log("MongoDB Connection failed");
 });
 
-// dbconnect.on("connected", () => {
-// 	console.log("MongoDB Connected");
+dbconnect.on("connected", () => {
+	console.log("MongoDB Connected");
 
-// 	const collection = dbconnect.collection("keys");
+	// setInterval(checkAndGenerateCodes, 10000);
+	// generateCodes.getUnusedCode();
+});
 
-// 	collection.countDocuments({}, function (err, count) {
-// 		if (err) {
-// 			console.log(err);
-// 		} else {
-// 			if (count > 0) {
-// 				console.log("keys exists");
-// 				console.log("Count :", count);
-// 			} else {
-// 				let outputArrayResult = generateCodes.generateCodeCombinations();
+const checkAndGenerateCodes = () => {
+	console.log("In checkAndGenerateCodes function");
+	const collection = dbconnect.collection("keys");
 
-// 				for (let i = 0; i < outputArrayResult.length; i++) {
-// 					console.log(outputArrayResult[i]);
-// 					collection
-// 						.insertOne({
-// 							code: outputArrayResult[i],
-// 							status: "unused",
-// 						})
-// 						.catch((err) => {
-// 							console.error("error in generating codes", err);
-// 						});
-// 				}
-// 			}
-// 		}
-// 	});
-// });
+	collection.countDocuments({ status: "unused" }, function (err, num) {
+		if (err) {
+			console.error(err);
+		} else {
+			if (num >= 3) {
+				console.log("Minimal number of codes exist", num);
+				return;
+			}
+			console.log(" less than 1000 codes exist");
+
+			generateCodes.generateCodeCombinations();
+
+			return;
+		}
+	});
+};
 
 module.exports = mongoose;

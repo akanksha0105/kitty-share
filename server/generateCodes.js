@@ -1,14 +1,76 @@
-const dbconnection = require("./db");
+const { response } = require("express");
+const mongoose = require("mongoose");
+const Codes = require("./models/codeModel");
 
-const generateCodeCombinations = () => {
-	let outputArrayResult = printAllKLength();
+const Keys = require("./models/keysModel");
 
-	return outputArrayResult;
-	// insert document to 'users' collection using insertOne
+let output = "";
+const generateCode = async (arr, n, tuple, k) => {
+	//let arrayIndex = 0;
+	return generateCombination(k, arr, n, tuple).then(
+		(generateCombinationResponse) => {
+			console.log("generateCombination", generateCombinationResponse);
+			console.log("output in the final call : ", output);
+			return output;
+		},
+	);
 };
 
-function printAllKLength() {
-	//let arr = [1, 2, "a"];
+const generateCombination = async (k, arr, n, tuple) => {
+	// console.log(`k is ${k} , arr is ${arr}, n is ${n} and tuple is ${tuple}`);
+
+	if (k === 0) {
+		console.log("Loop 1");
+		console.log(`tuple now : ${tuple}`);
+
+		let tempResult = tuple.join("");
+		console.log(`tempResult is: ${tempResult}`);
+		const ans = await checkIfCodeIsPresent(tempResult);
+		console.log("ans is : ", ans);
+		if (ans === true) {
+			output = "";
+			return;
+		}
+		if (ans === false) {
+			output = tempResult;
+			console.log(`output : ${output}`);
+			return;
+		}
+	} else {
+		console.log("Loop 2");
+		for (let i = 0; i < n; i++) {
+			tuple.push(arr[i]);
+			await generateCombination(k - 1, arr, n, tuple);
+			console.log(`outputResult in loop 1: ${output}`);
+			if (output) {
+				console.log(`Meets the condition of existence of output : ${output}`);
+				return;
+			}
+			tuple.pop();
+		}
+	}
+};
+
+const checkIfCodeIsPresent = async (outputResult) => {
+	return Codes.find({ code: outputResult })
+		.then((checkIfCodeIsPresentResponse) => {
+			console.log(
+				"checkIfCodeIsPresentResponse",
+				checkIfCodeIsPresentResponse.length,
+			);
+			if (checkIfCodeIsPresentResponse.length > 0) {
+				return true;
+			}
+
+			return false;
+		})
+		.catch((err) => {
+			console.error("Error in checkIfCodeIsPresentResponse function", err);
+		});
+};
+
+const getUnusedCode = async () => {
+	// let arr = [1, 2, 3];
 	let arr = [
 		"a",
 		"b",
@@ -73,35 +135,23 @@ function printAllKLength() {
 		8,
 		9,
 	];
+	let n = arr.length;
+	let tuple = [];
+	let k = 6;
 
-	let n = arr.length; //62
-	let k = 6; //2
-	let outputArray = [];
-	printAllKLengthRec(arr, "", n, k, outputArray);
-	return outputArray;
-}
+	return generateCode(arr, n, tuple, k)
+		.then((generateCodePromiseResponse) => {
+			console.log(
+				"generateCodePromiseResponse : ",
+				generateCodePromiseResponse,
+			);
 
-function printAllKLengthRec(arr, prefix, n, k, outputArray) {
-	// Base case: k is 0,
-	// print prefix
-	if (k == 0) {
-		// document.write(prefix + "<br>");
-		// console.log("prefix", prefix);
-		outputArray.push(prefix);
-		return;
-	}
+			return { combinationGenerated: true, code: generateCodePromiseResponse };
+		})
+		.catch((err) => {
+			console.error("Error in gettingUnusedCode Function", err);
+			return { combinationGenerated: false, code: null };
+		});
+};
 
-	// One by one add all characters
-	// from set and recursively
-	// call for k equals to k-1
-	for (let i = 0; i < n; ++i) {
-		// Next character of input added
-		let newPrefix = prefix + arr[i];
-
-		// k is decreased, because
-		// we have added a new character
-		printAllKLengthRec(arr, newPrefix, n, k - 1, outputArray);
-	}
-}
-
-module.exports = { generateCodeCombinations };
+module.exports = { getUnusedCode, generateCode };

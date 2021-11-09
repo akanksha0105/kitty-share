@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SendToConnections from "../screens/SendToConnections";
 import KeyGeneratedScreen from "../screens/KeyGeneratedScreen";
@@ -13,14 +13,15 @@ function ButtonsGroup(props) {
 	const [KeyGeneratedComponentEnabled, setKeyGeneratedComponentEnabled] =
 		useState(false);
 	const [generatedCode, setGeneratedCode] = useState("");
+	const [generateKeyButtonText, setGenerateKeyButtonText] =
+		useState("Generate the Key");
+
+	const [isGenerateKeyButtonDisabled, setIsGenerateKeyButtonDisabled] =
+		useState(true);
 
 	const generateSecretKey = async () => {
 		let valueOfTheURL = sharedInput;
 		let senderDeviceId = currentDeviceId;
-
-		console.log("current device id in textinput screen", senderDeviceId);
-
-		console.log("URL entered by the user", valueOfTheURL);
 		let secretKeyPromise = axios.post("/api/code/postthevalue", {
 			valueOfTheURL,
 			senderDeviceId,
@@ -29,6 +30,9 @@ function ButtonsGroup(props) {
 		secretKeyPromise
 			.then((response) => {
 				setGeneratedCode(response.data.data);
+				console.log("response", response.data);
+				setGenerateKeyButtonText("Generate Key again");
+				setIsGenerateKeyButtonDisabled(false);
 				console.log("Generated Key provided by the server");
 			})
 			.catch((error) => {
@@ -45,16 +49,30 @@ function ButtonsGroup(props) {
 		event.preventDefault();
 		console.log("In the sendConnectionsComponentEnabled");
 		setButtonOneDisabled(true);
+
 		setButtonTwoDisabled(true);
 		setConnectionsComponentEnabled(true);
 	};
 
 	const keyGeneratedEnabled = (event) => {
 		event.preventDefault();
+		setGenerateKeyButtonText("Generating key ...");
+		setIsGenerateKeyButtonDisabled(true);
 		generateSecretKey();
+
 		setButtonTwoDisabled(true);
 		setKeyGeneratedComponentEnabled(true);
 	};
+
+	useEffect(() => {
+		console.log("sharedInput", sharedInput);
+
+		if (sharedInput.length > 0) {
+			setIsGenerateKeyButtonDisabled(false);
+		} else {
+			setIsGenerateKeyButtonDisabled(true);
+		}
+	}, [sharedInput]);
 
 	return (
 		<>
@@ -64,8 +82,9 @@ function ButtonsGroup(props) {
 						onClick={keyGeneratedEnabled}
 						className={buttonOneDisabled ? "display-none" : "button__1"}
 						type="submit"
-						disabled={sharedInput.length > 0 ? false : true}>
-						Generate the Key
+						// disabled={sharedInput.length > 0 ? false : true}>
+						disabled={isGenerateKeyButtonDisabled}>
+						{generateKeyButtonText}
 					</button>
 				</div>
 				<div>
