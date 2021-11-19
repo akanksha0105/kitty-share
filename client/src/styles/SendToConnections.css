@@ -1,10 +1,9 @@
 .connections__list {
-	border: 1px solid red;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	color: white;
 	/* position: fixed; */
-	overflow-y: scroll;
+	/* overflow-y: scroll; */
 }

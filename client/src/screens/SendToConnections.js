@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import { useLocation } from "react-router-dom";
 import ConnectionsRow from "../components/ConnectionsRow";
-import Message from "../components/Message";
+import ErrorMessage from "../components/ErrorMessage";
 import { getConnections } from "../functions/sendToConnectionsScreenFunctions";
 import "../styles/SendToConnections.css";
 
@@ -37,27 +37,24 @@ function SendToConnections(props) {
 				setErrorMessage(err.Message);
 			});
 	};
+
 	useEffect(() => {
 		onGetConnections();
 	}, []);
 
 	return (
 		<div className="connections__list">
-			{connectionsList ? (
-				connectionsList.map((item) => (
-					<ConnectionsRow
-						key={item.deviceId}
-						receiverDeviceId={item.deviceId}
-						currentDeviceId={currentDeviceId}
-						urlTobeShared={sharedInput}
-					/>
-				))
-			) : (
-				<>
-					Error Message her {errorMessage}
-					{errorMessage.length > 0 ? <Message message={errorMessage} /> : null}
-				</>
-			)}
+			{connectionsList
+				? connectionsList.map((item) => (
+						<ConnectionsRow
+							key={item.deviceId}
+							receiverDeviceId={item.deviceId}
+							currentDeviceId={currentDeviceId}
+							urlTobeShared={sharedInput}
+						/>
+				  ))
+				: null}
+			<>{errorMessage ? <ErrorMessage message={errorMessage} /> : null}</>
 		</div>
 	);
 }

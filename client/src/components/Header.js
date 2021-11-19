@@ -6,7 +6,7 @@ import * as serviceWorkerRegistration from "../serviceWorkerRegistration";
 import axios from "axios";
 
 function Header(props) {
-	const { currentDeviceId } = props;
+	const { currentDeviceId, currentDeviceName } = props;
 	const [linkClicked, setLinkClicked] = useState(false);
 	const [logoClick, setLogoClick] = useState(false);
 	const [isSubscribedToNotifications, setIsSubscribedToNotifications] =
@@ -158,6 +158,14 @@ function Header(props) {
 						Add Device
 					</div>
 				</Link>
+
+				<Link
+					className={
+						linkClicked ? "header__link__left clicked" : "header__link__left"
+					}
+					to="/potentialconnections">
+					<div className="header__left__option"> Potential Connections</div>
+				</Link>
 			</div>
 
 			<Link className="header__link" to="/">
@@ -167,13 +175,18 @@ function Header(props) {
 			</Link>
 
 			<div className="header__right">
-				<div>
-					<Avatar
-						alt="Remy Sharp"
-						src={`https://avatars.dicebear.com/api/human/123.svg`}
-					/>{" "}
-				</div>{" "}
-				<div> Device Name </div>
+				{/* Used custom seed as currentDeviceId for generating Avatar */}
+				{currentDeviceId ? (
+					<div>
+						<Avatar
+							alt="Remy Sharp"
+							src={`https://avatars.dicebear.com/api/human/${currentDeviceId}.svg`}
+						/>{" "}
+					</div>
+				) : null}
+
+				{currentDeviceName ? <div> {currentDeviceName}</div> : null}
+
 				{currentDeviceId &&
 				localStorage.getItem("notificationsServicePossible") ? (
 					<div className="subscription__button">

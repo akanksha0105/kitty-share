@@ -96,19 +96,8 @@ router.post("/postthevalue", (req, res) => {
 			);
 
 			res.status(200).json({ data: code });
-			// return code;
 		})
-		// .then((generatedCodeResponse) => {
-		// 	//return Keys.updateOne(codeOldStatus, { $set: codeNewStatus });
-		// 	//return Keys.find({ code: x });
-		// 	return Keys.updateOne(
-		// 		{ code: generatedCodeResponse },
-		// 		{ $set: { status: "used" } },
-		// 	);
-		// })
-		// .then((updatedResponse) => {
-		// 	console.log("updatedResponse", updatedResponse);
-		// })
+
 		.catch((err) => {
 			console.error(
 				"Server was not able to generate the secret code for the URL",

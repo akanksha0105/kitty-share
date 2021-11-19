@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/CodeInputScreen.css";
 import {
 	retrieveMessage,
@@ -10,6 +10,8 @@ import "../styles/Modal.css";
 import Message from "../components/Message";
 
 import RetrievedMessageScreen from "./RetrievedMessageScreen";
+import ErrorMessage from "../components/ErrorMessage";
+import SuccessMessage from "../components/SuccessMessage";
 
 function CodeInputScreen({ currentDeviceId }) {
 	console.log("In CodeInputScreen Component");
@@ -21,8 +23,17 @@ function CodeInputScreen({ currentDeviceId }) {
 	const [deviceToBeAdded, setDeviceToBeAdded] = useState("");
 	const [addDeviceMessage, setAddDeviceMessage] = useState("");
 	const [show, setShow] = useState(false);
-	// const [errorMessage, setErrorMessage] = useState("");
+
 	const [newDeviceAdded, setNewDeviceAdded] = useState("");
+
+	const [errorMessage, setErrorMessage] = useState("");
+	const [successMessage, setSuccessMessage] = useState("");
+
+	const [isRetrieveMessageButtonDisabled, setIsRetrieveMessageButtonDisabled] =
+		useState(true);
+	const [retrieveMessageButtonText, setRetriveMessageButtonText] = useState(
+		"Enter the Input Key",
+	);
 
 	const hideModal = () => {
 		setShow(false);
@@ -30,19 +41,22 @@ function CodeInputScreen({ currentDeviceId }) {
 
 	const onGenerateMessage = (event) => {
 		event.preventDefault();
-		console.log("Form submitted");
-
+		setIsRetrieveMessageButtonDisabled(true);
+		setRetriveMessageButtonText("Retrieving...");
 		setNewDeviceAdded("");
+		setErrorMessage("");
+		setSuccessMessage("");
 
-		console.log("Code key entered for the URL retrieval", codeInputValue);
 		let newDevice;
 
 		retrieveMessage(codeInputValue)
 			.then((retrieveMessageResponse) => {
 				console.log("retrieveMessageResponse", retrieveMessageResponse);
 				if (retrieveMessageResponse.messageRetrieved === false) {
-					setRetrievedMessage(retrieveMessageResponse.data);
-					// setErrorMessage(retrieveMessageResponse.data);
+					// setRetrievedMessage(retrieveMessageResponse.data);
+					setErrorMessage(retrieveMessageResponse.data);
+					setIsRetrieveMessageButtonDisabled(false);
+					setRetriveMessageButtonText("Retrieve Message Again");
 					return false;
 				}
 
@@ -51,6 +65,8 @@ function CodeInputScreen({ currentDeviceId }) {
 
 				setDeviceToBeAdded(device);
 				setRetrievedMessage(data);
+				setIsRetrieveMessageButtonDisabled(false);
+				setRetriveMessageButtonText("Retrieve Message Again");
 
 				return checkIfDeviceCanBeAddedAsConnection(currentDeviceId, device);
 			})
@@ -75,7 +91,8 @@ function CodeInputScreen({ currentDeviceId }) {
 					"Unable to generate the message and connect new device",
 					err,
 				);
-				setRetrievedMessage("Unable to retrieve the message ");
+				// setRetrievedMessage("Unable to retrieve the message ");
+				setErrorMessage("Unable to retrieve the message ");
 			});
 	};
 
@@ -91,16 +108,28 @@ function CodeInputScreen({ currentDeviceId }) {
 				console.log("linkDevicesResponse", linkDevicesResponse);
 
 				if (linkDevicesResponse.linked === true) {
-					setNewDeviceAdded("Both the devices are connected");
+					// setNewDeviceAdded("Both the devices are connected");
+					setSuccessMessage("Both the devices are connected");
 					return;
 				}
 			})
 			.catch((err) => {
 				console.error("Unable to link both the devices", err);
 
-				setNewDeviceAdded("Unable to link both the devices");
+				// setNewDeviceAdded("Unable to link both the devices");
+				setErrorMessage("Unable to link both the devices");
 			});
 	};
+
+	useEffect(() => {
+		console.log("codeInputValue", codeInputValue);
+
+		if (codeInputValue.length > 0) {
+			setIsRetrieveMessageButtonDisabled(false);
+		} else {
+			setIsRetrieveMessageButtonDisabled(true);
+		}
+	}, [codeInputValue]);
 	return (
 		<div className="code__input__screen">
 			<div className="input__key__form">
@@ -121,11 +150,10 @@ function CodeInputScreen({ currentDeviceId }) {
 					<button
 						className="button__1"
 						type="submit"
-						disabled={codeInputValue.length > 0 ? false : true}>
-						Retrieve the Message
+						disabled={isRetrieveMessageButtonDisabled}>
+						{retrieveMessageButtonText}
 					</button>
 				</form>
-				{/* {errorMessage ? <Message message={errorMessage} /> : null} */}
 			</div>
 			{retrievedMessage ? (
 				<RetrievedMessageScreen retrievedMessage={retrievedMessage} />
@@ -142,6 +170,8 @@ function CodeInputScreen({ currentDeviceId }) {
 				</div>
 			</div>
 			{newDeviceAdded ? <Message message={newDeviceAdded} /> : null}
+			{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
+			{successMessage ? <SuccessMessage message={successMessage} /> : null}
 		</div>
 	);
 }

@@ -6,6 +6,10 @@ const deviceSchema = mongoose.Schema({
 		require: true,
 		unique: true,
 	},
+
+	deviceName: {
+		type: String,
+	},
 });
 
 const Devices = mongoose.model("Devices", deviceSchema);

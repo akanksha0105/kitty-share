@@ -1,18 +1,30 @@
-import React, { useState } from "react";
-import Message from "../components/Message";
+import React, { useState, useEffect } from "react";
+import ErrorMessage from "../components/ErrorMessage";
+import SuccessMessage from "../components/SuccessMessage";
 import { linkDevices } from "../functions/functions";
 
 function LinkToDeviceScreen({ currentDeviceId }) {
 	const [receiverDeviceID, setReceiverDeviceID] = useState("");
-	const [message, setMessage] = useState("");
+	const [linkDeviceButtonText, setLinkDeviceButtonText] = useState("Link");
+	const [isLinkDeviceButtonDisabled, setIsLinkDeviceButtonDisabled] =
+		useState(true);
 
+	const [errorMessage, setErrorMessage] = useState("");
+	const [successMessage, setSuccessMessage] = useState("");
 	const onLinkToNewDevice = async () => {
+		setErrorMessage("");
+		setSuccessMessage("");
 		console.log(
 			"In onSendingToOtherDevice event handler in LinkToDeviceScreen component",
 		);
 
+		setIsLinkDeviceButtonDisabled(true);
+		setLinkDeviceButtonText("Linking...");
+
 		if (currentDeviceId.localeCompare(receiverDeviceID) === 0) {
-			setMessage("Sender device cannot be same as Receiver Device");
+			setErrorMessage("Sender device cannot be same as Receiver Device");
+			setIsLinkDeviceButtonDisabled(false);
+			setLinkDeviceButtonText("Link Again");
 			return;
 		}
 
@@ -20,17 +32,31 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 			.then((linkDevicesResponse) => {
 				console.log("linkDevicesResponse", linkDevicesResponse);
 				if (linkDevicesResponse.linked === true) {
-					setMessage("Both devices are linked");
+					setSuccessMessage("Both devices are linked");
+					setIsLinkDeviceButtonDisabled(false);
+					setLinkDeviceButtonText("Link Again");
 					return;
 				}
 
-				setMessage(linkDevicesResponse.message);
+				setErrorMessage(linkDevicesResponse.message);
+				setIsLinkDeviceButtonDisabled(false);
+				setLinkDeviceButtonText("Link Again");
 			})
 			.catch((err) => {
 				console.error("Unable to link both the devices", err);
-				setMessage("Unable to link both the devices");
+				setErrorMessage("Unable to link both the devices");
 			});
 	};
+
+	useEffect(() => {
+		console.log("receiverDeviceId", receiverDeviceID);
+
+		if (receiverDeviceID.length > 0) {
+			setIsLinkDeviceButtonDisabled(false);
+		} else {
+			setIsLinkDeviceButtonDisabled(true);
+		}
+	}, [receiverDeviceID]);
 
 	if (currentDeviceId === "" || undefined) return <div>Loading device...</div>;
 
@@ -53,12 +79,13 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 				<button
 					className="button__1"
 					type="button"
-					disabled={receiverDeviceID.length > 0 ? false : true}
+					disabled={isLinkDeviceButtonDisabled}
 					onClick={onLinkToNewDevice}>
-					Link
+					{linkDeviceButtonText}
 				</button>
 
-				{message ? <Message message={message} /> : null}
+				{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
+				{successMessage ? <SuccessMessage message={successMessage} /> : null}
 			</form>
 
 			<div></div>

@@ -6,7 +6,37 @@
 	border: 1px solid #8c827c;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	/* white-space: nowrap; */
+}
+
+.error__message {
+	border: none;
+	justify-content: center;
+}
+
+.success__message {
+	border: none;
+	justify-content: center;
+}
+.success__message__content {
 	white-space: nowrap;
+	color: limegreen;
+	font-size: 20px;
+	padding: 20px 20px;
+	font-weight: bold;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.error__message__content {
+	margin-top: 10px;
+	color: red;
+	font-size: 20px;
+	/* padding: 20px 20px; */
+	font-weight: bold;
+	justify-content: center;
+	/* overflow: hidden; */
+	/* text-overflow: ellipsis; */
 }
 
 .message__content {
