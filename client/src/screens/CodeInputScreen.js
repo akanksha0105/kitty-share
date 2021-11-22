@@ -3,6 +3,7 @@ import "../styles/CodeInputScreen.css";
 import {
 	retrieveMessage,
 	checkIfDeviceCanBeAddedAsConnection,
+	getReceiverDeviceName,
 } from "../functions/codeInputScreenFunctions";
 
 import { linkDevices } from "../functions/functions";
@@ -21,11 +22,10 @@ function CodeInputScreen({ currentDeviceId }) {
 	const [retrievedMessage, setRetrievedMessage] = useState("");
 
 	const [deviceToBeAdded, setDeviceToBeAdded] = useState("");
-	const [addDeviceMessage, setAddDeviceMessage] = useState("");
 	const [show, setShow] = useState(false);
 
 	const [newDeviceAdded, setNewDeviceAdded] = useState("");
-
+	const [addDeviceMessage, setAddDeviceMessage] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
 	const [successMessage, setSuccessMessage] = useState("");
 
@@ -61,7 +61,6 @@ function CodeInputScreen({ currentDeviceId }) {
 				}
 
 				const { data, device } = retrieveMessageResponse;
-				newDevice = device;
 
 				setDeviceToBeAdded(device);
 				setRetrievedMessage(data);
@@ -80,11 +79,18 @@ function CodeInputScreen({ currentDeviceId }) {
 					return;
 				}
 
-				setShow(true);
+				return getReceiverDeviceName(deviceToBeAdded);
+			})
+			.then((getReceiverDeviceNameResponse) => {
+				if (getReceiverDeviceNameResponse.retrievedDeviceName === true) {
+					setShow(true);
 
-				setAddDeviceMessage(
-					`Do you want to add ${newDevice} to your connections ? `,
-				);
+					let newDeviceMessage =
+						getReceiverDeviceNameResponse.receiverDeviceName;
+					setAddDeviceMessage(
+						`Do you want to add ${newDeviceMessage} to your connections ? `,
+					);
+				}
 			})
 			.catch((err) => {
 				console.error(

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 // import { useLocation } from "react-router-dom";
 import ConnectionsRow from "../components/ConnectionsRow";
 import ErrorMessage from "../components/ErrorMessage";
-import { getConnections } from "../functions/sendToConnectionsScreenFunctions";
 import "../styles/SendToConnections.css";
+import Loading from "../components/Loading";
+
+import axios from "axios";
 
 function SendToConnections(props) {
 	// const location = useLocation();
@@ -14,41 +16,47 @@ function SendToConnections(props) {
 	const [connectionsList, setConnectionsList] = useState([]);
 	const [errorMessage, setErrorMessage] = useState("");
 
-	const onGetConnections = async () => {
-		// let device_id = location.state?.currentDeviceId.currentDeviceId;
-		console.log("In get onConnections");
-		let device_id = currentDeviceId;
-		console.log("device_id in sendToConnections component", device_id);
-		console.log("sharedInput in sendToConnections", sharedInput);
-		getConnections(device_id)
-			.then((getConnectionsPromiseResponse) => {
-				const { data, connectionsExists } = getConnectionsPromiseResponse;
-				if (connectionsExists === false) {
-					console.log("No connections");
-					setErrorMessage("No connections found");
-					//Make a no connections component
-					return;
-				}
+	const onGetAllConnections = () => {
+		console.log(
+			"In onGetAllConnections function in SendToConnections component",
+		);
 
-				setConnectionsList(data);
+		let deviceId = currentDeviceId;
+
+		axios
+			.get(
+				`http://localhost:8080/api/connections/getAllConnections/${deviceId}`,
+			)
+			.then((onGetAllConnectionsResponse) => {
+				console.log("onGetAllConnectionsResponse", onGetAllConnectionsResponse);
+
+				if (onGetAllConnectionsResponse.data.connectionExists === true)
+					setConnectionsList(
+						onGetAllConnectionsResponse.data.getAllConnectionsArray,
+					);
 			})
 			.catch((err) => {
-				console.error(err);
-				setErrorMessage(err.Message);
+				console.error(
+					"Error in retrieving connections on the client side : ",
+					err,
+				);
+				const { code, message } = err.response.data;
+				console.log(`code is ${code}, message is ${message} `);
+				setErrorMessage(message);
 			});
 	};
-
 	useEffect(() => {
-		onGetConnections();
+		onGetAllConnections();
 	}, []);
 
+	if (connectionsList === null) return <Loading />;
 	return (
 		<div className="connections__list">
 			{connectionsList
 				? connectionsList.map((item) => (
 						<ConnectionsRow
-							key={item.deviceId}
-							receiverDeviceId={item.deviceId}
+							key={item}
+							receiverDeviceId={item}
 							currentDeviceId={currentDeviceId}
 							urlTobeShared={sharedInput}
 						/>

@@ -6,7 +6,7 @@ import LinkToDeviceScreen from "./screens/LinkToDeviceScreen";
 import axios from "axios";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
-import PotentialConnections from "./screens/PotentialConnections";
+
 import nounsArray from "./jsonFiles/nouns.json";
 import adjectivesArray from "./jsonFiles/adjectives.json";
 
@@ -166,9 +166,7 @@ function App() {
 						<Route path="/loading">
 							<Loading />
 						</Route>
-						<Route path="/potentialConnections">
-							<PotentialConnections currentDeviceId={currentDeviceId} />
-						</Route>
+
 						<Route path="/">
 							<TextInputScreen currentDeviceId={currentDeviceId} />
 						</Route>

@@ -158,14 +158,6 @@ function Header(props) {
 						Add Device
 					</div>
 				</Link>
-
-				<Link
-					className={
-						linkClicked ? "header__link__left clicked" : "header__link__left"
-					}
-					to="/potentialconnections">
-					<div className="header__left__option"> Potential Connections</div>
-				</Link>
 			</div>
 
 			<Link className="header__link" to="/">

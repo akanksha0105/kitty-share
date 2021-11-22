@@ -151,6 +151,12 @@ router.get("/device/:deviceId", (req, res) => {
 		.then((deviceRecord) => {
 			console.log("Device Name : ", deviceRecord[0].deviceName);
 
+			if (deviceRecord.length <= 0) {
+				return res.status(404).json({
+					code: 102,
+					retrievedDeviceName: false,
+				});
+			}
 			return res.status(200).json({
 				deviceName: deviceRecord[0].deviceName,
 				retrievedDeviceName: true,
@@ -161,7 +167,38 @@ router.get("/device/:deviceId", (req, res) => {
 				"Error encountered on the server side in deriving the device name of the current device: ",
 				err,
 			);
-			return res.status(500).json({ retrievedDeviceName: false });
+			return res.status(500).json({ code: 101, retrievedDeviceName: false });
+		});
+});
+
+router.get("/device/:deviceName", (req, res) => {
+	console.log("In route for getting the device's device id with deviceName ");
+
+	const deviceName = req.params.deviceName;
+
+	console.log(`deviceName in get : ${deviceName}`);
+
+	DevicesModel.find({ deviceName: deviceName })
+		.then((deviceRecord) => {
+			if (deviceRecord.length <= 0) {
+				return res.status(404).json({
+					code: 102,
+					retrievedDeviceId: false,
+				});
+			}
+
+			console.log("Device Id : ", deviceRecord[0].deviceId);
+			return res.status(200).json({
+				deviceId: deviceRecord[0].deviceId,
+				retrievedDeviceId: true,
+			});
+		})
+		.catch((err) => {
+			console.error(
+				"Error encountered on the server side in deriving the device name of the current device: ",
+				err,
+			);
+			return res.status(500).json({ code: 101, retrievedDeviceId: false });
 		});
 });
 

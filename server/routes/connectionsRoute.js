@@ -4,7 +4,93 @@ const ConnectionsModel = require("../models/connectionsModel");
 var mongoose = require("mongoose");
 const dbconnection = require("../db");
 const { db } = require("../models/connectionsModel");
+const getAllConnections = require("../modules/getAllConnections.module");
 
+router.get("/getAllConnections/:deviceId", (req, res) => {
+	console.log(
+		"In connectionsRoute.js for getting all the deep-down connections",
+	);
+
+	const device_id = req.params.deviceId;
+	getAllConnections
+		.getAllConnections(device_id)
+		.then((getAllConnectionsResponse) => {
+			console.log("getAllConnectionsResponse :", getAllConnectionsResponse);
+			let getAllConnectionsResponseArray = getAllConnectionsResponse;
+			// let getAllConnectionsResponseArray = [...getAllConnectionsResponse];
+
+			// [...getAllConnectionsResponse].filter((item) => {
+			// 	if (item !== device_id) {
+			// 		getAllConnectionsResponseArray.push(item);
+			// 	}
+			// });
+			console.log(
+				"getAllConnectionsResponseArray",
+				getAllConnectionsResponseArray,
+			);
+
+			console.log(
+				"getAllConnectionsResponseArrayLength",
+				getAllConnectionsResponseArray.length,
+			);
+
+			if (getAllConnectionsResponseArray.length <= 0) {
+				return res.status(404).json({
+					code: 102,
+					message: "No Connections",
+					connectionsExits: false,
+				});
+			}
+
+			return res.status(200).json({
+				getAllConnectionsArray: getAllConnectionsResponseArray,
+				connectionExists: true,
+			});
+		})
+		.catch((err) => {
+			console.error(
+				"Error in getting all connections of the current device",
+				err,
+			);
+
+			return res.status(500).json({
+				code: 101,
+				message: "Error in getting all connections of the current devi",
+				connectionsExits: false,
+			});
+		});
+});
+
+const getConnectionsOfCurrentDevice = async (device_id) => {
+	console.log(
+		"In getConnectionsOfCurrentDevice function for getting connections",
+	);
+
+	return ConnectionsModel.find({ deviceId: device_id })
+		.then((connectionsModelResponse) => {
+			console.log("connectionsModelResponse", connectionsModelResponse);
+
+			if (connectionsModelResponse.length <= 0) {
+				console.log("No connections found");
+				return {
+					connectionsListExist: false,
+					message: "No connections found",
+				};
+			}
+
+			return {
+				connectionsList: connectionsModelResponse[0].connections,
+				connectionsListExist: true,
+			};
+		})
+		.catch((err) => {
+			console.error("Error in retrieving connections", err);
+			return {
+				connectionsListExist: false,
+				message: "Error in retrieving connections",
+			};
+		});
+};
 router.get("/:deviceId", (req, res) => {
 	console.log("In connectionsRoute.js for getting connections");
 	const device_id = req.params.deviceId;
@@ -196,12 +282,10 @@ router.post("/:deviceId", (req, res) => {
 				updateOrSaveConnectionPromiseResponse,
 			);
 			//console.log(updateOrSaveConnectionPromiseResponse);
-			res
-				.status(200)
-				.json({
-					data: updateOrSaveConnectionPromiseResponse.message,
-					connected: updateOrSaveConnectionPromiseResponse.connected,
-				});
+			res.status(200).json({
+				data: updateOrSaveConnectionPromiseResponse.message,
+				connected: updateOrSaveConnectionPromiseResponse.connected,
+			});
 		})
 		.catch((err) => {
 			console.error(

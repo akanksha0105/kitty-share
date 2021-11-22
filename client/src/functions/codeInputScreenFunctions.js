@@ -1,5 +1,69 @@
 import axios from "axios";
 import { checkDeviceIsSubscribed } from "../functions/functions";
+
+export const getReceiverDeviceName = async (receiverDeviceId) => {
+	let deviceId = receiverDeviceId;
+
+	return axios
+		.get(`http://localhost:8080/api/devices/device/${deviceId}`)
+		.then((getReceiverDeviceNameResponse) => {
+			console.log(
+				"getReceiverDeviceNameResponse",
+				getReceiverDeviceNameResponse,
+			);
+
+			return {
+				receiverDeviceName: getReceiverDeviceNameResponse.data.deviceName,
+				retrievedDeviceName: true,
+			};
+		})
+		.catch((err) => {
+			console.error(err);
+			const { code } = err.response.data;
+			if (code === 101) {
+				return {
+					message: "Device name not found",
+					retrievedDeviceName: false,
+				};
+			}
+
+			return {
+				message: "Internal Error in retrieving Device Name",
+				retrievedDeviceName: false,
+			};
+		});
+};
+export const checkReceiverDeviceName = async (receiverDeviceName) => {
+	const deviceName = receiverDeviceName;
+	return axios
+		.get(`http://localhost:8080/api/devices/device/${deviceName}`)
+		.then((receiverDeviceNameResponse) => {
+			console.log("receiverDeviceNameResponse", receiverDeviceNameResponse);
+			console.log(
+				"eceiverDeviceNameResponse.data.deviceId",
+				receiverDeviceNameResponse.data.deviceId,
+			);
+			return {
+				receiverDeviceId: receiverDeviceNameResponse.data.deviceId,
+				retrievedDeviceId: true,
+			};
+		})
+		.catch((err) => {
+			console.error(err);
+			const { code } = err.response.data;
+			if (code === 101) {
+				return {
+					message: "Device name not found",
+					retrievedDeviceId: false,
+				};
+			}
+
+			return {
+				message: "Internal Error in retrieving Device Name",
+				retrievedDeviceId: false,
+			};
+		});
+};
 export const retrieveMessage = async (codeInputValue) => {
 	const codedMessage = codeInputValue;
 
