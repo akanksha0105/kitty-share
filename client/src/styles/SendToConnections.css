@@ -2,8 +2,16 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	align-items: center;
+	/* align-items: center; */
 	color: white;
+	max-height: 200px;
+	overflow: auto;
+	border: 1px solid lightblue;
 	/* position: fixed; */
 	/* overflow-y: scroll; */
+}
+
+.connections__list__display__none {
+	display: none;
+	/* border-color: none; */
 }

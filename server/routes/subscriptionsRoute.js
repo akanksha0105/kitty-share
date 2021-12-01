@@ -165,6 +165,7 @@ router.post("/sendnotification", async (req, res) => {
 	const senderDeviceId = req.body.currentDeviceId;
 	const receiverDeviceID = req.body.receiverDeviceId;
 	const urlTobeShared = req.body.urlTobeShared;
+	const notificationSendingDevice = req.body.notificationSendingDevice;
 
 	const subscription = SubscriptionsModel.find({ deviceId: receiverDeviceID });
 	subscription
@@ -196,7 +197,7 @@ router.post("/sendnotification", async (req, res) => {
 			);
 
 			const payload = JSON.stringify({
-				title: `Notification by ${senderDeviceId}`,
+				title: `Notification by ${notificationSendingDevice}`,
 				content: urlTobeShared,
 			});
 

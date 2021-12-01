@@ -4,8 +4,8 @@
 	width: 350px;
 	margin: 10px 30px;
 	border: 1px solid #8c827c;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	/* overflow: hidden;
+	text-overflow: ellipsis; */
 	/* white-space: nowrap; */
 }
 
@@ -24,8 +24,6 @@
 	font-size: 20px;
 	padding: 20px 20px;
 	font-weight: bold;
-	overflow: hidden;
-	text-overflow: ellipsis;
 }
 
 .error__message__content {
@@ -45,6 +43,4 @@
 	font-size: 20px;
 	padding: 20px 20px;
 	font-weight: bold;
-	overflow: hidden;
-	text-overflow: ellipsis;
 }

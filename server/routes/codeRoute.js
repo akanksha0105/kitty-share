@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const CodeModel = require("../models/codeModel");
-const Keys = require("../models/keysModel");
 const generateCodes = require("../generateCodes");
 var mongoose = require("mongoose");
-const ObjectId = require("mongo-objectid");
+// const ObjectId = require("mongo-objectid");
 
 //Router for retrieving the URL - need to give the code to get the url
 router.get("/geturl/:codedMessage", (req, res) => {

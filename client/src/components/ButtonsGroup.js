@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import SendToConnections from "../screens/SendToConnections";
-import KeyGeneratedScreen from "../screens/KeyGeneratedScreen";
+import SendToConnections from "./SendToConnections";
+import KeyGeneratedScreen from "./KeyGeneratedScreen";
 
 function ButtonsGroup(props) {
-	const { sharedInput, currentDeviceId } = props;
+	const { sharedInput, currentDeviceId, currentDeviceName } = props;
 
 	const [buttonOneDisabled, setButtonOneDisabled] = useState(false);
 	const [buttonTwoDisabled, setButtonTwoDisabled] = useState(false);
@@ -102,6 +102,7 @@ function ButtonsGroup(props) {
 				<SendToConnections
 					currentDeviceId={currentDeviceId}
 					sharedInput={sharedInput}
+					currentDeviceName={currentDeviceName}
 				/>
 			) : null}
 

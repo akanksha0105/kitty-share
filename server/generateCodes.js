@@ -2,8 +2,6 @@ const { response } = require("express");
 const mongoose = require("mongoose");
 const Codes = require("./models/codeModel");
 
-const Keys = require("./models/keysModel");
-
 let output = "";
 const generateCode = async (arr, n, tuple, k) => {
 	//let arrayIndex = 0;

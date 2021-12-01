@@ -1,18 +1,21 @@
 import React, { useState } from "react";
 import "../styles/TextInputScreen.css";
 
-import CodeInputScreen from "../screens/CodeInputScreen";
+import CodeInput from "../components/CodeInput";
 import ButtonsGroup from "../components/ButtonsGroup";
 import LineSeparator from "../components/LineSeparator";
 
-function TextInputScreen({ currentDeviceId }) {
+function HomeScreen({ currentDeviceId, currentDeviceName }) {
 	const [sharedInput, setSharedInput] = useState("");
 
-	console.log("In the textInput", currentDeviceId);
+	console.log(
+		"In the HomeSreenComponent with the currentDeviceId : ",
+		currentDeviceId,
+	);
 
 	return (
-		<div className="text__input__screen">
-			<CodeInputScreen currentDeviceId={currentDeviceId} />
+		<div className="home__screen">
+			<CodeInput currentDeviceId={currentDeviceId} />
 			<LineSeparator />
 			<div className="text__input__form">
 				{/* <form onSubmit={onFormSubmit}> */}
@@ -32,10 +35,11 @@ function TextInputScreen({ currentDeviceId }) {
 					<ButtonsGroup
 						sharedInput={sharedInput}
 						currentDeviceId={currentDeviceId}
+						currentDeviceName={currentDeviceName}
 					/>
 				</form>
 			</div>
 		</div>
 	);
 }
-export default TextInputScreen;
+export default HomeScreen;

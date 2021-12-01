@@ -5,7 +5,7 @@ export const getReceiverDeviceName = async (receiverDeviceId) => {
 	let deviceId = receiverDeviceId;
 
 	return axios
-		.get(`http://localhost:8080/api/devices/device/${deviceId}`)
+		.get(`http://localhost:8080/api/devices/searchdevicename/${deviceId}`)
 		.then((getReceiverDeviceNameResponse) => {
 			console.log(
 				"getReceiverDeviceNameResponse",
@@ -18,17 +18,20 @@ export const getReceiverDeviceName = async (receiverDeviceId) => {
 			};
 		})
 		.catch((err) => {
-			console.error(err);
+			console.log("Hey");
+			// console.error(err);
 			const { code } = err.response.data;
+			console.log(`code is: ${code}`);
+
 			if (code === 101) {
 				return {
-					message: "Device name not found",
+					message: "Internal Error in retrieving Device Name",
 					retrievedDeviceName: false,
 				};
 			}
 
 			return {
-				message: "Internal Error in retrieving Device Name",
+				message: "Device name not found",
 				retrievedDeviceName: false,
 			};
 		});
@@ -36,7 +39,7 @@ export const getReceiverDeviceName = async (receiverDeviceId) => {
 export const checkReceiverDeviceName = async (receiverDeviceName) => {
 	const deviceName = receiverDeviceName;
 	return axios
-		.get(`http://localhost:8080/api/devices/device/${deviceName}`)
+		.get(`http://localhost:8080/api/devices/searchdeviceid/${deviceName}`)
 		.then((receiverDeviceNameResponse) => {
 			console.log("receiverDeviceNameResponse", receiverDeviceNameResponse);
 			console.log(
@@ -53,13 +56,13 @@ export const checkReceiverDeviceName = async (receiverDeviceName) => {
 			const { code } = err.response.data;
 			if (code === 101) {
 				return {
-					message: "Device name not found",
+					message: "Internal Error in retrieving Device Name",
 					retrievedDeviceId: false,
 				};
 			}
 
 			return {
-				message: "Internal Error in retrieving Device Name",
+				message: "Device name not found",
 				retrievedDeviceId: false,
 			};
 		});
@@ -98,7 +101,8 @@ export const checkIfDeviceCanBeAddedAsConnection = (
 	currentDeviceId,
 	device,
 ) => {
-	if (currentDeviceId.localeCompare(device) === 0) return false;
+	if (currentDeviceId.localeCompare(device) === 0)
+		return { canBeAddedAsConnection: false };
 
 	// check if there is a connection already present between both the devices
 	return checkDeviceIsAnExistingConnection(currentDeviceId, device)
@@ -107,19 +111,13 @@ export const checkIfDeviceCanBeAddedAsConnection = (
 				"checkDeviceIsAnExistingConnectionResponse",
 				checkDeviceIsAnExistingConnectionResponse,
 			);
-			if (checkDeviceIsAnExistingConnectionResponse === true) return false;
+			if (checkDeviceIsAnExistingConnectionResponse === true)
+				return { canBeAddedAsConnection: false };
 			return areBothSenderAndReceiverSubscribed(currentDeviceId, device);
-		})
-		.then((areBothSenderAndReceiverSubscribedResponse) => {
-			console.log(
-				"areBothSenderAndReceiverSubscribedResponse",
-				areBothSenderAndReceiverSubscribedResponse,
-			);
-			return areBothSenderAndReceiverSubscribedResponse;
 		})
 		.catch((err) => {
 			console.error(err);
-			return false;
+			return { canBeAddedAsConnection: false };
 		});
 
 	//check if both the sending and the receiving devices are subscribed to notifications
@@ -135,13 +133,13 @@ const areBothSenderAndReceiverSubscribed = async (currentDeviceId, device) => {
 
 			if (checkDeviceIsSubscribedResponse.isSubscribed === false) {
 				console.log("The sending device is not subscribed to notifications");
-				return false;
+				return { canBeAddedAsConnection: false };
 			}
 			return checkReceiverDeviceIsSubscribed(device);
 		})
 		.catch((err) => {
 			console.error(err);
-			return false;
+			return { canBeAddedAsConnection: false };
 		});
 };
 
@@ -155,12 +153,13 @@ const checkReceiverDeviceIsSubscribed = async (device) => {
 
 			if (checkDeviceIsSubscribedResponse.isSubscribed === false) {
 				console.log("The receiving device is not subscribed to notifications");
-				return false;
+				return { canBeAddedAsConnection: false };
 			}
-			return true;
+			return { canBeAddedAsConnection: true, deviceToBeAdded: device };
 		})
 		.catch((err) => {
 			console.error(err);
+			return { canBeAddedAsConnection: false };
 		});
 };
 
@@ -189,8 +188,8 @@ export const checkDeviceIsAnExistingConnection = async (
 				connectionExistsResponse,
 			);
 			if (
-				connectionExistsResponse.data.checked == true &&
-				connectionExistsResponse.data.connectionexists == true
+				connectionExistsResponse.data.checked === true &&
+				connectionExistsResponse.data.connectionexists === true
 			) {
 				return true;
 			}

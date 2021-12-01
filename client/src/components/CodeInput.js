@@ -8,27 +8,26 @@ import {
 
 import { linkDevices } from "../functions/functions";
 import "../styles/Modal.css";
-import Message from "../components/Message";
+import Message from "./Message";
 
 import RetrievedMessageScreen from "./RetrievedMessageScreen";
-import ErrorMessage from "../components/ErrorMessage";
-import SuccessMessage from "../components/SuccessMessage";
+import ErrorMessage from "./ErrorMessage";
+import SuccessMessage from "./SuccessMessage";
 
-function CodeInputScreen({ currentDeviceId }) {
-	console.log("In CodeInputScreen Component");
-	console.log(currentDeviceId);
+function CodeInput({ currentDeviceId }) {
+	console.log(
+		"In CodeInputScreen Component with currentDeviceId : ",
+		currentDeviceId,
+	);
 
 	const [codeInputValue, setCodeInputValue] = useState("");
 	const [retrievedMessage, setRetrievedMessage] = useState("");
-
 	const [deviceToBeAdded, setDeviceToBeAdded] = useState("");
 	const [show, setShow] = useState(false);
-
 	const [newDeviceAdded, setNewDeviceAdded] = useState("");
 	const [addDeviceMessage, setAddDeviceMessage] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
 	const [successMessage, setSuccessMessage] = useState("");
-
 	const [isRetrieveMessageButtonDisabled, setIsRetrieveMessageButtonDisabled] =
 		useState(true);
 	const [retrieveMessageButtonText, setRetriveMessageButtonText] = useState(
@@ -47,13 +46,10 @@ function CodeInputScreen({ currentDeviceId }) {
 		setErrorMessage("");
 		setSuccessMessage("");
 
-		let newDevice;
-
 		retrieveMessage(codeInputValue)
 			.then((retrieveMessageResponse) => {
 				console.log("retrieveMessageResponse", retrieveMessageResponse);
 				if (retrieveMessageResponse.messageRetrieved === false) {
-					// setRetrievedMessage(retrieveMessageResponse.data);
 					setErrorMessage(retrieveMessageResponse.data);
 					setIsRetrieveMessageButtonDisabled(false);
 					setRetriveMessageButtonText("Retrieve Message Again");
@@ -75,11 +71,16 @@ function CodeInputScreen({ currentDeviceId }) {
 					checkIfDeviceCanBeAddedAsConnectionResponse,
 				);
 
-				if (checkIfDeviceCanBeAddedAsConnectionResponse === false) {
-					return;
+				if (
+					checkIfDeviceCanBeAddedAsConnectionResponse.canBeAddedAsConnection ===
+					false
+				) {
+					return { retrievedDeviceName: false };
 				}
 
-				return getReceiverDeviceName(deviceToBeAdded);
+				return getReceiverDeviceName(
+					checkIfDeviceCanBeAddedAsConnectionResponse.deviceToBeAdded,
+				);
 			})
 			.then((getReceiverDeviceNameResponse) => {
 				if (getReceiverDeviceNameResponse.retrievedDeviceName === true) {
@@ -97,7 +98,7 @@ function CodeInputScreen({ currentDeviceId }) {
 					"Unable to generate the message and connect new device",
 					err,
 				);
-				// setRetrievedMessage("Unable to retrieve the message ");
+
 				setErrorMessage("Unable to retrieve the message ");
 			});
 	};
@@ -182,4 +183,4 @@ function CodeInputScreen({ currentDeviceId }) {
 	);
 }
 
-export default CodeInputScreen;
+export default CodeInput;

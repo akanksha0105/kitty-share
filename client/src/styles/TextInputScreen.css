@@ -20,7 +20,7 @@ div.container {
 	padding: 30px;
 } */
 
-.text__input__screen {
+.hone__screen {
 	text-align: center;
 }
 
@@ -108,7 +108,7 @@ button:focus {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	margin-top: 30px;
+	margin-top: 10px;
 	text-align: center;
 	padding: 30px;
 	/* border: 1px solid red; */

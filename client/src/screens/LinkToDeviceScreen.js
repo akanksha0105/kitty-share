@@ -24,7 +24,7 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 		checkReceiverDeviceName(receiverDeviceName)
 			.then((getReceiverDeviceNameResponse) => {
 				console.log(
-					"getReceiverDeviceNameResponse",
+					"getReceiverDeviceNameResponseFromFunction",
 					getReceiverDeviceNameResponse,
 				);
 				if (getReceiverDeviceNameResponse.retrievedDeviceId === false) {

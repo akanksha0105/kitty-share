@@ -299,4 +299,21 @@ router.post("/:deviceId", (req, res) => {
 		});
 });
 
+router.get("/deleteconnections/:deviceId", (req, res) => {
+	console.log("In connectionsRoute.js for deleting connections");
+	const currentDeviceId = req.params.deviceId;
+
+	const deleteConnectionsOfCurrentDevicePromise =
+		ConnectionsModel.findOneAndDelete({ deviceId: currentDeviceId });
+
+	deleteConnectionsOfCurrentDevicePromise.then(
+		(deleteConnectionsOfCurrentDevicePromiseResponse) => {
+			console.log(
+				"deleteConnectionsOfCurrentDevicePromiseResponse",
+				deleteConnectionsOfCurrentDevicePromiseResponse,
+			);
+		},
+	);
+});
+
 module.exports = router;

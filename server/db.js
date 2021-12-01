@@ -1,7 +1,7 @@
 // const e = require("cors");
-const { response } = require("express");
+// const { response } = require("express");
 const mongoose = require("mongoose");
-const generateCodes = require("./generateCodes");
+// const generateCodes = require("./generateCodes");
 var mongoDBURL =
 	"mongodb+srv://akanksha:akanksha@cluster0.xknwn.mongodb.net/share-url";
 
@@ -23,25 +23,25 @@ dbconnect.on("connected", () => {
 	// generateCodes.getUnusedCode();
 });
 
-const checkAndGenerateCodes = () => {
-	console.log("In checkAndGenerateCodes function");
-	const collection = dbconnect.collection("keys");
+// const checkAndGenerateCodes = () => {
+// 	console.log("In checkAndGenerateCodes function");
+// 	const collection = dbconnect.collection("keys");
 
-	collection.countDocuments({ status: "unused" }, function (err, num) {
-		if (err) {
-			console.error(err);
-		} else {
-			if (num >= 3) {
-				console.log("Minimal number of codes exist", num);
-				return;
-			}
-			console.log(" less than 1000 codes exist");
+// 	collection.countDocuments({ status: "unused" }, function (err, num) {
+// 		if (err) {
+// 			console.error(err);
+// 		} else {
+// 			if (num >= 3) {
+// 				console.log("Minimal number of codes exist", num);
+// 				return;
+// 			}
+// 			console.log(" less than 1000 codes exist");
 
-			generateCodes.generateCodeCombinations();
+// 			generateCodes.generateCodeCombinations();
 
-			return;
-		}
-	});
-};
+// 			return;
+// 		}
+// 	});
+// };
 
 module.exports = mongoose;

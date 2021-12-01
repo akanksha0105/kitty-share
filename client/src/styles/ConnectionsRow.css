@@ -4,7 +4,7 @@
 	padding-left: 10px;
 	padding-right: 10px;
 	padding-bottom: 10px;
-	border-bottom: 1px solid grey;
+	/* border-bottom: 1px solid grey; */
 	display: flex;
 	justify-content: center;
 	align-items: baseline;
@@ -35,12 +35,13 @@
 
 	font-size: 17px;
 	letter-spacing: 3px;
-	padding: 20px 50px;
+	/* padding: 20px 50px; */
+	padding: 10px 30px;
 	text-transform: uppercase;
 	cursor: pointer;
-	display: inline-block;
+	/* display: inline-block; */
 	flex: 1;
-	width: 50px;
+	/* width: 50px; */
 
 	-webkit-transition: all 0.4s;
 	-moz-transition: all 0.4s;

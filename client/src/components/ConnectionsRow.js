@@ -3,19 +3,24 @@ import "../styles/ConnectionsRow.css";
 import axios from "axios";
 
 const ConnectionsRow = (props) => {
-	const { receiverDeviceId, currentDeviceId, urlTobeShared } = props;
+	const {
+		receiverDeviceId,
+		currentDeviceId,
+		urlTobeShared,
+		currentDeviceName,
+	} = props;
 
 	const [recieverName, setReceiverName] = useState("");
 
-	console.log(
-		`currentDeviceId is ${currentDeviceId},  receiverDeviceId is ${receiverDeviceId}, urlToBeShared is ${urlTobeShared}`,
-	);
+	// console.log(
+	// 	`currentDeviceId is ${currentDeviceId},  receiverDeviceId is ${receiverDeviceId}, urlToBeShared is ${urlTobeShared} and currentDeviceName is ${currentDeviceName}`,
+	// );
 
 	const onGetReceiverName = async () => {
 		console.log("In onGetReceiverName");
 		let deviceId = receiverDeviceId;
 		return axios
-			.get(`http://localhost:8080/api/devices/device/${deviceId}`)
+			.get(`http://localhost:8080/api/devices/searchdevicename/${deviceId}`)
 			.then((onGetReceiverNameResponse) => {
 				console.log("onGetReceiverNameResponse", onGetReceiverNameResponse);
 				if (onGetReceiverNameResponse.data.retrievedDeviceName === true)
@@ -32,8 +37,9 @@ const ConnectionsRow = (props) => {
 			"In onSendNotificationToTheServer event handler in ConnectionsRow component ",
 		);
 
+		let notificationSendingDevice = currentDeviceName;
 		console.log(
-			`In onSendNotificationToServer, currentDeviceId is ${currentDeviceId},  receiverDeviceId is ${receiverDeviceId}, urlToBeShared is ${urlTobeShared}`,
+			`In onSendNotificationToServer, currentDeviceId is ${currentDeviceId},  receiverDeviceId is ${receiverDeviceId}, urlToBeShared is ${urlTobeShared}, notificationSendingDevice is ${notificationSendingDevice} `,
 		);
 
 		axios
@@ -41,6 +47,7 @@ const ConnectionsRow = (props) => {
 				currentDeviceId,
 				receiverDeviceId,
 				urlTobeShared,
+				notificationSendingDevice,
 			})
 			.then((sendNotificationToTheServerResponse) => {
 				console.log(

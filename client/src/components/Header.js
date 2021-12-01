@@ -11,11 +11,13 @@ function Header(props) {
 	const [logoClick, setLogoClick] = useState(false);
 	const [isSubscribedToNotifications, setIsSubscribedToNotifications] =
 		useState("false");
-
+	const [isSubscribeButtonDisabled, setIsSubscribeButtonDisabled] =
+		useState(false);
 	const [openUnsubscriptionModal, setOpenUnSubscriptionModal] = useState(false);
 
 	const hideUnsubscriptionModal = () => {
 		setOpenUnSubscriptionModal(false);
+		setIsSubscribeButtonDisabled(false);
 	};
 
 	const checkDeviceSubscribedToNotifications = () => {
@@ -56,6 +58,8 @@ function Header(props) {
 				isSubscribed,
 			);
 
+			setIsSubscribeButtonDisabled(true);
+
 			serviceWorkerRegistration
 				.subscribeToPushNotifications()
 				.then((response) => {
@@ -65,8 +69,10 @@ function Header(props) {
 						console.log("Here");
 						localStorage.setItem("isSubscribed", true);
 						setIsSubscribedToNotifications(true);
+						setIsSubscribeButtonDisabled(false);
 					} else {
 						console.log("Here2");
+						setIsSubscribeButtonDisabled(false);
 					}
 				})
 				.catch((err) => {
@@ -76,6 +82,7 @@ function Header(props) {
 					);
 					localStorage.setItem("isSubscribed", false);
 					setIsSubscribedToNotifications(false);
+					setIsSubscribeButtonDisabled(false);
 				});
 			return;
 		}
@@ -85,7 +92,7 @@ function Header(props) {
 				"isSubscribed in  Loop2 onNotificationsPermission",
 				isSubscribed,
 			);
-
+			setIsSubscribeButtonDisabled(true);
 			setOpenUnSubscriptionModal(true);
 
 			return;
@@ -99,7 +106,7 @@ function Header(props) {
 				console.log("unsubscribed push notifications", response);
 				if (response === true) {
 					//delete the subscription object from the database
-					deleteSubscriptionFromDatabase();
+					// deleteSubscriptionFromDatabase();
 					hideUnsubscriptionModal();
 				}
 			})
@@ -131,6 +138,7 @@ function Header(props) {
 				if (
 					deletedSubscriptionPromiseResponse.data.isSubscriptionDeleted === true
 				) {
+					// deleteConnectionsOfCurrentDevice();
 					localStorage.setItem("isSubscribed", false);
 					setIsSubscribedToNotifications(false);
 				}
@@ -139,6 +147,18 @@ function Header(props) {
 				console.error("Unable to unsubscribe", err);
 			});
 	};
+
+	// const deleteConnectionsOfCurrentDevice = async () => {
+	// 	let deviceId = currentDeviceId;
+
+	// 	return axios
+	// 		.get(
+	// 			`http://localhost:8080/api/connections/deleteconnections/${deviceId}`,
+	// 		)
+	// 		.then((x) => {
+	// 			console.log("x", x);
+	// 		});
+	// };
 
 	useEffect(() => {
 		let ans = checkDeviceSubscribedToNotifications();
@@ -181,10 +201,15 @@ function Header(props) {
 
 				{currentDeviceId &&
 				localStorage.getItem("notificationsServicePossible") ? (
-					<div className="subscription__button">
+					<div className={"subscription__button"}>
 						<button
+							disabled={isSubscribeButtonDisabled}
 							onClick={onNotificationsPermission}
-							className="subscribe__button">
+							className={
+								isSubscribedToNotifications === true
+									? "subscribe__button__active"
+									: "subscribe__button__inactive"
+							}>
 							{" "}
 							{isSubscribedToNotifications == true ? "Subscribed" : "Subscribe"}
 							{/* {subscribeOptionButtonText} */}
@@ -192,7 +217,6 @@ function Header(props) {
 					</div>
 				) : null}
 			</div>
-
 			<div
 				className={
 					openUnsubscriptionModal ? "modal display-block" : "modal display-none"

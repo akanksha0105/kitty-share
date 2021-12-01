@@ -2,13 +2,12 @@ const express = require("express");
 const router = express.Router();
 const DevicesModel = require("../models/devicesModel");
 var mongoose = require("mongoose");
-
+const generateDeviceNameModule = require("../modules/generateDeviceName.module");
 //Route checked
-router.post("/newdevice", (req, res) => {
+router.post("/newdevice", async (req, res) => {
 	console.log("In route for registering of new device");
 
 	const deviceId = req.body.senderDeviceId;
-	//   const deviceName = req.body.deviceName;
 
 	console.log("req.body.senderDeviceId", req.body.senderDeviceId);
 	const newDevicePair = new DevicesModel({
@@ -31,18 +30,23 @@ router.post("/newdevice", (req, res) => {
 		});
 });
 
-router.post("/device/:deviceId", (req, res) => {
+router.post("/newdevice/devicename/:deviceId", (req, res) => {
 	console.log(
 		"In route for updating the device's device name with specified current device id",
 	);
 
 	const deviceId = req.params.deviceId;
-	const deviceName = req.body.generatedDeviceName;
-	console.log("deviceName here: ", req.body.generatedDeviceName);
+	console.log("deviceId here :", deviceId);
+	let deviceName;
 
-	console.log(`deviceId in post : ${deviceId}`);
+	generateDeviceNameModule
+		.generateDeviceName(deviceId)
+		.then((queryResult) => {
+			console.log("generateDeviceNamePromiseResponse :", queryResult);
+			deviceName = queryResult;
 
-	DevicesModel.find({ deviceId: deviceId })
+			return DevicesModel.find({ deviceId: deviceId });
+		})
 		.then((deviceRecord) => {
 			console.log("Device Record : ", deviceRecord);
 
@@ -58,13 +62,12 @@ router.post("/device/:deviceId", (req, res) => {
 
 			return DevicesModel.updateOne(oldDeviceRecord, { $set: newDeviceRecord });
 		})
-		// DevicesModel.updateOne(
-		// 	{ deviceId: deviceId },
-		// 	{ $set: { deviceName: deviceName } },
-		// )
+
 		.then((updatedDeviceModelRecord) => {
 			console.log("updatedDeviceModelRecord", updatedDeviceModelRecord);
-			return res.status(200).json({ updatedDeviceName: true });
+			return res
+				.status(200)
+				.json({ updatedDeviceName: true, deviceName: deviceName });
 		})
 		.catch((err) => {
 			console.error(
@@ -138,7 +141,7 @@ router.post("/deviceidvalid", (req, res) => {
 		});
 });
 
-router.get("/device/:deviceId", (req, res) => {
+router.get("/searchdevicename/:deviceId", (req, res) => {
 	console.log(
 		"In route for getting the device's device name with specified current device id",
 	);
@@ -171,7 +174,7 @@ router.get("/device/:deviceId", (req, res) => {
 		});
 });
 
-router.get("/device/:deviceName", (req, res) => {
+router.get("/searchdeviceid/:deviceName", (req, res) => {
 	console.log("In route for getting the device's device id with deviceName ");
 
 	const deviceName = req.params.deviceName;
