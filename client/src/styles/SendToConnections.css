@@ -1,3 +1,7 @@
+.connections__list__display__none {
+	display: none;
+}
+
 .connections__list {
 	display: flex;
 	flex-direction: column;
@@ -9,9 +13,4 @@
 	border: 1px solid lightblue;
 	/* position: fixed; */
 	/* overflow-y: scroll; */
-}
-
-.connections__list__display__none {
-	display: none;
-	/* border-color: none; */
 }

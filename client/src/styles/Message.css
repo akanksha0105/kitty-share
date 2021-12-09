@@ -3,7 +3,7 @@
 	justify-content: flex-start;
 	width: 350px;
 	margin: 10px 30px;
-	border: 1px solid #8c827c;
+	/* border: 1px solid #8c827c; */
 	/* overflow: hidden;
 	text-overflow: ellipsis; */
 	/* white-space: nowrap; */
@@ -11,6 +11,7 @@
 
 .error__message {
 	border: none;
+
 	justify-content: center;
 }
 
@@ -27,8 +28,9 @@
 }
 
 .error__message__content {
+	border: none;
 	margin-top: 10px;
-	color: red;
+	color: tomato;
 	font-size: 20px;
 	/* padding: 20px 20px; */
 	font-weight: bold;
@@ -38,6 +40,7 @@
 }
 
 .message__content {
+	border: none;
 	white-space: nowrap;
 	color: white;
 	font-size: 20px;

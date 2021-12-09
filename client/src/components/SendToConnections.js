@@ -58,25 +58,48 @@ function SendToConnections(props) {
 		return <ErrorMessage message={message} />;
 	}
 	return (
-		<div
-			className={
-				connectionsList
-					? "connections__list"
-					: "connections__list__display__none"
-			}>
-			{connectionsList && currentlySubscribed
-				? connectionsList.map((item) => (
-						<ConnectionsRow
-							key={item}
-							receiverDeviceId={item}
-							currentDeviceId={currentDeviceId}
-							urlTobeShared={sharedInput}
-							currentDeviceName={currentDeviceName}
-						/>
-				  ))
-				: null}
-			<>{errorMessage ? <ErrorMessage message={errorMessage} /> : null}</>
-		</div>
+		<>
+			<div
+				className={
+					connectionsList
+						? "connections__list"
+						: "connections__list__display__none"
+				}>
+				{connectionsList && currentlySubscribed
+					? connectionsList.map((item) => (
+							<ConnectionsRow
+								key={item}
+								receiverDeviceId={item}
+								currentDeviceId={currentDeviceId}
+								urlTobeShared={sharedInput}
+								currentDeviceName={currentDeviceName}
+							/>
+					  ))
+					: null}
+			</div>
+			{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
+		</>
+		// <>
+		// 	<div
+		// 		className={
+		// 			connectionsList
+		// 				? "connections__list"
+		// 				: "connections__list__display__none"
+		// 		}>
+		// 		{connectionsList && currentlySubscribed
+		// 			? connectionsList.map((item) => (
+		// 					<ConnectionsRow
+		// 						key={item}
+		// 						receiverDeviceId={item}
+		// 						currentDeviceId={currentDeviceId}
+		// 						urlTobeShared={sharedInput}
+		// 						currentDeviceName={currentDeviceName}
+		// 					/>
+		// 			  ))
+		// 			: null}
+		// 	</div>
+		// 	{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
+		// </>
 	);
 }
 
