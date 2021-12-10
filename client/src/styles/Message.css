@@ -32,9 +32,10 @@
 	margin-top: 10px;
 	color: tomato;
 	font-size: 20px;
-	/* padding: 20px 20px; */
+	padding: 20px 20px;
 	font-weight: bold;
 	justify-content: center;
+	line-height: 1.8;
 	/* overflow: hidden; */
 	/* text-overflow: ellipsis; */
 }

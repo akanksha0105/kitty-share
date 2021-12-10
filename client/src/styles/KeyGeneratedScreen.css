@@ -1,11 +1,15 @@
 .container__screen {
 	border: 1px solid lightblue;
 	margin-top: 20px;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	/* padding-top: 10px; */
+	/* padding-bottom: 10px; */
 	padding-left: 20px;
 	padding-right: 20px;
-	width: 150px;
+	min-width: 150px;
+	min-height: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	/* justify-content: center;
 	text-align: center;
@@ -24,7 +28,29 @@
 	color: floralwhite;
 	font-size: 1.5rem;
 	letter-spacing: 4px;
-	padding: 20px;
+	/* padding: 20px; */
 	font-family: var(--secondaryFont);
 	/* font-weight: bold; */
+}
+
+.retrieved__container__screen {
+	border: 1px solid lightblue;
+	margin-top: 20px;
+
+	min-width: 200px;
+	max-width: 400px;
+	min-height: 0px;
+	max-height: 100px;
+	word-wrap: break-word;
+	overflow-y: auto;
+	scrollbar-width: thin;
+}
+
+/* Generated code */
+.retrieved__output__box {
+	color: floralwhite;
+	font-size: 1.5rem;
+	letter-spacing: 4px;
+	padding: 20px;
+	font-family: var(--secondaryFont);
 }

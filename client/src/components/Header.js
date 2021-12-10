@@ -38,6 +38,7 @@ function Header(props) {
 			console.log("Loop 2");
 			localStorage.setItem("isSubscribed", true);
 			setIsSubscribedToNotifications(true);
+			setIsSubscribeButtonDisabled(true);
 			return;
 		}
 
@@ -45,6 +46,7 @@ function Header(props) {
 			console.log("Loop 3");
 			localStorage.setItem("isSubscribed", false);
 			setIsSubscribedToNotifications(false);
+			setIsSubscribeButtonDisabled(false);
 			return;
 		}
 	};
@@ -93,72 +95,15 @@ function Header(props) {
 				isSubscribed,
 			);
 			setIsSubscribeButtonDisabled(true);
-			setOpenUnSubscriptionModal(true);
+			// setOpenUnSubscriptionModal(true);
 
 			return;
 		}
 	};
 
-	const unsubscribePushNotifications = () => {
-		serviceWorkerRegistration
-			.unsubscribeTopushNotifications()
-			.then((response) => {
-				console.log("unsubscribed push notifications", response);
-				if (response === true) {
-					//delete the subscription object from the database
-					// deleteSubscriptionFromDatabase();
-					hideUnsubscriptionModal();
-				}
-			})
-			.catch((err) => {
-				console.error(
-					"Application unable to unsubscribe push notifications",
-					err,
-				);
-			});
-	};
-
 	const onLogoClick = (event) => {
 		setLinkClicked(false);
 	};
-
-	const deleteSubscriptionFromDatabase = () => {
-		let subscriptionId = currentDeviceId;
-		const deletedSubscriptionPromise = axios.delete(
-			`http://localhost:8080/api/subscription/subscribeddevice/${subscriptionId}`,
-		);
-
-		deletedSubscriptionPromise
-			.then((deletedSubscriptionPromiseResponse) => {
-				console.log(
-					"deletedSubscriptionPromiseResponse",
-					deletedSubscriptionPromiseResponse.data.message,
-				);
-
-				if (
-					deletedSubscriptionPromiseResponse.data.isSubscriptionDeleted === true
-				) {
-					// deleteConnectionsOfCurrentDevice();
-					localStorage.setItem("isSubscribed", false);
-					setIsSubscribedToNotifications(false);
-				}
-			})
-			.catch((err) => {
-				console.error("Unable to unsubscribe", err);
-			});
-	};
-
-	// const deleteConnectionsOfCurrentDevice = async () => {
-	// 	let deviceId = currentDeviceId;
-
-	// 	return axios
-	// 		.get(
-	// 			`http://localhost:8080/api/connections/deleteconnections/${deviceId}`,
-	// 		)
-	// 		.then((x) => {
-	// 			console.log("x", x);
-	// 		});
-	// };
 
 	useEffect(() => {
 		let ans = checkDeviceSubscribedToNotifications();
@@ -169,7 +114,7 @@ function Header(props) {
 			<div className="header__left">
 				<Link
 					className={
-						linkClicked ? "header__link__left clicked" : "header__link__left"
+						linkClicked ? "header__link__left__clicked" : "header__link__left"
 					}
 					to={!linkClicked ? "/linktoanewdevice" : "/"}>
 					<div
@@ -217,7 +162,71 @@ function Header(props) {
 					</div>
 				) : null}
 			</div>
-			<div
+		</div>
+	);
+}
+
+export default Header;
+
+// const deleteSubscriptionFromDatabase = () => {
+// 	let subscriptionId = currentDeviceId;
+// 	const deletedSubscriptionPromise = axios.delete(
+// 		`http://localhost:8080/api/subscription/subscribeddevice/${subscriptionId}`,
+// 	);
+
+// 	deletedSubscriptionPromise
+// 		.then((deletedSubscriptionPromiseResponse) => {
+// 			console.log(
+// 				"deletedSubscriptionPromiseResponse",
+// 				deletedSubscriptionPromiseResponse.data.message,
+// 			);
+
+// 			if (
+// 				deletedSubscriptionPromiseResponse.data.isSubscriptionDeleted === true
+// 			) {
+// 				// deleteConnectionsOfCurrentDevice();
+// 				localStorage.setItem("isSubscribed", false);
+// 				setIsSubscribedToNotifications(false);
+// 			}
+// 		})
+// 		.catch((err) => {
+// 			console.error("Unable to unsubscribe", err);
+// 		});
+// };
+
+// const deleteConnectionsOfCurrentDevice = async () => {
+// 	let deviceId = currentDeviceId;
+
+// 	return axios
+// 		.get(
+// 			`http://localhost:8080/api/connections/deleteconnections/${deviceId}`,
+// 		)
+// 		.then((x) => {
+// 			console.log("x", x);
+// 		});
+// };
+
+// const unsubscribePushNotifications = () => {
+// 	serviceWorkerRegistration
+// 		.unsubscribeTopushNotifications()
+// 		.then((response) => {
+// 			console.log("unsubscribed push notifications", response);
+// 			if (response === true) {
+// 				//delete the subscription object from the database
+// 				// deleteSubscriptionFromDatabase();
+// 				hideUnsubscriptionModal();
+// 			}
+// 		})
+// 		.catch((err) => {
+// 			console.error(
+// 				"Application unable to unsubscribe push notifications",
+// 				err,
+// 			);
+// 		});
+// };
+
+{
+	/* <div
 				className={
 					openUnsubscriptionModal ? "modal display-block" : "modal display-none"
 				}>
@@ -238,9 +247,5 @@ function Header(props) {
 						Unsubscribe
 					</button>
 				</div>
-			</div>
-		</div>
-	);
+			</div> */
 }
-
-export default Header;

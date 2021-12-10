@@ -6,6 +6,7 @@ import axios from "axios";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
 import HomeScreen from "./screens/HomeScreen";
+import WebsiteLoader from "./screens/WebsiteLoader";
 
 function App() {
 	const [currentDeviceId, setCurrentDeviceId] = useState("");
@@ -80,7 +81,7 @@ function App() {
 		registerANewDevice();
 	}, [currentDeviceId, currentDeviceName]);
 
-	if (currentDeviceId === "") return <Loading />;
+	if (currentDeviceId === "") return <WebsiteLoader />;
 
 	return (
 		<div className="app">

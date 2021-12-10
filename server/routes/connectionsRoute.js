@@ -44,7 +44,7 @@ router.get("/getAllConnections/:deviceId", (req, res) => {
 
 			return res.status(200).json({
 				getAllConnectionsArray: getAllConnectionsResponseArray,
-				connectionExists: true,
+				connectionsExists: true,
 			});
 		})
 		.catch((err) => {

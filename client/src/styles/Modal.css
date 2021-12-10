@@ -18,9 +18,6 @@
 	margin-right: 10px;
 }
 
-.modal__options button {
-	width: 16%;
-}
 .modal__message {
 	color: white;
 	padding-top: 20px;
@@ -37,3 +34,7 @@
 /* .modal__options {
 
 } */
+
+.button_1 {
+	width: 16%;
+}

@@ -159,6 +159,7 @@ button:focus {
 	align-items: center;
 	justify-content: center;
 	margin-top: 200px;
+	text-align: center;
 }
 
 .display-none {

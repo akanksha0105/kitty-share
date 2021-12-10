@@ -68,11 +68,15 @@ const ConnectionsRow = (props) => {
 		<div className="connections__row">
 			{recieverName ? (
 				<>
-					<div className="receiver__id">{recieverName}</div>
-					<button type="button" onClick={onSendNotificationToTheServer}>
-						{" "}
-						Send
-					</button>
+					<div className="left__side">
+						<div className="receiver__id">{recieverName}</div>
+					</div>
+					<div className="right__side">
+						<button type="button" onClick={onSendNotificationToTheServer}>
+							{" "}
+							Send
+						</button>
+					</div>
 				</>
 			) : null}
 			{/* <div className="receiver__id">{receiverDeviceId}</div> */}

@@ -37,21 +37,22 @@
 .header__left__option {
 	color: #e7e7ec;
 	justify-content: flex-start;
-	padding-right: 25px;
-	/* align-items: center; */
-	/* gap: 25px; */
+}
+
+.header__left__option:hover {
+	background: linear-gradient(to right, lightblue, tomato);
+	background-clip: border-box;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 .header__link__left {
 	text-decoration: none;
 }
 
-.clicked {
-	/* text-decoration: underline; */
-
+.header__link__left__clicked {
 	padding-bottom: 3px;
 	border-bottom-style: solid;
-	text-decoration-color: white;
 	border-color: white;
 }
 
@@ -78,17 +79,17 @@
 .subscribe__button__inactive {
 	border: 1px solid white;
 	/* background-color: black; */
-	color: white;
+	color: black;
 	padding: 10px;
 	font-size: 1em;
 	border-radius: 6px;
-	background-color: darkred;
+	background-color: tomato;
 	border: none;
 }
 
 .subscribe__button__active[disabled] {
-	background-color: #a9a9a9;
-	color: white;
+	background-color: limegreen;
+	color: black;
 }
 
 .subscribe__button__inactive[disabled] {
