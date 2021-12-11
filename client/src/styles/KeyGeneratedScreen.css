@@ -1,26 +1,17 @@
 .container__screen {
 	border: 1px solid lightblue;
+	border-radius: 3px;
 	margin-top: 20px;
 	/* padding-top: 10px; */
 	/* padding-bottom: 10px; */
-	padding-left: 20px;
-	padding-right: 20px;
+	/* padding-left: 20px;
+	padding-right: 20px; */
 	min-width: 150px;
-	min-height: 100px;
+	min-height: 80px;
+	padding: 0px 35px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
-	/* justify-content: center;
-	text-align: center;
-	padding: 20px;
-	margin: 10px 30px;
-	border: 1px solid #8c827c;
-	width: 200px;
-	height: 100px;
-	scrollbar-width: thin;
-	padding-bottom: 0;
-	border: 2px solid lightblue; */
 }
 
 /* Generated code */
@@ -28,13 +19,12 @@
 	color: floralwhite;
 	font-size: 1.5rem;
 	letter-spacing: 4px;
-	/* padding: 20px; */
 	font-family: var(--secondaryFont);
-	/* font-weight: bold; */
 }
 
 .retrieved__container__screen {
 	border: 1px solid lightblue;
+	border-radius: 3px;
 	margin-top: 20px;
 
 	min-width: 200px;

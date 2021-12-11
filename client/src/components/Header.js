@@ -2,113 +2,26 @@ import React, { useState, useEffect } from "react";
 import "../styles/Header.css";
 import { Link } from "react-router-dom";
 import { Avatar } from "@material-ui/core";
-import * as serviceWorkerRegistration from "../serviceWorkerRegistration";
+
 import axios from "axios";
 
 function Header(props) {
-	const { currentDeviceId, currentDeviceName } = props;
+	const {
+		currentDeviceId,
+		currentDeviceName,
+		isDeviceSubscribed,
+		onNotificationsPermission,
+		isSubscribeButtonDisabled,
+	} = props;
 	const [linkClicked, setLinkClicked] = useState(false);
 	const [logoClick, setLogoClick] = useState(false);
-	const [isSubscribedToNotifications, setIsSubscribedToNotifications] =
-		useState("false");
-	const [isSubscribeButtonDisabled, setIsSubscribeButtonDisabled] =
-		useState(false);
-	const [openUnsubscriptionModal, setOpenUnSubscriptionModal] = useState(false);
 
-	const hideUnsubscriptionModal = () => {
-		setOpenUnSubscriptionModal(false);
-		setIsSubscribeButtonDisabled(false);
-	};
-
-	const checkDeviceSubscribedToNotifications = () => {
-		let isSubscribed = JSON.parse(localStorage.getItem("isSubscribed"));
-		console.log(
-			"isSubscribed in checkDeviceSubscribedToNotifications",
-			isSubscribed,
-		);
-
-		if (isSubscribed === null) {
-			console.log("Loop 1");
-			localStorage.setItem("isSubscribed", false);
-			setIsSubscribedToNotifications(false);
-			return;
-		}
-
-		if (isSubscribed === true) {
-			console.log("Loop 2");
-			localStorage.setItem("isSubscribed", true);
-			setIsSubscribedToNotifications(true);
-			setIsSubscribeButtonDisabled(true);
-			return;
-		}
-
-		if (isSubscribed === false) {
-			console.log("Loop 3");
-			localStorage.setItem("isSubscribed", false);
-			setIsSubscribedToNotifications(false);
-			setIsSubscribeButtonDisabled(false);
-			return;
-		}
-	};
-
-	const onNotificationsPermission = () => {
-		let isSubscribed = isSubscribedToNotifications;
-		console.log("isSubscribed in onNotificationsPermission", isSubscribed);
-		if (isSubscribed === false) {
-			console.log(
-				"isSubscribed in  Loop1 onNotificationsPermission",
-				isSubscribed,
-			);
-
-			setIsSubscribeButtonDisabled(true);
-
-			serviceWorkerRegistration
-				.subscribeToPushNotifications()
-				.then((response) => {
-					console.log("subscribed to push notifications", response);
-
-					if (response === true) {
-						console.log("Here");
-						localStorage.setItem("isSubscribed", true);
-						setIsSubscribedToNotifications(true);
-						setIsSubscribeButtonDisabled(false);
-					} else {
-						console.log("Here2");
-						setIsSubscribeButtonDisabled(false);
-					}
-				})
-				.catch((err) => {
-					console.error(
-						"Application not registered for the push notifications",
-						err,
-					);
-					localStorage.setItem("isSubscribed", false);
-					setIsSubscribedToNotifications(false);
-					setIsSubscribeButtonDisabled(false);
-				});
-			return;
-		}
-
-		if (isSubscribed === true) {
-			console.log(
-				"isSubscribed in  Loop2 onNotificationsPermission",
-				isSubscribed,
-			);
-			setIsSubscribeButtonDisabled(true);
-			// setOpenUnSubscriptionModal(true);
-
-			return;
-		}
-	};
+	console.log("isDeviceSubscribed in Header: ", isDeviceSubscribed);
 
 	const onLogoClick = (event) => {
 		setLinkClicked(false);
 	};
 
-	useEffect(() => {
-		let ans = checkDeviceSubscribedToNotifications();
-		console.log(ans);
-	});
 	return (
 		<div className="header">
 			<div className="header__left">
@@ -151,12 +64,12 @@ function Header(props) {
 							disabled={isSubscribeButtonDisabled}
 							onClick={onNotificationsPermission}
 							className={
-								isSubscribedToNotifications === true
+								isDeviceSubscribed
 									? "subscribe__button__active"
 									: "subscribe__button__inactive"
 							}>
 							{" "}
-							{isSubscribedToNotifications == true ? "Subscribed" : "Subscribe"}
+							{isDeviceSubscribed ? "Subscribed" : "Subscribe"}
 							{/* {subscribeOptionButtonText} */}
 						</button>
 					</div>
@@ -225,8 +138,8 @@ export default Header;
 // 		});
 // };
 
-{
-	/* <div
+// {
+/* <div
 				className={
 					openUnsubscriptionModal ? "modal display-block" : "modal display-none"
 				}>
@@ -248,4 +161,35 @@ export default Header;
 					</button>
 				</div>
 			</div> */
-}
+// }
+
+// const checkDeviceSubscribedToNotifications = () => {
+// 	let isSubscribed = JSON.parse(localStorage.getItem("isSubscribed"));
+// 	console.log(
+// 		"isSubscribed in checkDeviceSubscribedToNotifications",
+// 		isSubscribed,
+// 	);
+
+// 	if (isSubscribed === null) {
+// 		console.log("Loop 1");
+// 		localStorage.setItem("isSubscribed", false);
+// 		setIsSubscribedToNotifications(false);
+// 		return;
+// 	}
+
+// 	if (isSubscribed === true) {
+// 		console.log("Loop 2");
+// 		localStorage.setItem("isSubscribed", true);
+// 		setIsSubscribedToNotifications(true);
+// 		setIsSubscribeButtonDisabled(true);
+// 		return;
+// 	}
+
+// 	if (isSubscribed === false) {
+// 		console.log("Loop 3");
+// 		localStorage.setItem("isSubscribed", false);
+// 		setIsSubscribedToNotifications(false);
+// 		setIsSubscribeButtonDisabled(false);
+// 		return;
+// 	}
+// };

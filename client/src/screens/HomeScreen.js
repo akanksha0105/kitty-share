@@ -5,7 +5,11 @@ import CodeInput from "../components/CodeInput";
 import ButtonsGroup from "../components/ButtonsGroup";
 import LineSeparator from "../components/LineSeparator";
 
-function HomeScreen({ currentDeviceId, currentDeviceName }) {
+function HomeScreen({
+	currentDeviceId,
+	currentDeviceName,
+	isDeviceSubscribed,
+}) {
 	const [sharedInput, setSharedInput] = useState("");
 
 	console.log(
@@ -36,6 +40,7 @@ function HomeScreen({ currentDeviceId, currentDeviceName }) {
 						sharedInput={sharedInput}
 						currentDeviceId={currentDeviceId}
 						currentDeviceName={currentDeviceName}
+						isDeviceSubscribed={isDeviceSubscribed}
 					/>
 				</form>
 			</div>

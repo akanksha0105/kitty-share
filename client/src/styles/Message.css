@@ -10,9 +10,9 @@
 }
 
 .error__message {
-	border: none;
-
+	border: 1px solid blue;
 	justify-content: center;
+	background-color: linear-gradient(#e66465, #9198e5);
 }
 
 .success__message {

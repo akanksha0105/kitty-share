@@ -4,7 +4,12 @@ import SendToConnections from "./SendToConnections";
 import KeyGeneratedScreen from "./KeyGeneratedScreen";
 
 function ButtonsGroup(props) {
-	const { sharedInput, currentDeviceId, currentDeviceName } = props;
+	const {
+		sharedInput,
+		currentDeviceId,
+		currentDeviceName,
+		isDeviceSubscribed,
+	} = props;
 
 	const [buttonOneDisabled, setButtonOneDisabled] = useState(false);
 	const [buttonTwoDisabled, setButtonTwoDisabled] = useState(false);
@@ -103,6 +108,7 @@ function ButtonsGroup(props) {
 					currentDeviceId={currentDeviceId}
 					sharedInput={sharedInput}
 					currentDeviceName={currentDeviceName}
+					isDeviceSubscribed={isDeviceSubscribed}
 				/>
 			) : null}
 
