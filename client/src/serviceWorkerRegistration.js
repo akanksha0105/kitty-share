@@ -238,7 +238,8 @@ const urlBase64ToUint8Array = (base64String) => {
 export function register(config) {
 	console.log("config is : ", config);
 	console.log("value of process.env.NODE_ENV :", process.env.NODE_ENV);
-	console.log("Service worker present in : ");
+	console.log("Service worker present in : ", "serviceworker" in navigator);
+	localStorage.setItem("notificationsServicePossible", true);
 	if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
 		// The URL constructor is available in all browsers that support SW.
 		console.log("Production Loop1");
@@ -281,6 +282,7 @@ function registerValidSW(swUrl, config) {
 	navigator.serviceWorker
 		.register(swUrl)
 		.then((registration) => {
+			console.log("ServiceWorker is successfully registered:");
 			registration.onupdatefound = () => {
 				const installingWorker = registration.installing;
 				if (installingWorker == null) {
