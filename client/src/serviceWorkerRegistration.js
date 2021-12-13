@@ -238,7 +238,20 @@ const urlBase64ToUint8Array = (base64String) => {
 export function register(config) {
 	console.log("config is : ", config);
 	console.log("value of process.env.NODE_ENV :", process.env.NODE_ENV);
-	console.log("Service worker present in : ", "serviceworker" in navigator);
+
+	if (!("serviceWorker" in navigator)) {
+		// throw new Error("No Service Worker support!");
+		console.error("No Service Worker Support!");
+		return false;
+	}
+	if (!("PushManager" in window)) {
+		//throw new Error("No Push API Support!");
+		console.error("No Push API Support!");
+		return false;
+	}
+
+	console.log("true");
+	console.log("Service worker present in : ");
 	localStorage.setItem("notificationsServicePossible", true);
 	if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
 		// The URL constructor is available in all browsers that support SW.
