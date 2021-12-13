@@ -55,7 +55,7 @@ function App() {
 			localStorage.setItem("deviceId", newDeviceIdGenerated);
 			let senderDeviceId = localStorage.getItem("deviceId");
 			return await axios
-				.post("http://localhost:8080/api/devices/newdevice", {
+				.post("/api/devices/newdevice", {
 					senderDeviceId,
 				})
 				.then((response) => {
@@ -89,9 +89,7 @@ function App() {
 		}
 
 		return axios
-			.post(
-				`http://localhost:8080/api/devices/newdevice/devicename/${deviceId}`,
-			)
+			.post(`/api/devices/newdevice/devicename/${deviceId}`)
 			.then((generateNewDeviceNameResponse) => {
 				console.log(
 					"generateNewDeviceNameResponse",

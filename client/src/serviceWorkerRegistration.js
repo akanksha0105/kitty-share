@@ -236,18 +236,25 @@ const urlBase64ToUint8Array = (base64String) => {
 };
 
 export function register(config) {
+	console.log("config is : ", config);
+	console.log("value of process.env.NODE_ENV :", process.env.NODE_ENV);
+	console.log("Service worker present in : ");
 	if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
 		// The URL constructor is available in all browsers that support SW.
+		console.log("Production Loop1");
 		const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
+		console.log("publicURL", publicUrl);
 		if (publicUrl.origin !== window.location.origin) {
 			// Our service worker won't work if PUBLIC_URL is on a different origin
 			// from what our page is served on. This might happen if a CDN is used to
 			// serve assets; see https://github.com/facebook/create-react-app/issues/2374
+			console.log("CDN used here");
 			return;
 		}
 
 		window.addEventListener("load", () => {
 			const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+			console.log("swURL is: ", swUrl);
 
 			if (isLocalhost) {
 				// This is running on localhost. Let's check if a service worker still exists or not.
@@ -270,6 +277,7 @@ export function register(config) {
 }
 
 function registerValidSW(swUrl, config) {
+	console.log("Finally in registerValidSW");
 	navigator.serviceWorker
 		.register(swUrl)
 		.then((registration) => {
@@ -393,7 +401,7 @@ const sendSubscriptionToTheServer = async (subscriptionObject) => {
 		return;
 	}
 	return await axios
-		.post("http://localhost:8080/api/subscription/savesubscription", {
+		.post("/api/subscription/savesubscription", {
 			body: { subscriptionObject, subscribedDeviceId },
 			Headers: {
 				"Content-type": "application/json",
