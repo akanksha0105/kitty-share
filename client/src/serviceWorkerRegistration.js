@@ -282,7 +282,7 @@ function registerValidSW(swUrl, config) {
 	navigator.serviceWorker
 		.register(swUrl)
 		.then((registration) => {
-			console.log("ServiceWorker is successfully registered:");
+			console.log("ServiceWorker is successfully registered:", registration);
 			registration.onupdatefound = () => {
 				const installingWorker = registration.installing;
 				if (installingWorker == null) {
