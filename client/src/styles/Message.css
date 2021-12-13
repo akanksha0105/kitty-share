@@ -1,8 +1,10 @@
 .message {
 	display: flex;
 	justify-content: flex-start;
-	width: 350px;
+	min-width: 250px;
+	max-width: 350px;
 	margin: 10px 30px;
+
 	/* border: 1px solid #8c827c; */
 	/* overflow: hidden;
 	text-overflow: ellipsis; */
@@ -10,18 +12,22 @@
 }
 
 .error__message {
-	border: 1px solid blue;
+	border: 1px solid #c68c8c;
 	justify-content: center;
-	background-color: linear-gradient(#e66465, #9198e5);
+	background: linear-gradient(#cc9999, #d3a6a6);
+	border-radius: 3px;
 }
 
 .success__message {
-	border: none;
+	border: 1px solid #66a366;
 	justify-content: center;
+	border-radius: 3px;
+	background: linear-gradient(#99c299, #a6c9a6);
 }
 .success__message__content {
 	white-space: nowrap;
-	color: limegreen;
+	color: #006600;
+	/* color: black; */
 	font-size: 20px;
 	padding: 20px 20px;
 	font-weight: bold;
@@ -29,11 +35,13 @@
 
 .error__message__content {
 	border: none;
-	margin-top: 10px;
-	color: tomato;
+	/* margin-top: 10px; */
+	/* color: tomato; */
+	color: #932626;
 	font-size: 20px;
 	padding: 20px 20px;
 	font-weight: bold;
+
 	justify-content: center;
 	line-height: 1.8;
 	/* overflow: hidden; */

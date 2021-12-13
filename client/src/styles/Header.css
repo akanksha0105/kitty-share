@@ -72,7 +72,8 @@
 	padding: 10px 20px;
 	font-size: 0.8em;
 	border-radius: 3px;
-	background-color: seagreen;
+	/* background-color: seagreen; */
+	background: linear-gradient(#99c299, #a6c9a6);
 	border: none;
 }
 
@@ -83,16 +84,16 @@
 	padding: 10px 20px;
 	font-size: 0.8em;
 	border-radius: 3px;
-	background-color: tomato;
+	background: linear-gradient(#cc9999, #d3a6a6);
 	border: none;
 }
 
 .subscribe__button__active[disabled] {
-	background-color: limegreen;
+	/* background-color: limegreen; */
 	color: black;
 }
 
 .subscribe__button__inactive[disabled] {
-	background-color: #a9a9a9;
+	/* background-color: #a9a9a9; */
 	color: white;
 }

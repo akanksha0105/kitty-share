@@ -12,6 +12,16 @@
 
 import axios from "axios";
 
+const isLocalhost = Boolean(
+	window.location.hostname === "localhost" ||
+		// [::1] is the IPv6 localhost address.
+		window.location.hostname === "[::1]" ||
+		// 127.0.0.0/8 are considered localhost for IPv4.
+		window.location.hostname.match(
+			/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/,
+		),
+);
+
 const urlBase64ToUint8Array = (base64String) => {
 	const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
 	const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
@@ -37,38 +47,9 @@ const checkForServiceWorkerAndPushManager = () => {
 	return true;
 };
 
-export const unsubscribeTopushNotifications = async () => {
-	return navigator.serviceWorker.ready.then(async (reg) => {
-		// const pushSubscription = reg.pushManager.getSubscription();
-		// console.log("unsubscription SUB", pushSubscription);
-
-		return reg.pushManager
-			.getSubscription()
-			.then((pushSubscription) => {
-				console.log(
-					"pushSubscription object in serviceWorker registration file",
-					pushSubscription,
-				);
-
-				return pushSubscription.unsubscribe();
-			})
-			.then((unsubscriptionToPushNotificationsResponse) => {
-				console.log(
-					"unsubscriptionToPushNotificationsResponse",
-					unsubscriptionToPushNotificationsResponse,
-				);
-				console.log("Successfully unsubscribed");
-				return true;
-			})
-			.catch((err) => {
-				console.error("Unsubscription failed", err);
-				return false;
-			});
-	});
-};
-
 const isSubscribeToPush = async () => {
 	// The function will return Service Worker Registration Object
+
 	return navigator.serviceWorker
 		.register("./service-worker.js")
 		.then((registration) => {
@@ -190,4 +171,34 @@ export const subscribeToPushNotifications = async () => {
 			);
 			return false;
 		});
+};
+
+export const unsubscribeTopushNotifications = async () => {
+	return navigator.serviceWorker.ready.then(async (reg) => {
+		// const pushSubscription = reg.pushManager.getSubscription();
+		// console.log("unsubscription SUB", pushSubscription);
+
+		return reg.pushManager
+			.getSubscription()
+			.then((pushSubscription) => {
+				console.log(
+					"pushSubscription object in serviceWorker registration file",
+					pushSubscription,
+				);
+
+				return pushSubscription.unsubscribe();
+			})
+			.then((unsubscriptionToPushNotificationsResponse) => {
+				console.log(
+					"unsubscriptionToPushNotificationsResponse",
+					unsubscriptionToPushNotificationsResponse,
+				);
+				console.log("Successfully unsubscribed");
+				return true;
+			})
+			.catch((err) => {
+				console.error("Unsubscription failed", err);
+				return false;
+			});
+	});
 };
