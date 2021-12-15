@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const getConnections = async (device_id) => {
 	return await axios
-		.get(`http://localhost:8080/api/connections/${device_id} `)
+		.get(`/api/connections/getAllConnections/${device_id} `)
 		.then((getConnectionsResponse) => {
 			console.log(
 				"In getting connections on client side in sendToConnections component",

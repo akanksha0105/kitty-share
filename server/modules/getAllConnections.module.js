@@ -1,14 +1,17 @@
 const ConnectionsModel = require("../models/connectionsModel");
-let result = new Set();
-let visited = {};
+// let result = new Set();
+// let visited = {};
 let finalAdjacencyList = new Map();
 const getAllConnections = async (currentDeviceId) => {
+	// console.log("Initial Visited Array: ", visited);
 	let adjacencyList = new Map();
 	console.log(
 		`In getPotentialConnections function with currentDeviceId : ${currentDeviceId}`,
 	);
 
-	return getAllPossibleConnections(currentDeviceId, adjacencyList)
+	let result = new Set();
+	// let visited = new Object();
+	return getAllPossibleConnections(currentDeviceId, adjacencyList, {}, result)
 		.then((getAllPossibleConnectionsResponse) => {
 			console.log(
 				"getAllPossibleConnectionsResponse :",
@@ -28,6 +31,7 @@ const getAllConnections = async (currentDeviceId) => {
 			});
 
 			console.log("Final ANS : ", ans);
+
 			return ans;
 		})
 		.catch((err) => {
@@ -35,12 +39,18 @@ const getAllConnections = async (currentDeviceId) => {
 		});
 };
 
-const getAllPossibleConnections = async (currentVertex, adjacencyList) => {
+const getAllPossibleConnections = async (
+	currentVertex,
+	adjacencyList,
+	visited,
+	result,
+) => {
 	console.log(
 		"In getAllPossibleConnections function with currentVertex : ",
 		currentVertex,
 	);
 
+	console.log(" Initial visited:", visited);
 	visited[currentVertex] = true;
 	console.log("visited : ", visited);
 	result.add(currentVertex);
@@ -80,10 +90,15 @@ const getAllPossibleConnections = async (currentVertex, adjacencyList) => {
 			console.log("x", x);
 			console.log("x[i]", x[i]);
 			if (!visited[x[i]])
-				await getAllPossibleConnections(x[i], finalAdjacencyList);
+				await getAllPossibleConnections(
+					x[i],
+					finalAdjacencyList,
+					visited,
+					result,
+				);
 		}
 	} else {
-		return;
+		return result;
 	}
 };
 

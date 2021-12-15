@@ -50,6 +50,8 @@ function SendToConnections(props) {
 				console.log(`code is ${code}, message is ${message} `);
 				setErrorMessage(message);
 			});
+
+		// console.log(connectionsList);
 	};
 	useEffect(() => {
 		// setInterval(() => {
@@ -64,16 +66,16 @@ function SendToConnections(props) {
 		let message = "You need to subscribe to notifications to send messages";
 		return <ErrorMessage message={message} />;
 	}
-	if (isDeviceSubscribed === true && connectionsList.length === 0) {
-		let message = "No connections";
-		return <ErrorMessage message={message} />;
-	}
+	// if (isDeviceSubscribed === true && connectionsList.length === 0) {
+	// 	let message = "No connections";
+	// 	return <ErrorMessage message={message} />;
+	// }
 
 	return (
 		<>
 			<div
 				className={
-					connectionsList && isDeviceSubscribed
+					connectionsList.length > 0 && isDeviceSubscribed
 						? "connections__list"
 						: "connections__list__display__none"
 				}>
@@ -89,7 +91,6 @@ function SendToConnections(props) {
 					  ))
 					: null}
 			</div>
-
 			{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
 		</>
 	);

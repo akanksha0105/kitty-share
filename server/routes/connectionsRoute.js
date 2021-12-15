@@ -17,13 +17,7 @@ router.get("/getAllConnections/:deviceId", (req, res) => {
 		.then((getAllConnectionsResponse) => {
 			console.log("getAllConnectionsResponse :", getAllConnectionsResponse);
 			let getAllConnectionsResponseArray = getAllConnectionsResponse;
-			// let getAllConnectionsResponseArray = [...getAllConnectionsResponse];
 
-			// [...getAllConnectionsResponse].filter((item) => {
-			// 	if (item !== device_id) {
-			// 		getAllConnectionsResponseArray.push(item);
-			// 	}
-			// });
 			console.log(
 				"getAllConnectionsResponseArray",
 				getAllConnectionsResponseArray,
