@@ -5,14 +5,17 @@ import ErrorMessage from "../components/ErrorMessage";
 import "../styles/SendToConnections.css";
 import Loading from "../components/Loading";
 import PromptToSubscribe from "./PromptToSubscribe";
+import { Link } from "react-router-dom";
 // import ErrorMessage from "../components/ErrorMessage";
 import axios from "axios";
+import "../styles/AddDeviceModal.css";
 
 function SendToConnections(props) {
 	// const location = useLocation();
 	// const urlTobeShared = location.state?.url;
 	// const currentDeviceId = location.state?.currentDeviceId;
-
+	const [show, setShow] = useState(false);
+	let displayMessage = `Currently, no connections. To send messages, you can add device as a connection`;
 	const {
 		currentDeviceId,
 		sharedInput,
@@ -21,6 +24,10 @@ function SendToConnections(props) {
 	} = props;
 	const [connectionsList, setConnectionsList] = useState([]);
 	const [errorMessage, setErrorMessage] = useState("");
+
+	const hideModal = () => {
+		setShow(false);
+	};
 
 	const onGetAllConnections = () => {
 		console.log(
@@ -46,6 +53,13 @@ function SendToConnections(props) {
 				);
 				const { code, message } = err.response.data;
 				console.log(`code is ${code}, message is ${message} `);
+
+				if (code === 102) {
+					//
+					setShow(true);
+					return;
+				}
+
 				setErrorMessage(message);
 			});
 
@@ -90,6 +104,20 @@ function SendToConnections(props) {
 					: null}
 			</div>
 			{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
+			<div className={show ? "modal display-block" : "modal display-none"}>
+				<div className="modal__message">{displayMessage}</div>
+				<div className="add__device__modal__options">
+					<button type="button" className="button" onClick={hideModal}>
+						Close
+					</button>
+
+					<Link to="/linktoanewdevice">
+						<button type="button" className="button">
+							Add Device
+						</button>
+					</Link>
+				</div>
+			</div>
 		</>
 	);
 }
