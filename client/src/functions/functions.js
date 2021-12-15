@@ -11,9 +11,7 @@ export const checkDeviceIsSubscribed = async (deviceIdToBeChecked) => {
 	);
 
 	return axios
-		.get(
-			`http://localhost:8080/api/subscription/subscribeddevice/${deviceIdToBeChecked}`,
-		)
+		.get(`/api/subscription/subscribeddevice/${deviceIdToBeChecked}`)
 		.then((isDeviceSubscribedResponse) => {
 			const { message } = isDeviceSubscribedResponse.data;
 			let successMessage = { message: message, isSubscribed: true };
@@ -177,7 +175,7 @@ export const addReceiverToTheDeviceConnectionList = async (
 	);
 
 	return axios
-		.post(`http://localhost:8080/api/connections/${device_id}`, {
+		.post(`/api/connections/${device_id}`, {
 			receivingDeviceId,
 		})
 		.then((addReceiverToListResponse) => {

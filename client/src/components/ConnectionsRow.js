@@ -20,7 +20,7 @@ const ConnectionsRow = (props) => {
 		console.log("In onGetReceiverName");
 		let deviceId = receiverDeviceId;
 		return axios
-			.get(`http://localhost:8080/api/devices/searchdevicename/${deviceId}`)
+			.get(`/api/devices/searchdevicename/${deviceId}`)
 			.then((onGetReceiverNameResponse) => {
 				console.log("onGetReceiverNameResponse", onGetReceiverNameResponse);
 				if (onGetReceiverNameResponse.data.retrievedDeviceName === true)
@@ -43,7 +43,7 @@ const ConnectionsRow = (props) => {
 		);
 
 		axios
-			.post("http://localhost:8080/api/subscription/sendnotification", {
+			.post("/api/subscription/sendnotification", {
 				currentDeviceId,
 				receiverDeviceId,
 				urlTobeShared,

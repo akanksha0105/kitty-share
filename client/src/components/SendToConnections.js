@@ -30,9 +30,7 @@ function SendToConnections(props) {
 		let deviceId = currentDeviceId;
 
 		axios
-			.get(
-				`http://localhost:8080/api/connections/getAllConnections/${deviceId}`,
-			)
+			.get(`/api/connections/getAllConnections/${deviceId}`)
 			.then((onGetAllConnectionsResponse) => {
 				console.log("onGetAllConnectionsResponse", onGetAllConnectionsResponse);
 

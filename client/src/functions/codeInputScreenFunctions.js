@@ -5,7 +5,7 @@ export const getReceiverDeviceName = async (receiverDeviceId) => {
 	let deviceId = receiverDeviceId;
 
 	return axios
-		.get(`http://localhost:8080/api/devices/searchdevicename/${deviceId}`)
+		.get(`/api/devices/searchdevicename/${deviceId}`)
 		.then((getReceiverDeviceNameResponse) => {
 			console.log(
 				"getReceiverDeviceNameResponse",
@@ -39,7 +39,7 @@ export const getReceiverDeviceName = async (receiverDeviceId) => {
 export const checkReceiverDeviceName = async (receiverDeviceName) => {
 	const deviceName = receiverDeviceName;
 	return axios
-		.get(`http://localhost:8080/api/devices/searchdeviceid/${deviceName}`)
+		.get(`/api/devices/searchdeviceid/${deviceName}`)
 		.then((receiverDeviceNameResponse) => {
 			console.log("receiverDeviceNameResponse", receiverDeviceNameResponse);
 			console.log(
@@ -178,9 +178,7 @@ export const checkDeviceIsAnExistingConnection = async (
 		receiverDeviceID,
 	);
 	return axios
-		.get(
-			`http://localhost:8080/api/connections/checkifconnected/${device_id}/${receiverDeviceID}`,
-		)
+		.get(`/api/connections/checkifconnected/${device_id}/${receiverDeviceID}`)
 
 		.then((connectionExistsResponse) => {
 			console.log(
