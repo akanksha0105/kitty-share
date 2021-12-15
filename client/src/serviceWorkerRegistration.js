@@ -395,7 +395,7 @@ export const subscribeToPushNotifications = async () => {
 				sendSubscriptionToTheServerResponse,
 			);
 
-			if (sendSubscriptionToTheServer === false) return false;
+			if (sendSubscriptionToTheServerResponse === false) return false;
 			return true;
 		})
 		.catch((err) => {

@@ -50,7 +50,8 @@ export const linkDevices = async (currentDeviceId, receiverDeviceID) => {
 
 			if (checkDeviceIsSubscribedResponse.isSubscribed === false) {
 				let response = {
-					message: "The sending device is not subscribed to notifications",
+					message:
+						"You are not subscribed to notifications. Subscribe to send notifications to the connections",
 					linked: false,
 				};
 				return response;
@@ -82,7 +83,8 @@ export const canReceiverDeviceBeLinked = async (
 
 			if (checkDeviceIsSubscribedResponse.isSubscribed === false) {
 				let response = {
-					message: "The receiving device is not subscribed to notifications",
+					message:
+						"The receiving device needs to subscribe to notifications to receive messages",
 					linked: false,
 				};
 				return response;

@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=ABeeZee&display=swap");
 .header {
 	padding-top: 0.5em;
 	display: flex;
@@ -22,7 +22,7 @@
 	color: #e7e7ec;
 	flex: 0.3;
 	padding-left: 25px;
-	font-family: "Libre Baskerville", serif;
+	font-family: "ABeeZee", sans-serif;
 	letter-spacing: 1px;
 	font-weight: bolder;
 }
@@ -36,9 +36,10 @@
 	justify-content: flex-end;
 	gap: 25px;
 	padding-right: 25px;
-	font-family: "Libre Baskerville", serif;
+	font-family: "ABeeZee", sans-serif;
 	letter-spacing: 1px;
 	font-weight: bolder;
+	/* text-transform: capitalize; */
 }
 
 .header__left__option {
@@ -72,9 +73,10 @@
 	padding: 10px;
 	font-size: 1em;
 	border-radius: 6px;
-	font-family: "Libre Baskerville", serif;
+	font-family: "Open Sans Condensed", sans-serif;
 	letter-spacing: 1px;
 	font-weight: bolder;
+	text-transform: uppercase;
 }
 
 .subscribe__button__active {
@@ -87,10 +89,12 @@
 	/* background-color: seagreen; */
 	background: linear-gradient(#99c299, #a6c9a6);
 	border: none;
+	/* font-family: "ABeeZee", sans-serif; */
 	font-family: "Open Sans Condensed", sans-serif;
-	letter-spacing: 3px;
+	letter-spacing: 2px;
 	font-weight: bolder;
 	text-transform: uppercase;
+	font-weight: bolder;
 }
 
 .subscribe__button__inactive {
@@ -100,8 +104,12 @@
 	padding: 10px 20px;
 	font-size: 0.8em;
 	border-radius: 3px;
+	letter-spacing: 2px;
+	font-family: "Open Sans Condensed", sans-serif;
 	background: linear-gradient(#cc9999, #d3a6a6);
 	border: none;
+	text-transform: uppercase;
+	font-weight: bolder;
 }
 
 .subscribe__button__active[disabled] {

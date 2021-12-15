@@ -162,6 +162,16 @@ button:focus {
 	text-align: center;
 }
 
+.link__to__a__device__screen > form {
+	/* border: 1px solid red; */
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+	width: 500px;
+	/* justify-content: center; */
+}
+
 .display-none {
 	display: none;
 }

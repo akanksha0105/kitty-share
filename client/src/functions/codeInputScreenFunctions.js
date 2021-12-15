@@ -43,7 +43,7 @@ export const checkReceiverDeviceName = async (receiverDeviceName) => {
 		.then((receiverDeviceNameResponse) => {
 			console.log("receiverDeviceNameResponse", receiverDeviceNameResponse);
 			console.log(
-				"eceiverDeviceNameResponse.data.deviceId",
+				"receiverDeviceNameResponse.data.deviceId",
 				receiverDeviceNameResponse.data.deviceId,
 			);
 			return {
