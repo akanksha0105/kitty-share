@@ -15,7 +15,7 @@ function SendToConnections(props) {
 	// const urlTobeShared = location.state?.url;
 	// const currentDeviceId = location.state?.currentDeviceId;
 	const [show, setShow] = useState(false);
-	let displayMessage = `Currently, no connections. To send messages, you can add device as a connection`;
+	let displayMessage = `To send messages, you need to add a device`;
 	const {
 		currentDeviceId,
 		sharedInput,
@@ -105,7 +105,9 @@ function SendToConnections(props) {
 			</div>
 			{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
 			<div className={show ? "modal display-block" : "modal display-none"}>
-				<div className="modal__message">{displayMessage}</div>
+				<div className="add__device__modal__header">No Connections</div>
+				{/* <div className="line__separator"></div> */}
+				<div className="add__device__modal__message">{displayMessage}</div>
 				<div className="add__device__modal__options">
 					<button type="button" className="button" onClick={hideModal}>
 						Close

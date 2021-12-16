@@ -150,6 +150,7 @@ button:focus {
 .button__2[disabled] {
 	background-color: #ffa190;
 	color: #262626;
+
 	/* color: green; */
 }
 
