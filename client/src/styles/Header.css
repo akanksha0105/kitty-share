@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=ABeeZee&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather&family=Source+Sans+Pro&display=swap");
 .header {
 	padding-top: 0.5em;
 	display: flex;
@@ -24,7 +25,10 @@
 	padding-left: 25px;
 	font-family: "ABeeZee", sans-serif;
 	letter-spacing: 1px;
-	font-weight: bolder;
+	font-weight: bold;
+	font-size: 1.1em;
+	/* font-family: "Source Sans Pro", sans-serif; */
+	letter-spacing: 0.8px;
 }
 
 .header__right {
