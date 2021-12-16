@@ -143,7 +143,7 @@ export const addSenderToTheDeviceConnectionList = async (
 	);
 
 	return axios
-		.post(`http://localhost:8080/api/connections/${device_id}`, {
+		.post(`/api/connections/${device_id}`, {
 			receivingDeviceId,
 		})
 		.then((addSenderToListResponse) => {
