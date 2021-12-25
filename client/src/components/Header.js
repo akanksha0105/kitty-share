@@ -29,9 +29,9 @@ function Header(props) {
 					className={
 						linkClicked ? "header__link__left__clicked" : "header__link__left"
 					}
-					to={!linkClicked ? "/linktoanewdevice" : "/"}>
+					to="/linktoanewdevice">
 					<div
-						onClick={(e) => setLinkClicked(!linkClicked)}
+						onClick={(e) => setLinkClicked(true)}
 						className="header__left__option">
 						Add Device
 					</div>

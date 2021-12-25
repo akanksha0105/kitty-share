@@ -75,7 +75,7 @@ function SendToConnections(props) {
 
 	if (connectionsList === null) return <Loading />;
 	if (isDeviceSubscribed === false) {
-		let message = "You need to subscribe to notifications to send messages";
+		let message = "You need to subscribe to send messages";
 		return <ErrorMessage message={message} />;
 	}
 	// if (isDeviceSubscribed === true && connectionsList.length === 0) {

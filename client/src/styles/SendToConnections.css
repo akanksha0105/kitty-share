@@ -25,6 +25,7 @@
 	max-width: 400px;
 	max-height: 150px;
 	overflow-y: scroll;
+	border-radius: 5px;
 }
 
 .text__input__form form {

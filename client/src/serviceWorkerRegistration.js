@@ -372,10 +372,38 @@ const isSubscribeToPush = async () => {
 			return { pushSubscription: null, isSubscribeToPush: false };
 		});
 };
+
+// const notificationPermission = async () => {
+// 	console.log("In notificationPermission function");
+// 	return Notification.requestPermission().then((status) => {
+// 		console.log("Notification permission status:", status);
+// 		// if (status === "default") {
+// 		// 	console.log("default");
+// 		// } else if (status === "denied") {
+// 		// 	console.log("denied");
+// 		// } else {
+// 		// 	console.log("granted");
+// 		// }
+// 		return status;
+// 	});
+// };
 export const subscribeToPushNotifications = async () => {
 	console.log(
 		"In subscribeToPushNotifications function of service worker registration file ",
 	);
+
+	// return notificationPermission().then((status) => {
+	// 	if (status === "default") {
+	// 		return false;
+	// 	} else if ((status = "granted")) {
+	// 		return deviceSubscribeToPushNotifications();
+	// 	} else if ((status = "denied")) {
+	// 		console.log(
+	// 			"notifications are blocked. You need to allow notifications service to subscribe",
+	// 		);
+	// 		return false;
+	// 	}
+	// });
 
 	return isSubscribeToPush()
 		.then((subscribeTopushResponse) => {
