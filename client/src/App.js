@@ -60,7 +60,7 @@ function App() {
 				})
 				.then((response) => {
 					console.log(" new device saved in database ", response);
-
+					localStorage.setItem("device saved", true);
 					// setCurrentDeviceId(response.data.deviceId);
 					// return response.data.deviceId;
 					return generateNewDeviceName(response.data.deviceId);

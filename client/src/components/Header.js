@@ -59,7 +59,12 @@ function Header(props) {
 
 				{currentDeviceId &&
 				localStorage.getItem("notificationsServicePossible") ? (
-					<div className={"subscription__button"}>
+					<div
+						className={
+							localStorage.getItem("device saved") === true
+								? "subscription__button"
+								: null
+						}>
 						<button
 							disabled={isSubscribeButtonDisabled}
 							onClick={onNotificationsPermission}
