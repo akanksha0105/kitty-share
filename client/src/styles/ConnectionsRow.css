@@ -91,3 +91,8 @@
 	-moz-transition: all 0.4s;
 	transition: all 0.4s;
 }
+
+.connections__row button[disabled] {
+	background-color: lightblue;
+	color: #262626;
+}

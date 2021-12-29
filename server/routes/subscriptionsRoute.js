@@ -177,9 +177,13 @@ router.post("/sendnotification", async (req, res) => {
 
 			//This block of syntax can be avoided
 			if (subscriptionsModelRecord.length <= 0) {
+				// return res
+				// 	.status(404)
+				// 	.json({ message: "No receiver_id exists like this..." });
+
 				return res
 					.status(404)
-					.json({ message: "No receiver_id exists like this..." });
+					.json({ message: "No receiver_id exists like this...", sent: false });
 			}
 
 			//console.log(subscriptionsModelRecord[0].subscriptionObject.endpoint);
@@ -207,14 +211,22 @@ router.post("/sendnotification", async (req, res) => {
 				.then((webpushNotificationResponse) => {
 					console.log("webpush Notification sent", webpushNotificationResponse);
 					res.setHeader("Content-Type", "application/json");
-					res.json({ message: "message sent" });
+					// res.json({ message: "message sent" });
+					res.status(200).json({ message: "message sent", sent: true });
 				})
 				.catch((err) => {
 					console.error("Error in webpush", err);
+					res.status(500).json({ message: "Error in webpush", sent: false });
 				});
 		})
 		.catch((err) => {
 			console.error("Unable to fetch subscription from database", err);
+			res
+				.status(500)
+				.json({
+					message: "Unable to fetch subscription from database",
+					sent: false,
+				});
 		});
 });
 

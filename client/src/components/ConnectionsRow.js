@@ -11,6 +11,7 @@ const ConnectionsRow = (props) => {
 	} = props;
 
 	const [recieverName, setReceiverName] = useState("");
+	const [buttonText, setButtonText] = useState("Send");
 
 	// console.log(
 	// 	`currentDeviceId is ${currentDeviceId},  receiverDeviceId is ${receiverDeviceId}, urlToBeShared is ${urlTobeShared} and currentDeviceName is ${currentDeviceName}`,
@@ -54,7 +55,11 @@ const ConnectionsRow = (props) => {
 					"URL is shared with the receiver : ",
 					sendNotificationToTheServerResponse,
 				);
-				const { message } = sendNotificationToTheServerResponse.data;
+				const { message, sent } = sendNotificationToTheServerResponse.data;
+
+				if (sent === true) {
+					setButtonText("Sent");
+				}
 
 				//Message sent component
 			})
@@ -72,9 +77,13 @@ const ConnectionsRow = (props) => {
 						<div className="receiver__id">{recieverName}</div>
 					</div>
 					<div className="right__side">
-						<button type="button" onClick={onSendNotificationToTheServer}>
+						<button
+							type="button"
+							onClick={onSendNotificationToTheServer}
+							disabled={buttonText === "Send" ? false : true}>
 							{" "}
-							Send
+							{/* Send */}
+							{buttonText}
 						</button>
 					</div>
 				</>
