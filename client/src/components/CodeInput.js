@@ -31,7 +31,7 @@ function CodeInput({ currentDeviceId }) {
 	const [isRetrieveMessageButtonDisabled, setIsRetrieveMessageButtonDisabled] =
 		useState(true);
 	const [retrieveMessageButtonText, setRetriveMessageButtonText] = useState(
-		"Enter the Input Key",
+		"Retrieve the Message",
 	);
 
 	const hideModal = () => {
