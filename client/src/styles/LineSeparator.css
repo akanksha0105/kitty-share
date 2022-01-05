@@ -1,11 +1,14 @@
 .line__separator {
-	display: flex;
+	border: 1px solid greenyellow;
+	height: 10%;
+	width: 100%;
+	/* display: flex;
 	justify-content: center;
 	align-items: center;
-	color: #8c827c;
+	color: #8c827c; */
 	/* margin-top: 60px; */
 	/* margin-bottom: 20px; */
-	flex: 0.25;
+	/* flex: 0.25; */
 }
 
 .line__on__side {

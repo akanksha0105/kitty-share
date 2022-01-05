@@ -139,29 +139,28 @@ function CodeInput({ currentDeviceId }) {
 	}, [codeInputValue]);
 	return (
 		<div className="code__input__screen">
-			<div className="input__key__form">
-				<form onSubmit={onGenerateMessage}>
-					<label>
-						<input
-							name="name"
-							id="name"
-							type="text"
-							value={codeInputValue}
-							onChange={(event) => setCodeInputValue(event.target.value)}
-							required
-						/>
-						<div className="label-text">Enter the Input Key</div>
-					</label>
-					<br />
+			<form onSubmit={onGenerateMessage}>
+				<label>
+					<input
+						name="name"
+						id="name"
+						type="text"
+						value={codeInputValue}
+						onChange={(event) => setCodeInputValue(event.target.value)}
+						required
+					/>
+					<div className="label-text">Enter the Input Key</div>
+				</label>
+				<br />
 
-					<button
-						className="button__1"
-						type="submit"
-						disabled={isRetrieveMessageButtonDisabled}>
-						{retrieveMessageButtonText}
-					</button>
-				</form>
-			</div>
+				<button
+					className="button__1"
+					type="submit"
+					disabled={isRetrieveMessageButtonDisabled}>
+					{retrieveMessageButtonText}
+				</button>
+			</form>
+
 			{retrievedMessage ? (
 				<RetrievedMessageScreen retrievedMessage={retrievedMessage} />
 			) : null}

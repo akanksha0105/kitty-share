@@ -1,0 +1,31 @@
+/* 
+div.container {
+	height: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+} */
+
+.link__to__a__device__screen {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 90%;
+	text-align: center;
+}
+
+.link__to__a__device__screen > form {
+	border: 1px solid red;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+	gap: 1.2em;
+	width: 100%;
+	/* justify-content: center; */
+}
+
+.display-none {
+	display: none;
+}

@@ -3,6 +3,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import SuccessMessage from "../components/SuccessMessage";
 import { linkDevices } from "../functions/functions";
 import { checkReceiverDeviceName } from "../functions/codeInputScreenFunctions";
+import "../styles/LinkToDevice.css";
 
 function LinkToDeviceScreen({ currentDeviceId }) {
 	const [receiverDeviceID, setReceiverDeviceID] = useState("");
@@ -39,29 +40,6 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 					getReceiverDeviceNameResponse.receiverDeviceId,
 				);
 			})
-			// .then((x) => {
-			// 	if (currentDeviceId.localeCompare(receiverDeviceID) === 0) {
-			// 		setErrorMessage("Sender device cannot be same as Receiver Device");
-			// 		setIsLinkDeviceButtonDisabled(false);
-			// 		setLinkDeviceButtonText("Link Again");
-			// 		return;
-			// 	}
-
-			// 	linkDevices(currentDeviceId, receiverDeviceID)
-			// 		.then((linkDevicesResponse) => {
-			// 			console.log("linkDevicesResponse", linkDevicesResponse);
-			// 			if (linkDevicesResponse.linked === true) {
-			// 				setSuccessMessage("Both devices are linked");
-			// 				setIsLinkDeviceButtonDisabled(false);
-			// 				setLinkDeviceButtonText("Link Again");
-			// 				return true;
-			// 			}
-
-			// 			setErrorMessage(linkDevicesResponse.message);
-			// 			setIsLinkDeviceButtonDisabled(false);
-			// 			setLinkDeviceButtonText("Link Again");
-			// 			return;
-			// 		})
 
 			.catch((err) => {
 				console.error("Unable to link both the devices", err);

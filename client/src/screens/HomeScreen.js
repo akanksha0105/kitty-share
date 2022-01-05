@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/TextInputScreen.css";
-
+import "../styles/HomeScreen.css";
 import CodeInput from "../components/CodeInput";
 import ButtonsGroup from "../components/ButtonsGroup";
 import LineSeparator from "../components/LineSeparator";

@@ -82,25 +82,25 @@ function ButtonsGroup(props) {
 	return (
 		<>
 			<div className="text__input__screen__buttons">
-				<div>
-					<button
-						onClick={keyGeneratedEnabled}
-						className={buttonOneDisabled ? "display-none" : "button__1"}
-						type="submit"
-						// disabled={sharedInput.length > 0 ? false : true}>
-						disabled={isGenerateKeyButtonDisabled}>
-						{generateKeyButtonText}
-					</button>
-				</div>
-				<div>
-					<button
-						onClick={sendConnectionsEnabled}
-						className={buttonTwoDisabled ? "display-none" : "button__2"}
-						type="submit"
-						disabled={sharedInput.length > 0 ? false : true}>
-						Send to Connections
-					</button>
-				</div>
+				{/* <div> */}
+				<button
+					onClick={keyGeneratedEnabled}
+					className={buttonOneDisabled ? "display-none" : "button__1"}
+					type="submit"
+					// disabled={sharedInput.length > 0 ? false : true}>
+					disabled={isGenerateKeyButtonDisabled}>
+					{generateKeyButtonText}
+				</button>
+				{/* </div> */}
+				{/* <div> */}
+				<button
+					onClick={sendConnectionsEnabled}
+					className={buttonTwoDisabled ? "display-none" : "button__2"}
+					type="submit"
+					disabled={sharedInput.length > 0 ? false : true}>
+					Send to Connections
+				</button>
+				{/* </div> */}
 			</div>
 
 			{sendConnectionsComponentEnabled ? (

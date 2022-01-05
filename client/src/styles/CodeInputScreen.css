@@ -1,7 +1,18 @@
 .code__input__screen {
 	border: 1px solid blue;
+	height: 40%;
+	width: 100%;
+	/* display: flex; */
+	/* flex: 0.75;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center; */
+}
+
+.code__input__screen > form {
+	border: 1px solid royalblue;
 	display: flex;
-	flex: 0.75;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
@@ -13,4 +24,18 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+}
+
+@media screen and (max-width: 500px) {
+	.input__key__form {
+		width: 100%;
+		padding: 0;
+	}
+	.button__1,
+	.button__2 {
+		/* width: 300px; */
+		width: 95%;
+		padding: 20px 60px;
+		font-size: 1em;
+	}
 }
