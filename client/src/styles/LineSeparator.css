@@ -4,13 +4,14 @@
 	align-items: center;
 	color: #8c827c;
 	/* margin-top: 60px; */
-	margin-bottom: 20px;
+	/* margin-bottom: 20px; */
 	flex: 0.25;
 }
 
 .line__on__side {
 	border: 1px solid #8c827c;
-	width: 250px;
-	margin-left: 10px;
-	margin-right: 10px;
+	width: 200px;
+	/* width: 18%; */
+	/* margin-left: 10px;
+	margin-right: 10px; */
 }
