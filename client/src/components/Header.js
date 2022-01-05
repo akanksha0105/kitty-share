@@ -3,8 +3,6 @@ import "../styles/Header.css";
 import { Link } from "react-router-dom";
 import { Avatar } from "@material-ui/core";
 
-import axios from "axios";
-
 function Header(props) {
 	const {
 		currentDeviceId,
