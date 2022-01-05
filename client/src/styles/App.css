@@ -1,0 +1,8 @@
+.app {
+	border: 4px solid green;
+	height: 99vh;
+	width: 99%;
+	display: flex;
+	flex-direction: column;
+	background-color: var(--backgroundColor);
+}

@@ -1,0 +1,188 @@
+body {
+	background-color: #1d2227;
+	/* height: 100vh; */
+	font-family: "Montserrat", sans-serif;
+}
+
+/* .home__screen {
+	border: 1px solid violet;
+	height: 90%;
+	width: 100%;
+} */
+div.container {
+	height: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* form design */
+
+/* form {
+	margin-top: 200px;
+	text-align: center;
+	padding: 30px;
+} */
+
+.home__screen {
+	text-align: center;
+}
+
+label {
+	display: block;
+	letter-spacing: 4px;
+	padding-top: 30px;
+	text-align: center;
+	margin-top: 0px;
+	color: white;
+}
+
+/* animation for the text to float up */
+
+label .label-text {
+	color: #a1a7b5;
+	cursor: text;
+	font-size: 15px;
+	line-height: 20px;
+	text-transform: uppercase;
+	-moz-transform: translateY(-34px);
+	-ms-transform: translateY(-34px);
+	-webkit-transform: translateY(-34px);
+	transform: translateY(-34px);
+	transition: all 0.3s;
+}
+
+/* remove the input box styling */
+label input {
+	background-color: transparent;
+	border: 0;
+	border-bottom: 2px solid #a1a7b5;
+	color: white;
+	font-size: 20px;
+	letter-spacing: 1px;
+	outline: 0;
+	padding: 10px 20px;
+	text-align: center;
+	transition: all 0.3s;
+	width: 200px;
+}
+
+/* once you click in the input the input width box animates */
+
+label input:focus {
+	max-width: 100%;
+	width: 400px;
+}
+
+/* the text floats up and turns white */
+
+label input:focus + .label-text {
+	color: #f0f0f0;
+	font-size: 13px;
+	margin-top: 10px;
+	-moz-transform: translateY(-74px);
+	-ms-transform: translateY(-74px);
+	-webkit-transform: translateY(-74px);
+	transform: translateY(-74px);
+}
+
+/* the text floats up during form validation */
+
+label input:valid + .label-text {
+	font-size: 13px;
+
+	-moz-transform: translateY(-74px);
+	-ms-transform: translateY(-74px);
+	-webkit-transform: translateY(-74px);
+	transform: translateY(-74px);
+}
+
+button:hover,
+button:focus {
+	background-color: white;
+	color: #333333;
+}
+
+#input__key__button {
+	align-content: center;
+}
+
+.text__input__form form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-top: 10px;
+	text-align: center;
+	padding: 30px;
+	/* border: 1px solid red; */
+}
+
+.button__1,
+.button__2 {
+	background: transparent;
+	color: #f0f0f0;
+	background-color: #0da5cc;
+
+	border-radius: 3px;
+	font-family: "Open Sans Condensed", sans-serif;
+	font-weight: bolder;
+	border: none;
+
+	font-size: 17px;
+	letter-spacing: 3px;
+	padding: 20px 75px;
+	text-transform: uppercase;
+	cursor: pointer;
+	display: inline-block;
+	flex: 1;
+	width: 350px;
+	margin: 10px 30px;
+	-webkit-transition: all 0.4s;
+	-moz-transition: all 0.4s;
+	transition: all 0.4s;
+}
+
+.button__2 {
+	background-color: tomato;
+}
+
+.button__1[disabled] {
+	background-color: lightblue;
+	color: #262626;
+}
+.button__2[disabled] {
+	background-color: #ffa190;
+	color: #262626;
+
+	/* color: green; */
+}
+
+.link__to__a__device__screen {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-top: 200px;
+	text-align: center;
+}
+
+.link__to__a__device__screen > form {
+	/* border: 1px solid red; */
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+	width: 500px;
+	/* justify-content: center; */
+}
+
+.display-none {
+	display: none;
+}
+
+/* .button__1 {
+	background: linear-gradient(#e66465, #9198e5);
+	background: linear-gradient(#0da5cc, tomato);
+} */

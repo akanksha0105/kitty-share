@@ -19,30 +19,31 @@ function HomeScreen({
 
 	return (
 		<div className="home__screen">
-			<CodeInput currentDeviceId={currentDeviceId} />
-			<LineSeparator />
-			<div className="text__input__form">
-				{/* <form onSubmit={onFormSubmit}> */}
-				<form>
-					<label>
-						<input
-							name="name"
-							id="name"
-							type="text"
-							value={sharedInput}
-							onChange={(e) => setSharedInput(e.target.value)}
-							required
+			<div className="home">
+				<CodeInput currentDeviceId={currentDeviceId} />
+				<LineSeparator />
+				<div className="text__input__form">
+					<form>
+						<label>
+							<input
+								name="name"
+								id="name"
+								type="text"
+								value={sharedInput}
+								onChange={(e) => setSharedInput(e.target.value)}
+								required
+							/>
+							<div className="label-text">Enter the text to be shared</div>
+						</label>
+						<br />
+						<ButtonsGroup
+							sharedInput={sharedInput}
+							currentDeviceId={currentDeviceId}
+							currentDeviceName={currentDeviceName}
+							isDeviceSubscribed={isDeviceSubscribed}
 						/>
-						<div className="label-text">Enter the text to be shared</div>
-					</label>
-					<br />
-					<ButtonsGroup
-						sharedInput={sharedInput}
-						currentDeviceId={currentDeviceId}
-						currentDeviceName={currentDeviceName}
-						isDeviceSubscribed={isDeviceSubscribed}
-					/>
-				</form>
+					</form>
+				</div>
 			</div>
 		</div>
 	);

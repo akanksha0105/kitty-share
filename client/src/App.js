@@ -7,7 +7,9 @@ import Header from "./components/Header";
 import Loading from "./components/Loading";
 import HomeScreen from "./screens/HomeScreen";
 import WebsiteLoader from "./screens/WebsiteLoader";
+import Demo from "./screens/Demo";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import "./styles/App.css";
 function App() {
 	const [currentDeviceId, setCurrentDeviceId] = useState("");
 	const [currentDeviceName, setCurrentDeviceName] = useState("");
@@ -196,6 +198,9 @@ function App() {
 						</Route>
 						<Route path="/loading">
 							<Loading />
+						</Route>
+						<Route path="/demo">
+							<Demo />
 						</Route>
 
 						<Route path="/">

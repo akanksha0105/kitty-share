@@ -1,14 +1,35 @@
 @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=ABeeZee&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Merriweather&family=Source+Sans+Pro&display=swap");
+
+.home__screen {
+	border: 4px solid sienna;
+	height: 90%;
+	width: 100%;
+	display: flex;
+	background-color: var(--backgroundColor);
+	justify-content: center;
+	align-items: center;
+}
+
+.home {
+	border: 2px solid #99c299;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
 .header {
-	padding-top: 0.5em;
+	border: 1px solid red;
+	height: 10%;
+	width: 100%;
 	display: flex;
 	align-items: center;
 	color: #e7e7ec;
 }
 
 .header__link {
+	border: 1px solid red;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -17,37 +38,44 @@
 	font-size: 4em;
 	font-family: "Cookie", cursive;
 }
+
 .header__left {
+	border: 1px solid red;
 	display: flex;
+	height: 100%;
 	align-items: center;
 	color: #e7e7ec;
 	flex: 0.3;
-	padding-left: 25px;
-	font-family: "ABeeZee", sans-serif;
-	letter-spacing: 1px;
+	padding-left: 1.5em;
+	gap: 1.5em;
+	letter-spacing: 0.1em;
+
+	font-family: var(--headerFont);
 	font-weight: bold;
 	font-size: 1em;
-	/* font-family: "Source Sans Pro", sans-serif; */
-	letter-spacing: 0.8px;
 }
 
 .header__right {
+	border: 1px solid red;
 	display: flex;
 	align-items: center;
+	height: 100%;
 	color: #e7e7ec;
 	flex: 0.3;
 	font-weight: bold;
 	justify-content: flex-end;
-	gap: 25px;
-	padding-right: 25px;
-	font-family: "ABeeZee", sans-serif;
-	letter-spacing: 1px;
+	gap: 1.5em;
+	padding-right: 1.5em;
+	font-family: var(--headerFont);
+	letter-spacing: 0.1em;
 	font-weight: bolder;
-	font-size: 1em;
-	/* text-transform: capitalize; */
+
+	letter-spacing: 1%;
 }
 
 .header__left__option {
+	border: 1px solid red;
+	height: 100%;
 	color: #e7e7ec;
 	justify-content: flex-start;
 	text-decoration: none;
@@ -65,7 +93,7 @@
 }
 
 .header__link__left__clicked {
-	padding-bottom: 3px;
+	padding-bottom: 0.2em;
 	border-bottom-style: solid;
 	border-color: white;
 	text-decoration: none;
@@ -77,26 +105,24 @@
 	color: white;
 	padding: 10px;
 	font-size: 1em;
-	border-radius: 6px;
+	border-radius: 0.1em;
 	font-family: "Open Sans Condensed", sans-serif;
-	letter-spacing: 1px;
+	letter-spacing: 0.1em;
 	font-weight: bolder;
 	text-transform: uppercase;
 }
 
 .subscribe__button__active {
 	border: 1px solid white;
-	/* background-color: black; */
 	color: white;
 	padding: 10px 20px;
+	padding: 0.75em 1.5em;
 	font-size: 0.8em;
-	border-radius: 3px;
-	/* background-color: seagreen; */
+	border-radius: 0.1em;
 	background: linear-gradient(#99c299, #a6c9a6);
 	border: none;
-	/* font-family: "ABeeZee", sans-serif; */
 	font-family: "Open Sans Condensed", sans-serif;
-	letter-spacing: 2px;
+	letter-spacing: 0.1em;
 	font-weight: bolder;
 	text-transform: uppercase;
 	font-weight: bolder;
@@ -104,12 +130,12 @@
 
 .subscribe__button__inactive {
 	border: 1px solid white;
-	/* background-color: black; */
 	color: black;
 	padding: 10px 20px;
+	padding: 0.75em 1.5em;
 	font-size: 0.8em;
-	border-radius: 3px;
-	letter-spacing: 2px;
+	border-radius: 0.1em;
+	letter-spacing: 0.1em;
 	font-family: "Open Sans Condensed", sans-serif;
 	background: linear-gradient(#cc9999, #d3a6a6);
 	border: none;
@@ -118,11 +144,23 @@
 }
 
 .subscribe__button__active[disabled] {
-	/* background-color: limegreen; */
 	color: black;
 }
 
 .subscribe__button__inactive[disabled] {
-	/* background-color: #a9a9a9; */
 	color: white;
+}
+
+@media screen and (max-width: 650px) {
+	.header__left {
+		font-size: 0.8em;
+	}
+
+	.header__link {
+		font-size: 3em;
+	}
+
+	.header__right {
+		font-size: 0.8em;
+	}
 }

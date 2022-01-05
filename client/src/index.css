@@ -1,21 +1,32 @@
 @import url("https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@100;300;400&family=Amiri&family=Baloo+2&family=Cardo&family=Cormorant+Garamond:wght@300&family=EB+Garamond&family=Frank+Ruhl+Libre:wght@400;500;700&family=Nanum+Myeongjo:wght@800&family=PT+Sans&family=Padauk&display=swap");
 
+* {
+	margin: 0;
+}
 :root {
 	--secondaryFont: "Padauk", sans-serif;
+	--backgroundColor: #020202;
+	--headerFont: "ABeeZee", sans-serif;
 }
 
 body {
-	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
 		"Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
 		sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-
-	background-color: #020202;
+}
+.body::-webkit-scrollbar {
+	display: none;
 }
 
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
 		monospace;
+}
+
+html,
+body {
+	overflow-x: auto;
+	overflow-y: auto;
 }
