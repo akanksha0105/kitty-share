@@ -2,12 +2,15 @@
 	border: 1px solid blue;
 	height: 40%;
 	width: 100%;
-	/* display: flex; */
-	/* flex: 0.75;
-	flex-direction: column;
+	display: flex;
 	align-items: center;
 	justify-content: center;
-	text-align: center; */
+	flex-direction: column;
+	text-align: center;
+
+	/* flex: 0.75;
+	
+	 */
 }
 
 .code__input__screen > form {
@@ -17,6 +20,7 @@
 	align-items: center;
 	justify-content: center;
 	text-align: center;
+	padding-top: 2em;
 }
 
 .message__retrieval__screen {
@@ -30,6 +34,10 @@
 	.input__key__form {
 		width: 100%;
 		padding: 0;
+	}
+
+	.code__input__screen > form {
+		width: 100%;
 	}
 	.button__1,
 	.button__2 {

@@ -22,7 +22,7 @@ function Header(props) {
 
 	return (
 		<div className="header">
-			{/* <div className="header__left">
+			<div className="header__left">
 				<Link
 					className={
 						linkClicked ? "header__link__left__clicked" : "header__link__left"
@@ -45,10 +45,10 @@ function Header(props) {
 						className="header__left__option">
 						How It Works
 					</div>
-				</Link> */}
+				</Link>
 
-			{/* <div className="fa fa-bars"></div> */}
-			{/* </div>
+				{/* <div className="fa fa-bars"></div> */}
+			</div>
 
 			<Link className="header__link" to="/">
 				<div onClick={onLogoClick} className="logo">
@@ -66,9 +66,9 @@ function Header(props) {
 					</div>
 				) : null}
 
-				{currentDeviceName ? <div> {currentDeviceName}</div> : null} */}
+				{currentDeviceName ? <div> {currentDeviceName}</div> : null}
 
-			{/* {currentDeviceId &&
+				{/* {currentDeviceId &&
 				localStorage.getItem("notificationsServicePossible") ? (
 					<div
 						className={
@@ -77,7 +77,7 @@ function Header(props) {
 								: null
 						}> */}
 
-			{/* <div className="subscription__button">
+				<div className="subscription__button">
 					<button
 						disabled={isSubscribeButtonDisabled}
 						onClick={onNotificationsPermission}
@@ -90,7 +90,7 @@ function Header(props) {
 						{isDeviceSubscribed ? "Subscribed" : "Subscribe"}
 					</button>
 				</div>
-			</div> */}
+			</div>
 		</div>
 	);
 }
