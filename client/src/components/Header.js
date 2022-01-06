@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import "../styles/Header.css";
 import { Link } from "react-router-dom";
 import { Avatar } from "@material-ui/core";
-// import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { BsPatchQuestion } from "react-icons/bs";
-import { MdAddCircleOutline } from "react-icons/md";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 function Header(props) {
 	const {
@@ -60,12 +60,12 @@ function Header(props) {
 			<div className="header__right">
 				<Link className="header__link__left" to="/linktoanewdevice">
 					<div className="header__right__icon">
-						<MdAddCircleOutline style={{ width: "30px", height: "30px" }} />
+						<AddCircleIcon />
 					</div>
 				</Link>
 				<Link className="header__link__left" to="/demo">
 					<div className="header__right__icon">
-						<BsPatchQuestion style={{ width: "30px", height: "30px" }} />
+						<HelpOutlineIcon />
 					</div>
 				</Link>
 				{currentDeviceId ? (

@@ -145,6 +145,15 @@
 	display: none;
 }
 
+.header__right__icon > .css-i4bv87-MuiSvgIcon-root {
+	height: 30px;
+	width: 30px;
+}
+
+.header__right__icon > .css-i4bv87-MuiSvgIcon-root {
+	height: 30px;
+	width: 30px;
+}
 @media screen and (max-width: 650px) {
 	.header__left {
 		font-size: 0.8em;
