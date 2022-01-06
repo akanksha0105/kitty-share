@@ -2,19 +2,19 @@
 	border: 1px solid greenyellow;
 	height: 10%;
 	width: 100%;
-	/* display: flex;
+	display: flex;
 	justify-content: center;
 	align-items: center;
-	color: #8c827c; */
-	/* margin-top: 60px; */
-	/* margin-bottom: 20px; */
-	/* flex: 0.25; */
+	color: #8c827c;
 }
 
 .line__on__side {
 	border: 1px solid #8c827c;
 	width: 200px;
-	/* width: 18%; */
-	/* margin-left: 10px;
-	margin-right: 10px; */
+}
+
+@media screen and (max-width: 650px) {
+	.line__on__side {
+		width: 100%;
+	}
 }

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import "../styles/Header.css";
 import { Link } from "react-router-dom";
 import { Avatar } from "@material-ui/core";
+// import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { BsPatchQuestion } from "react-icons/bs";
+import { MdAddCircleOutline } from "react-icons/md";
 
 function Header(props) {
 	const {
@@ -46,8 +49,6 @@ function Header(props) {
 						How It Works
 					</div>
 				</Link>
-
-				{/* <div className="fa fa-bars"></div> */}
 			</div>
 
 			<Link className="header__link" to="/">
@@ -57,9 +58,20 @@ function Header(props) {
 			</Link>
 
 			<div className="header__right">
+				<Link className="header__link__left" to="/linktoanewdevice">
+					<div className="header__right__icon">
+						<MdAddCircleOutline style={{ width: "30px", height: "30px" }} />
+					</div>
+				</Link>
+				<Link className="header__link__left" to="/demo">
+					<div className="header__right__icon">
+						<BsPatchQuestion style={{ width: "30px", height: "30px" }} />
+					</div>
+				</Link>
 				{currentDeviceId ? (
-					<div>
+					<div className="avatar__div">
 						<Avatar
+							className="avatar"
 							alt="Remy Sharp"
 							src={`https://avatars.dicebear.com/api/human/${currentDeviceId}.svg`}
 						/>{" "}

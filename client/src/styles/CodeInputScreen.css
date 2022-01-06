@@ -20,7 +20,7 @@
 	align-items: center;
 	justify-content: center;
 	text-align: center;
-	padding-top: 2em;
+	/* padding-top: 2em; */
 }
 
 .message__retrieval__screen {
