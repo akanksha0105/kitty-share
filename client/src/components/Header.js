@@ -15,6 +15,7 @@ function Header(props) {
 		isSubscribeButtonDisabled,
 	} = props;
 	const [linkClicked, setLinkClicked] = useState(false);
+	const [linkTwoClicked, setLinkTwoClicked] = useState(false);
 	const [logoClick, setLogoClick] = useState(false);
 
 	console.log("isDeviceSubscribed in Header: ", isDeviceSubscribed);
@@ -40,11 +41,13 @@ function Header(props) {
 
 				<Link
 					className={
-						linkClicked ? "header__link__left__clicked" : "header__link__left"
+						linkTwoClicked
+							? "header__link__left__clicked"
+							: "header__link__left"
 					}
 					to="/demo">
 					<div
-						onClick={(e) => setLinkClicked(true)}
+						onClick={(e) => setLinkTwoClicked(true)}
 						className="header__left__option">
 						How It Works
 					</div>

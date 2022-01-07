@@ -62,15 +62,9 @@ function SendToConnections(props) {
 
 				setErrorMessage(message);
 			});
-
-		// console.log(connectionsList);
 	};
 	useEffect(() => {
-		// setInterval(() => {
-		// 	onGetAllConnections();
-		// }, 10000);
 		onGetAllConnections();
-		// console.log("Connections List length : ", connectionsList.length);
 	}, [isDeviceSubscribed]);
 
 	if (connectionsList === null) return <Loading />;
@@ -78,10 +72,6 @@ function SendToConnections(props) {
 		let message = "You need to subscribe to send messages";
 		return <ErrorMessage message={message} />;
 	}
-	// if (isDeviceSubscribed === true && connectionsList.length === 0) {
-	// 	let message = "No connections";
-	// 	return <ErrorMessage message={message} />;
-	// }
 
 	return (
 		<>
@@ -106,7 +96,7 @@ function SendToConnections(props) {
 			{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
 			<div className={show ? "modal display-block" : "modal display-none"}>
 				<div className="add__device__modal__header">No Connections</div>
-				{/* <div className="line__separator"></div> */}
+
 				<div className="add__device__modal__message">{displayMessage}</div>
 				<div className="add__device__modal__options">
 					<button type="button" className="button" onClick={hideModal}>

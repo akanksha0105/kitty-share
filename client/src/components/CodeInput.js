@@ -14,7 +14,7 @@ import RetrievedMessageScreen from "./RetrievedMessageScreen";
 import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
 
-function CodeInput({ currentDeviceId }) {
+function CodeInput({ currentDeviceId, displayTextInputComponent }) {
 	console.log(
 		"In CodeInputScreen Component with currentDeviceId : ",
 		currentDeviceId,
@@ -139,45 +139,53 @@ function CodeInput({ currentDeviceId }) {
 	}, [codeInputValue]);
 	return (
 		<div className="code__input__screen">
-			<form onSubmit={onGenerateMessage}>
-				<label>
-					<input
-						name="name"
-						id="name"
-						type="text"
-						value={codeInputValue}
-						onChange={(event) => setCodeInputValue(event.target.value)}
-						required
-					/>
-					<div className="label-text">Enter the Input Key</div>
-				</label>
-				<br />
+			<div>
+				<form onSubmit={onGenerateMessage}>
+					<label>
+						<input
+							name="name"
+							id="name"
+							type="text"
+							value={codeInputValue}
+							onChange={(event) => setCodeInputValue(event.target.value)}
+							required
+						/>
+						<div className="label-text">Enter the Input Key</div>
+					</label>
+					<br />
 
-				<button
-					className="button__1"
-					type="submit"
-					disabled={isRetrieveMessageButtonDisabled}>
-					{retrieveMessageButtonText}
-				</button>
-			</form>
+					<button
+						className="button__1"
+						type="submit"
+						disabled={isRetrieveMessageButtonDisabled}>
+						{retrieveMessageButtonText}
+					</button>
+				</form>
 
-			{retrievedMessage ? (
-				<RetrievedMessageScreen retrievedMessage={retrievedMessage} />
-			) : null}
-			<div className={show ? "modal display-block" : "modal display-none"}>
-				<div className="modal__message">{addDeviceMessage}</div>
-				<div className="modal__options">
-					<button type="button" className="choice__button" onClick={hideModal}>
-						No
-					</button>
-					<button type="button" className="choice__button" onClick={addDevice}>
-						Yes
-					</button>
+				{retrievedMessage ? (
+					<RetrievedMessageScreen retrievedMessage={retrievedMessage} />
+				) : null}
+				<div className={show ? "modal display-block" : "modal display-none"}>
+					<div className="modal__message">{addDeviceMessage}</div>
+					<div className="modal__options">
+						<button
+							type="button"
+							className="choice__button"
+							onClick={hideModal}>
+							No
+						</button>
+						<button
+							type="button"
+							className="choice__button"
+							onClick={addDevice}>
+							Yes
+						</button>
+					</div>
 				</div>
+				{newDeviceAdded ? <Message message={newDeviceAdded} /> : null}
+				{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
+				{successMessage ? <SuccessMessage message={successMessage} /> : null}
 			</div>
-			{newDeviceAdded ? <Message message={newDeviceAdded} /> : null}
-			{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
-			{successMessage ? <SuccessMessage message={successMessage} /> : null}
 		</div>
 	);
 }

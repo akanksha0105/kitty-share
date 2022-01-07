@@ -1,39 +1,40 @@
 .message {
 	display: flex;
 	justify-content: flex-start;
-	min-width: 250px;
-	max-width: 350px;
-	margin: 10px 30px;
+	align-items: center;
+	/* min-width: 150px;
+
+	max-width: 350px; */
+	min-width: 60%;
+	max-width: 80%;
+	/* margin: 10px 30px; */
 }
 
 .error__message {
 	border: 1px solid #505050;
 	background-color: #202020;
 
-	/* border: 1px solid #c68c8c;
-	background: linear-gradient(#cc9999, #d3a6a6); */
-
 	justify-content: center;
-	border-radius: 3px;
+	border-radius: 0.2em;
+	width: 50%;
 }
 
 .success__message {
 	border: 1px solid #505050;
 	background-color: #202020;
 
-	/* border: 1px solid #66a366; */
-	/* background: linear-gradient(#99c299, #a6c9a6); */
 	justify-content: center;
-	border-radius: 3px;
+	border-radius: 0.2em;
 }
 .success__message__content {
 	color: lightgreen;
 
-	/* color: #006600;
-	font-weight: bold; */
 	white-space: nowrap;
 	font-size: 20px;
+	font-size: 1.2em;
 	padding: 20px 20px;
+
+	padding: 0.8em 0.9em;
 	background: linear-gradient(#99c299, #a6c9a6);
 	background-clip: border-box;
 	-webkit-background-clip: text;
@@ -43,10 +44,11 @@
 .error__message__content {
 	color: tomato;
 
-	/* color: #932626; */
-	/* font-weight: bold; */
 	font-size: 20px;
+	font-size: 1.2em;
 	padding: 20px 20px;
+	/* padding: 0.8em 0.7em; */
+
 	border: none;
 
 	justify-content: center;
@@ -58,6 +60,13 @@
 	white-space: nowrap;
 	color: white;
 	font-size: 20px;
-	padding: 20px 20px;
+	/* padding: 20px 20px; */
 	font-weight: bold;
+}
+
+@media screen and (max-width: 500px) {
+	.error__message__content {
+		font-size: 1em;
+		line-height: 1.2;
+	}
 }

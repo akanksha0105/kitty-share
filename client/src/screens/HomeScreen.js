@@ -11,6 +11,11 @@ function HomeScreen({
 	isDeviceSubscribed,
 }) {
 	const [sharedInput, setSharedInput] = useState("");
+	const [showTextInput, setShowTextInput] = useState(true);
+
+	const displayTextInputComponent = () => {
+		console.log("Trying");
+	};
 
 	console.log(
 		"In the HomeSreenComponent with the currentDeviceId : ",
@@ -20,7 +25,10 @@ function HomeScreen({
 	return (
 		<div className="home__screen">
 			<div className="home">
-				<CodeInput currentDeviceId={currentDeviceId} />
+				<CodeInput
+					displayTextInputComponent={displayTextInputComponent}
+					currentDeviceId={currentDeviceId}
+				/>
 				<LineSeparator />
 				<div className="text__input__form">
 					<form>

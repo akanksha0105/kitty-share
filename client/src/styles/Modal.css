@@ -1,13 +1,17 @@
 .modal {
 	margin-top: 30px;
 	margin-bottom: 30px;
-	width: 500px;
 	border: 1px solid white;
+	width: 80%;
+	height: 10%;
+	width: 500px;
+
 	text-align: center;
 	height: 180px;
+
 	display: flex;
 	flex-direction: column;
-	border-radius: 3px;
+	border-radius: 0.1em;
 	color: black;
 	background-color: white;
 	background-color: #202020;
@@ -39,7 +43,7 @@
 }
 
 .display-block {
-	display: block;
+	display: flex;
 }
 
 .display-none {
