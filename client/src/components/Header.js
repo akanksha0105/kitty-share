@@ -27,6 +27,15 @@ function Header(props) {
 		// setLogoClick({});
 	};
 
+	const onLinkOneClick = (e) => {
+		setLinkClicked(true);
+		setLinkTwoClicked(false);
+	};
+
+	const onLinkTwoClick = () => {
+		setLinkTwoClicked(true);
+		setLinkClicked(false);
+	};
 	return (
 		<div className="header">
 			<div className="header__left">
@@ -35,9 +44,7 @@ function Header(props) {
 						linkClicked ? "header__link__left__clicked" : "header__link__left"
 					}
 					to="/linktoanewdevice">
-					<div
-						onClick={(e) => setLinkClicked(true)}
-						className="header__left__option">
+					<div onClick={onLinkOneClick} className="header__left__option">
 						Add Device
 					</div>
 				</Link>
@@ -49,9 +56,7 @@ function Header(props) {
 							: "header__link__left"
 					}
 					to="/demo">
-					<div
-						onClick={(e) => setLinkTwoClicked(true)}
-						className="header__left__option">
+					<div onClick={onLinkTwoClick} className="header__left__option">
 						How It Works
 					</div>
 				</Link>
