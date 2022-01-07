@@ -2,6 +2,7 @@
 	/* border: 2px solid yellow; */
 	display: flex;
 	padding: 20px;
+	padding: 1em;
 	align-items: center;
 	justify-content: baseline;
 	/* gap: 100px; */
@@ -31,15 +32,16 @@
 	margin-left: auto;
 	background-color: #0da5cc;
 
-	border-radius: 3px;
+	border-radius: 0.1em;
 	border: none;
 	font-family: "Open Sans Condensed", sans-serif;
 	font-weight: bolder;
 	border: none;
 
-	font-size: 17px;
-	letter-spacing: 3px;
+	font-size: 1em;
+	letter-spacing: 0.1em;
 	padding: 10px 30px;
+	padding: 0.6em 1.5em;
 	text-transform: uppercase;
 	cursor: pointer;
 	flex: 0.5;

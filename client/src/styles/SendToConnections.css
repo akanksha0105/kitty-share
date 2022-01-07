@@ -2,32 +2,24 @@
 	display: none;
 }
 
-/* .connections__list {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	color: white;
-	max-height: 200px;
-	overflow: auto;
-	border: 1px solid lightblue;
-	padding-top: 20px;
-	padding-bottom: 20px;
-
-} */
-
 .connections__list {
-	/* border: 4px solid red; */
 	border: 1px solid lightblue;
 	display: flex;
 	flex-direction: column;
 	min-width: 400px;
-	min-width: none;
-	max-width: 400px;
+	max-width: 500px;
 	max-height: 150px;
 	overflow-y: scroll;
-	border-radius: 5px;
+	border-radius: 0.3em;
+	transition: all 0.4s;
 }
 
 .text__input__form form {
 	text-align: unset;
+}
+
+@media screen and (max-width: 500px) {
+	.connections__list {
+		min-width: 300px;
+	}
 }
