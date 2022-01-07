@@ -1,5 +1,5 @@
 .header {
-	border: 1px solid red;
+	/* border: 1px solid red; */
 	height: 10%;
 	width: 100%;
 	display: flex;
@@ -10,7 +10,7 @@
 }
 
 .header__left {
-	border: 3px solid lightgreen;
+	/* border: 3px solid lightgreen; */
 	display: flex;
 	height: 100%;
 	align-items: center;
@@ -28,7 +28,7 @@
 }
 
 .header__left__option {
-	border: 1px solid red;
+	/* border: 1px solid red; */
 	height: 100%;
 	color: #e7e7ec;
 	justify-content: flex-start;
@@ -48,7 +48,7 @@
 }
 
 .header__link__left__clicked {
-	border: 1px solid orange;
+	/* border: 1px solid orange; */
 	padding-bottom: 0.2em;
 	border-bottom-style: solid;
 	border-color: white;
@@ -56,7 +56,7 @@
 }
 
 .header__right {
-	border: 1px solid yellow;
+	/* border: 1px solid yellow; */
 	display: flex;
 	align-items: center;
 	height: 100%;
@@ -76,7 +76,7 @@
 }
 
 .header__link {
-	border: 3px solid indianred;
+	/* border: 3px solid indianred; */
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -87,7 +87,7 @@
 	font-family: "Cookie", cursive;
 }
 .subscribe__button {
-	border: 1px solid white;
+	/* border: 1px solid white; */
 	background-color: black;
 	color: white;
 
@@ -100,7 +100,7 @@
 }
 
 .subscribe__button__active {
-	border: 1px solid white;
+	/* border: 1px solid white; */
 	color: white;
 	/* padding: 10px 20px; */
 	padding: 0.75em 1.5em;
@@ -116,7 +116,7 @@
 }
 
 .subscribe__button__inactive {
-	border: 1px solid white;
+	/* border: 1px solid white; */
 	color: black;
 	/* padding: 10px 20px; */
 	padding: 0.75em 1.5em;
@@ -138,9 +138,9 @@
 	color: white;
 }
 
-.header__right > div {
+/* .header__right > div {
 	border: 1px solid #99c299;
-}
+} */
 .header__right__icon {
 	display: none;
 }

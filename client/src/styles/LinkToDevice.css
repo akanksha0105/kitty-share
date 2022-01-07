@@ -16,7 +16,7 @@ div.container {
 }
 
 .link__to__a__device__screen > form {
-	border: 1px solid red;
+	/* border: 1px solid red; */
 	display: flex;
 	flex-direction: column;
 	text-align: center;

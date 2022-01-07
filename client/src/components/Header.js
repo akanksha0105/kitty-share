@@ -16,12 +16,14 @@ function Header(props) {
 	} = props;
 	const [linkClicked, setLinkClicked] = useState(false);
 	const [linkTwoClicked, setLinkTwoClicked] = useState(false);
-	const [logoClick, setLogoClick] = useState(false);
+	const [logoClick, setLogoClick] = useState();
 
 	console.log("isDeviceSubscribed in Header: ", isDeviceSubscribed);
 
 	const onLogoClick = (event) => {
 		setLinkClicked(false);
+		// console.log("loc", window.location.origin);
+		// setLogoClick({});
 	};
 
 	return (

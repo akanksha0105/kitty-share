@@ -14,7 +14,8 @@ function HomeScreen({
 	const [showTextInput, setShowTextInput] = useState(true);
 
 	const displayTextInputComponent = () => {
-		console.log("Trying");
+		console.log("In displayTextInputComponent");
+		setShowTextInput(false);
 	};
 
 	console.log(
@@ -28,9 +29,10 @@ function HomeScreen({
 				<CodeInput
 					displayTextInputComponent={displayTextInputComponent}
 					currentDeviceId={currentDeviceId}
+					showTextInput={showTextInput}
 				/>
-				<LineSeparator />
-				<div className="text__input__form">
+				<LineSeparator showTextInput={showTextInput} />
+				<div className={showTextInput ? "text__input__form" : "display-none"}>
 					<form>
 						<label>
 							<input

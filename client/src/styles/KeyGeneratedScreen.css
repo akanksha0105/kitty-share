@@ -1,6 +1,6 @@
 .container__screen {
 	border: 1px solid lightblue;
-	border-radius: 3px;
+	border-radius: 0.2em;
 	margin-top: 20px;
 	min-width: 150px;
 	min-height: 80px;
@@ -14,19 +14,19 @@
 .output__box {
 	color: floralwhite;
 	font-size: 1.5rem;
-	letter-spacing: 4px;
+	letter-spacing: 0.1em;
 	font-family: var(--secondaryFont);
 }
 
 .retrieved__container__screen {
 	border: 1px solid lightblue;
-	border-radius: 3px;
-	margin-top: 20px;
-
+	border-radius: 0.2em;
+	/* margin-top: 20px; */
+	width: 110%;
 	min-width: 200px;
 	max-width: 400px;
-	min-height: 0px;
-	max-height: 100px;
+	min-height: 100px;
+	max-height: 150px;
 	word-wrap: break-word;
 	overflow-y: auto;
 	scrollbar-width: thin;
@@ -36,7 +36,18 @@
 .retrieved__output__box {
 	color: floralwhite;
 	font-size: 1.5rem;
-	letter-spacing: 4px;
+	letter-spacing: 0.1em;
 	padding: 20px;
 	font-family: var(--secondaryFont);
+}
+
+@media screen and (max-width: 800px) {
+	.retrieved__output__box {
+		font-size: 1em;
+		font-family: var(--secondaryFont);
+	}
+
+	.retrieved__container__screen {
+		width: 110%;
+	}
 }

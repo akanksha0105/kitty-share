@@ -1,5 +1,5 @@
 .demo__screen {
-	border: 1px solid green;
+	/* border: 1px solid green; */
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -9,7 +9,7 @@
 }
 
 .demo {
-	border: 1px solid red;
+	/* border: 1px solid red; */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -18,7 +18,7 @@
 }
 
 .about {
-	border: 1px solid yellowgreen;
+	/* border: 1px solid yellowgreen; */
 	height: 25%;
 	width: 40%;
 	display: flex;
@@ -32,7 +32,7 @@
 }
 
 .videos__display {
-	border: 1px solid yellowgreen;
+	/* border: 1px solid yellowgreen; */
 	height: 70%;
 	width: 80%;
 	display: flex;
@@ -43,7 +43,7 @@
 }
 
 .video__changing__buttons {
-	border: 1px solid yellowgreen;
+	/* border: 1px solid yellowgreen; */
 	height: 5%;
 	width: 40%;
 	display: flex;

@@ -5,18 +5,19 @@
 	/* min-width: 150px;
 
 	max-width: 350px; */
-	min-width: 60%;
-	max-width: 80%;
+
+	/* max-width: 80%; */
 	/* margin: 10px 30px; */
 }
 
 .error__message {
 	border: 1px solid #505050;
 	background-color: #202020;
-
+	min-width: 150px;
+	max-width: 300px;
+	/* width: 20%; */
 	justify-content: center;
 	border-radius: 0.2em;
-	width: 50%;
 }
 
 .success__message {
@@ -44,7 +45,7 @@
 .error__message__content {
 	color: tomato;
 
-	font-size: 20px;
+	/* font-size: 20px; */
 	font-size: 1.2em;
 	padding: 20px 20px;
 	/* padding: 0.8em 0.7em; */
@@ -65,8 +66,12 @@
 }
 
 @media screen and (max-width: 500px) {
-	.error__message__content {
+	/* .error__message__content {
 		font-size: 1em;
 		line-height: 1.2;
+	} */
+
+	.error__message {
+		width: 250px;
 	}
 }

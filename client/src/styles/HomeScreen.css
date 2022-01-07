@@ -1,5 +1,5 @@
 .home__screen {
-	border: 1px solid sienna;
+	/* border: 1px solid sienna; */
 	height: 90%;
 	width: 100%;
 	display: flex;
@@ -10,7 +10,7 @@
 }
 
 .home {
-	border: 1px solid green;
+	/* border: 1px solid green; */
 	display: flex;
 	flex-direction: column;
 	align-items: center;

@@ -1,9 +1,9 @@
 import React from "react";
 import "../styles/LineSeparator.css";
 
-function LineSeparator() {
+function LineSeparator({ showTextInput }) {
 	return (
-		<div className="line__separator">
+		<div className={showTextInput ? "line__separator" : "display-none"}>
 			<div className="line__on__side"></div>
 			<div className="separator__word">OR</div>
 			<div className="line__on__side"></div>

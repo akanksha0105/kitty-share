@@ -13,8 +13,13 @@ import Message from "./Message";
 import RetrievedMessageScreen from "./RetrievedMessageScreen";
 import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
+import "../styles/x.css";
 
-function CodeInput({ currentDeviceId, displayTextInputComponent }) {
+function CodeInput({
+	currentDeviceId,
+	displayTextInputComponent,
+	showTextInput,
+}) {
 	console.log(
 		"In CodeInputScreen Component with currentDeviceId : ",
 		currentDeviceId,
@@ -138,9 +143,14 @@ function CodeInput({ currentDeviceId, displayTextInputComponent }) {
 		}
 	}, [codeInputValue]);
 	return (
-		<div className="code__input__screen">
-			<div>
-				<form onSubmit={onGenerateMessage}>
+		<div
+			className={
+				showTextInput
+					? "code__input__screen"
+					: "alternative__code__input__screen"
+			}>
+			<div className="form__div">
+				<form className="code__form" onSubmit={onGenerateMessage}>
 					<label>
 						<input
 							name="name"
@@ -155,6 +165,7 @@ function CodeInput({ currentDeviceId, displayTextInputComponent }) {
 					<br />
 
 					<button
+						onClick={displayTextInputComponent}
 						className="button__1"
 						type="submit"
 						disabled={isRetrieveMessageButtonDisabled}>
