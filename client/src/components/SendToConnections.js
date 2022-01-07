@@ -94,7 +94,12 @@ function SendToConnections(props) {
 					: null}
 			</div>
 			{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
-			<div className={show ? "modal display-block" : "modal display-none"}>
+			<div
+				className={
+					show
+						? "add__device__modal display-block"
+						: "add__device__modal display-none"
+				}>
 				<div className="add__device__modal__header">No Connections</div>
 
 				<div className="add__device__modal__message">{displayMessage}</div>

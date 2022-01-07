@@ -33,6 +33,7 @@
 	color: #e7e7ec;
 	justify-content: flex-start;
 	text-decoration: none;
+	transition: all 0.2s;
 }
 
 .header__left__option:hover {

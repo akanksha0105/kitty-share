@@ -22,10 +22,10 @@
 	border: 1px solid lightblue;
 	border-radius: 0.2em;
 	/* margin-top: 20px; */
-	width: 110%;
+	/* width: 110%; */
 	min-width: 200px;
 	max-width: 400px;
-	min-height: 100px;
+	/* min-height: 100px; */
 	max-height: 150px;
 	word-wrap: break-word;
 	overflow-y: auto;
@@ -46,8 +46,8 @@
 		font-size: 1em;
 		font-family: var(--secondaryFont);
 	}
-
+	/* 
 	.retrieved__container__screen {
 		width: 110%;
-	}
+	} */
 }

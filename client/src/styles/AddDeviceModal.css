@@ -1,18 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=ABeeZee&display=swap");
-.modal {
-	width: 450px;
-	color: black;
+.add__device__modal {
+	/* color: black;
 	background-color: #202020;
 	border: 1px solid #505050;
 	margin-top: 0;
 	display: flex;
 	flex-direction: column;
-	border-radius: 0.3em;
+	border-radius: 0.3em; */
 	/* gap: 30px; */
+
+	border: 1px solid white;
+	width: 450px;
+	text-align: center;
+	height: 180px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 0.1em;
+	color: black;
+	background-color: #202020;
+	border: 1px solid #505050;
+	box-shadow: #505050;
+	transition: all 0.4s;
 }
 
 .add__device__modal__header {
-	border: 1px solid #0da5cc;
+	/* border: 1px solid #0da5cc; */
 	display: flex;
 	border-bottom: 1px solid #404040;
 	font-size: 1.2em;
@@ -31,16 +43,17 @@
 	display: flex;
 	/* flex: 2; */
 	justify-content: center;
-	border: 1px solid #0da5cc;
+	/* border: 1px solid #0da5cc; */
 	align-items: center;
 	/* padding-top: 0.5em;
 	padding-bottom: 0.5em; */
 	gap: 1.5em;
 	height: 50%;
+	transition: all 0.4s;
 }
 
 .add__device__modal__message {
-	border: 1px solid #0da5cc;
+	/* border: 1px solid #0da5cc; */
 	display: flex;
 	/* flex: 1; */
 	font-family: "ABeeZee", sans-serif;
@@ -51,6 +64,7 @@
 	padding-bottom: 0.5em; */
 	line-height: 1.4;
 	height: 25%;
+	transition: all 0.4s;
 }
 
 .display-block {
@@ -77,9 +91,11 @@
 	padding: 12px 40px;
 	text-transform: uppercase;
 	cursor: pointer;
-	display: inline-block;
-	flex: 0.5;
+	display: flex;
 	transition: all 0.4s;
+	justify-content: center;
+	align-items: center;
+	width: 160px;
 }
 
 .button:hover {
@@ -93,8 +109,24 @@
 	background-color: #282828; */
 
 @media screen and (max-width: 900px) {
-	.modal {
+	.add__device__modal {
 		height: 55%;
 		width: 90%;
 	}
+
+	.add__device__modal__options {
+		gap: 1em;
+	}
+	.add__device__modal__message {
+		padding-top: 0.4em;
+		line-height: 1.6;
+	}
+
+	.button {
+		width: 120px;
+		padding: 12px 20px;
+	}
+	/* .modal {
+		
+	} */
 }
