@@ -109,7 +109,7 @@ video {
 	border-radius: 0.3em;
 	border: 1px solid lightblue;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
 	.video__description__one,
 	.video__description__two {
 		width: 100%;

@@ -20,6 +20,6 @@
 
 @media screen and (max-width: 500px) {
 	.connections__list {
-		min-width: 300px;
+		min-width: 350px;
 	}
 }
