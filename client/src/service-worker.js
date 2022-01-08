@@ -1,6 +1,7 @@
 const ignored = self.__WB_MANIFEST;
 console.log("I am there. My name is Service Worker");
 
+let url;
 self.addEventListener("install", (event) => {
 	console.log("Service Worker installed");
 });
@@ -38,9 +39,17 @@ self.addEventListener("notificationclick", (event) => {
 	event.notification.close();
 	let x = validURL(url);
 
-	console.log("x is : ", x);
+	console.log("Is it a valid URL : ", x);
+
+	if (x === false) {
+		localStorage.setItem("notificationReceived", url);
+		client.openWindow("/notification");
+		return;
+	}
+	// navigator.serviceWorker.controller.postMessage(url, )
 
 	clients.openWindow(url);
+	return;
 });
 
 function validURL(str) {
