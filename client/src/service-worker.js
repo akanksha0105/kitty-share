@@ -42,13 +42,13 @@ self.addEventListener("notificationclick", (event) => {
 	console.log("Is it a valid URL : ", x);
 
 	if (x === false) {
-		client.postMessage({
+		navigator.serviceWorker.controller.postMessage({
 			msg: url,
 			url: event.request.url,
 		});
 		return;
 	}
-	// navigator.serviceWorker.controller.postMessage(url);
+	// postMessage(url);
 
 	client.openWindow(url);
 	return;
