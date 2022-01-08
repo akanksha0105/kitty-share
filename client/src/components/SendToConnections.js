@@ -60,7 +60,8 @@ function SendToConnections(props) {
 					return;
 				}
 
-				setErrorMessage(message);
+				// setErrorMessage(message);
+				setErrorMessage("Error in retrieving connections");
 			});
 	};
 	useEffect(() => {
