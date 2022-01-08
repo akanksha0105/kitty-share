@@ -42,14 +42,22 @@ self.addEventListener("notificationclick", (event) => {
 	console.log("Is it a valid URL : ", x);
 
 	if (x === false) {
-		localStorage.setItem("notificationReceived", url);
-		client.openWindow("/notification");
+		client.postMessage({
+			msg: url,
+			url: event.request.url,
+		});
 		return;
 	}
-	// navigator.serviceWorker.controller.postMessage(url, )
+	// navigator.serviceWorker.controller.postMessage(url);
 
-	clients.openWindow(url);
+	client.openWindow(url);
 	return;
+});
+
+self.addEventListener("message", (event) => {
+	console.log("On message");
+	console.log(event.data.msg, event.data.url);
+	localStorage.setItem("dataReceived", event.data.msg);
 });
 
 function validURL(str) {
