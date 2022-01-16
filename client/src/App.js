@@ -6,9 +6,11 @@ import axios from "axios";
 import Header from "./components/Header";
 import Loading from "./components/Loading";
 import HomeScreen from "./screens/HomeScreen";
+import ShowMessage from "./screens/ShowMessage";
 import WebsiteLoader from "./screens/WebsiteLoader";
 import Demo from "./screens/Demo";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+
 import "./styles/App.css";
 function App() {
 	const [currentDeviceId, setCurrentDeviceId] = useState("");
@@ -202,7 +204,9 @@ function App() {
 						<Route path="/demo">
 							<Demo />
 						</Route>
-
+						<Route path="/showmessage">
+							<ShowMessage />
+						</Route>
 						<Route path="/">
 							<HomeScreen
 								currentDeviceId={currentDeviceId}
