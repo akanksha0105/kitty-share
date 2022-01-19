@@ -57,7 +57,7 @@ self.addEventListener("notificationclick", (event) => {
 		return;
 	}
 
-	let desiredURL = `http://localhost:3000/showmessage/${newCode}`;
+	let desiredURL = `/showmessage/${newCode}`;
 	console.log("desiredURL", desiredURL);
 	clients.openWindow(desiredURL);
 
