@@ -1,5 +1,4 @@
 import { useEffect, useState, React } from "react";
-import { openDB } from "idb";
 import axios from "axios";
 import "../styles/ShowMessage.css";
 import ErrorMessage from "../components/ErrorMessage";
