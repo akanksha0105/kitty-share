@@ -10,6 +10,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	background-color: var(--backgroundColor);
+	align-items: center;
 }
 
 /* @media screen and (max-width: 332px) {

@@ -1,9 +1,12 @@
 const express = require("express");
+const { v4: uuidv4 } = require("uuid");
 const router = express.Router();
 const SubscriptionsModel = require("../models/subscriptionsModel");
+const TextCodeModel = require("../models/textCodeModel");
 var mongoose = require("mongoose");
 
 const webpush = require("web-push");
+const { UUID } = require("bson");
 
 router.get("/subscribeddevice/:deviceid", (req, res) => {
 	console.log(
@@ -156,7 +159,51 @@ router.post("/savesubscription", async (req, res) => {
 		},
 	);
 });
+const validURL = (str) => {
+	var pattern = new RegExp(
+		"^(https?:\\/\\/)?" + // protocol
+			"((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+			"((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+			"(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+			"(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+			"(\\#[-a-z\\d_]*)?$",
+		"i",
+	); // fragment locator
+	return !!pattern.test(str);
+};
 
+const checkOrGenerateCodeForText = async (urlTobeShared) => {
+	return TextCodeModel.find({ message: urlTobeShared })
+		.then((messageFoundResponse) => {
+			let generatedCode;
+			console.log("messageFoundResponse : ", messageFoundResponse);
+			if (messageFoundResponse.length > 0) {
+				generatedCode = messageFoundResponse[0].code;
+				return generatedCode;
+			} else {
+				generatedCode = uuidv4();
+				console.log("newCode is", generatedCode);
+
+				const newTextCode = new TextCodeModel({
+					code: generatedCode,
+					message: urlTobeShared,
+				});
+
+				return newTextCode
+					.save()
+					.then((newTextCodeSavedResponse) => {
+						console.log("newTextCodeSavedResponse", newTextCodeSavedResponse);
+						return generatedCode;
+					})
+					.catch((err) => {
+						console.error("Error in newTextCodeSavedResponse ", err);
+					});
+			}
+		})
+		.catch((err) => {
+			console.error("Error in messageFoundResponse ", err);
+		});
+};
 router.post("/sendnotification", async (req, res) => {
 	console.log("Reaching send Notification route...");
 	// console.log(req.body.currentDeviceId);
@@ -200,12 +247,51 @@ router.post("/sendnotification", async (req, res) => {
 				pushSubscriptionObject,
 			);
 
-			const payload = JSON.stringify({
-				title: `Notification by ${notificationSendingDevice}`,
-				content: urlTobeShared,
-			});
+			let newCode, isURL, payload;
+			if (validURL(urlTobeShared) === true) {
+				payload = JSON.stringify({
+					title: `Notification by ${notificationSendingDevice}`,
+					content: urlTobeShared,
+					newCode: null,
+					isURL: true,
+				});
 
-			console.log("payload here", payload);
+				return {
+					payload: payload,
+					pushSubscriptionObject: pushSubscriptionObject,
+				};
+			} else {
+				isURL = false;
+
+				return checkOrGenerateCodeForText(urlTobeShared).then(
+					(checkOrGenerateCodeForTextResponse) => {
+						console.log(
+							"checkOrGenerateCodeForTextResponse",
+							checkOrGenerateCodeForTextResponse,
+						);
+
+						payload = JSON.stringify({
+							title: `Notification by ${notificationSendingDevice}`,
+							content: urlTobeShared,
+							newCode: checkOrGenerateCodeForTextResponse,
+							isURL: false,
+						});
+
+						return {
+							payload: payload,
+							pushSubscriptionObject: pushSubscriptionObject,
+						};
+					},
+				);
+			}
+		})
+		.then((payloadResponse) => {
+			// console.log("final newCode", newCode);
+
+			console.log("payload with pushSubscriptionObject here", payloadResponse);
+
+			let pushSubscriptionObject = payloadResponse.pushSubscriptionObject;
+			let payload = payloadResponse.payload;
 			webpush
 				.sendNotification(pushSubscriptionObject, payload)
 				.then((webpushNotificationResponse) => {
@@ -221,12 +307,10 @@ router.post("/sendnotification", async (req, res) => {
 		})
 		.catch((err) => {
 			console.error("Unable to fetch subscription from database", err);
-			res
-				.status(500)
-				.json({
-					message: "Unable to fetch subscription from database",
-					sent: false,
-				});
+			res.status(500).json({
+				message: "Unable to fetch subscription from database",
+				sent: false,
+			});
 		});
 });
 

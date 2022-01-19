@@ -2,6 +2,8 @@ const ignored = self.__WB_MANIFEST;
 console.log("I am there. My name is Service Worker");
 
 let url;
+let newCode;
+let isURL;
 const dbName = "Notifications";
 const version = 1; // incremental ints
 const storeName = "textnote";
@@ -22,13 +24,14 @@ self.addEventListener("push", (event) => {
 		console.log("Push event!! ", data);
 
 		url = data.content;
+		newCode = data.newCode;
+		isURL = data.isURL;
 		const options = {
 			body: data.content,
 			requireInteraction: true,
 		};
 
 		self.registration.showNotification(data.title, options);
-		self.postMessage(url);
 	} else {
 		console.log("Push event but no data");
 	}
@@ -41,40 +44,33 @@ self.addEventListener("notificationclick", (event) => {
 
 	console.log("Closed notification: " + notification);
 
-	let x = validURL(url);
-	console.log("Is it a valid URL : ", x);
-	if (x === true) {
+	// let x = validURL(url);
+	// console.log("Is it a valid URL : ", x);
+	// if (x === true) {
+	// 	clients.openWindow(url);
+	// 	return;
+	// }
+
+	if (isURL === true) {
+		event.notification.close();
 		clients.openWindow(url);
 		return;
 	}
 
-	openDB(url).then((response) => {
-		console.log("Let's do this :", response);
-		clients.openWindow("http://localhost:3000/showmessage");
-	});
+	let desiredURL = `http://localhost:3000/showmessage/${newCode}`;
+	console.log("desiredURL", desiredURL);
+	clients.openWindow(desiredURL);
 
-	// self.registration.postMessage(url);
+	// clients.postMessage(url);
+	// openDB(url).then((response) => {
+	// 	console.log("Let's do this :", response);
+	// 	clients.openWindow("http://localhost:3000/showmessage");
+	// });
 
-	// clients.openWindow("http://localhost:3000/showmessage");
 	return;
 
 	// event.notification.close();
 });
-
-self.addEventListener(
-	"message",
-	function (e) {
-		document.getElementsByClassName("show__message").textContent = e.data;
-	},
-	false,
-);
-
-// self.addEventListener('message', event => {
-// 	// event is an ExtendableMessageEvent object
-// 	console.log(`The client sent me a message: ${event.data}`);
-
-// 	event.source.postMessage("Hi client");
-//   });
 
 async function openDB(textnote) {
 	// ask to open the db

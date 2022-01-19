@@ -109,7 +109,7 @@ function SendToConnections(props) {
 						Close
 					</button>
 
-					<Link to="/linktoanewdevice">
+					<Link className="add__device__button" to="/linktoanewdevice">
 						<button type="button" className="button">
 							Add Device
 						</button>

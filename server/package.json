@@ -13,6 +13,7 @@
     "nodemon": "^2.0.12",
     "objectid": "^3.2.1",
     "socket.io": "^4.2.0",
+    "uuid": "^8.3.2",
     "web-push": "^3.4.5"
   },
   "devDependencies": {},

@@ -12,15 +12,17 @@
 	border: 1px solid white;
 	width: 450px;
 	text-align: center;
-	height: 180px;
+	/* height: 180px; */
 	display: flex;
 	flex-direction: column;
 	border-radius: 0.1em;
 	color: black;
 	background-color: #202020;
+	background-color: #101010;
 	border: 1px solid #505050;
 	box-shadow: #505050;
 	transition: all 0.4s;
+	font-family: "Open Sans Condensed", sans-serif;
 }
 
 .add__device__modal__header {
@@ -30,12 +32,15 @@
 	font-size: 1.2em;
 	align-items: center;
 	/* flex: 1; */
-	height: 25%;
+	/* height: 25%; */
 	/* padding-top: 0.5em;
 	padding-bottom: 0.5em; */
-	font-family: "ABeeZee", sans-serif;
-	color: tomato;
+	font-family: "Open Sans Condensed";
+	color: #a74532;
 	justify-content: center;
+	letter-spacing: 0.1em;
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
 }
 
 .add__device__modal__options {
@@ -45,10 +50,11 @@
 	justify-content: center;
 	/* border: 1px solid #0da5cc; */
 	align-items: center;
+
 	/* padding-top: 0.5em;
 	padding-bottom: 0.5em; */
 	gap: 1.5em;
-	height: 50%;
+	/* height: 50%; */
 	transition: all 0.4s;
 }
 
@@ -56,15 +62,20 @@
 	/* border: 1px solid #0da5cc; */
 	display: flex;
 	/* flex: 1; */
-	font-family: "ABeeZee", sans-serif;
+	/* font-family: "ABeeZee", sans-serif; */
 	color: white;
 	justify-content: center;
 	align-items: center;
+	font-family: "Open Sans Condensed";
+	letter-spacing: 0.1em;
 	/* padding-top: 0.5em;
 	padding-bottom: 0.5em; */
 	line-height: 1.4;
-	height: 25%;
+	/* height: 25%; */
 	transition: all 0.4s;
+	padding-bottom: 1.5em;
+	padding-top: 1.3em;
+	font-size: 1em;
 }
 
 .display-block {
@@ -88,7 +99,7 @@
 	font-weight: bolder;
 	font-size: 1em;
 	letter-spacing: 0.1em;
-	padding: 12px 40px;
+	/* padding: 12px 40px; */
 	text-transform: uppercase;
 	cursor: pointer;
 	display: flex;
@@ -96,6 +107,8 @@
 	justify-content: center;
 	align-items: center;
 	width: 160px;
+	margin-bottom: 1.5em;
+	padding: 1em;
 }
 
 .button:hover {
@@ -104,27 +117,31 @@
 	border: 1px solid #0da5cc;
 }
 
+.add__device__button {
+	text-decoration: none;
+}
+
 /* background-color: #f0f0f0;
 	background-color: #404040;
 	background-color: #282828; */
 
 @media screen and (max-width: 900px) {
-	.add__device__modal {
-		height: 55%;
-		width: 90%;
-	}
+	/* .add__device__modal {
+
+		width: 300px;
+	} */
 
 	.add__device__modal__options {
-		gap: 1em;
+		gap: 2em;
 	}
 	.add__device__modal__message {
-		padding-top: 0.4em;
+		/* padding-top: 0.4em; */
 		line-height: 1.6;
 	}
 
 	.button {
 		width: 120px;
-		padding: 12px 20px;
+		/* padding: 12px 20px; */
 	}
 	/* .modal {
 		

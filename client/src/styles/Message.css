@@ -11,18 +11,20 @@
 }
 
 .error__message {
-	border: 1px solid #505050;
-	background-color: #202020;
+	/* border: 1px solid #505050; */
+	/* background-color: #202020; */
 	min-width: 150px;
 	max-width: 300px;
+	font-family: "Open Sans Condensed";
+	letter-spacing: 0.1em;
 	/* width: 20%; */
 	justify-content: center;
 	border-radius: 0.2em;
 }
 
 .success__message {
-	border: 1px solid #505050;
-	background-color: #202020;
+	/* border: 1px solid #505050;
+	background-color: #202020; */
 
 	justify-content: center;
 	border-radius: 0.2em;
@@ -40,10 +42,12 @@
 	background-clip: border-box;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
+	font-family: "Open Sans Condensed";
+	letter-spacing: 0.1em;
 }
 
 .error__message__content {
-	color: tomato;
+	color: #a74532;
 
 	/* font-size: 20px; */
 	font-size: 1.2em;

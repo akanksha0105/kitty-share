@@ -17,6 +17,7 @@ var codeRoute = require("./routes/codeRoute");
 var devicesRoute = require("./routes/devicesRoute");
 var subscriptionsRoute = require("./routes/subscriptionsRoute");
 var connectionsRoute = require("./routes/connectionsRoute");
+var textRoute = require("./routes/textRoute");
 // const vapidKeys = webpush.generateVAPIDKeys();
 const vapidKeys = {
 	publicKey:
@@ -40,6 +41,7 @@ app.use("/api/code", codeRoute);
 app.use("/api/devices", devicesRoute);
 app.use("/api/subscription", subscriptionsRoute);
 app.use("/api/connections", connectionsRoute);
+app.use("/api/text", textRoute);
 
 app.get("/*", function (req, res) {
 	res.sendFile(path.join(__dirname, "../client/build", "index.html"));
