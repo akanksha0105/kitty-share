@@ -57,7 +57,7 @@ self.addEventListener("notificationclick", (event) => {
 		return;
 	}
 
-	let desiredURL = `/showmessage/${newCode}`;
+	let desiredURL = `https://kittyshare.xyz/showmessage/${newCode}`;
 	console.log("desiredURL", desiredURL);
 	clients.openWindow(desiredURL);
 
