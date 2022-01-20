@@ -4,7 +4,6 @@ import ConnectionsRow from "../components/ConnectionsRow";
 import ErrorMessage from "../components/ErrorMessage";
 import "../styles/SendToConnections.css";
 import Loading from "../components/Loading";
-import PromptToSubscribe from "./PromptToSubscribe";
 import { Link } from "react-router-dom";
 // import ErrorMessage from "../components/ErrorMessage";
 import axios from "axios";

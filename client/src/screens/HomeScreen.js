@@ -12,10 +12,15 @@ function HomeScreen({
 }) {
 	const [sharedInput, setSharedInput] = useState("");
 	const [showTextInput, setShowTextInput] = useState(true);
-
+	const [showCodeInput, setShowCodeInput] = useState(true);
 	const displayTextInputComponent = () => {
 		console.log("In displayTextInputComponent");
 		setShowTextInput(false);
+	};
+
+	const displayCodeInputComponent = () => {
+		console.log("In displayCodeInputComponent");
+		setShowCodeInput(false);
 	};
 
 	const displayErrorMessage = () => {
@@ -25,7 +30,15 @@ function HomeScreen({
 		"In the HomeSreenComponent with the currentDeviceId : ",
 		currentDeviceId,
 	);
-
+	const getTextInputScreenName = () => {
+		if (showTextInput === true && showCodeInput === false) {
+			return "alternative__text__input__form";
+		} else if (showTextInput === false && showCodeInput === true) {
+			return "display-none";
+		} else if (showTextInput === true && showCodeInput === true) {
+			return "text__input__form";
+		}
+	};
 	return (
 		<div className="home__screen">
 			<div className="home">
@@ -33,10 +46,15 @@ function HomeScreen({
 					displayTextInputComponent={displayTextInputComponent}
 					currentDeviceId={currentDeviceId}
 					showTextInput={showTextInput}
+					showCodeInput={showCodeInput}
 				/>
-				<LineSeparator showTextInput={showTextInput} />
-				<div className={showTextInput ? "text__input__form" : "display-none"}>
-					<form>
+				<LineSeparator
+					showTextInput={showTextInput}
+					showCodeInput={showCodeInput}
+				/>
+				{/* <div className={showTextInput ? "text__input__form" : "display-none"}> */}
+				<div className={getTextInputScreenName()}>
+					<form className="form__one__div">
 						<label>
 							<input
 								name="name"
@@ -55,6 +73,7 @@ function HomeScreen({
 							currentDeviceName={currentDeviceName}
 							isDeviceSubscribed={isDeviceSubscribed}
 							displayErrorMessage={displayErrorMessage}
+							displayCodeInputComponent={displayCodeInputComponent}
 						/>
 					</form>
 				</div>

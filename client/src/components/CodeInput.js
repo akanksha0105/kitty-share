@@ -19,6 +19,7 @@ function CodeInput({
 	currentDeviceId,
 	displayTextInputComponent,
 	showTextInput,
+	showCodeInput,
 }) {
 	console.log(
 		"In CodeInputScreen Component with currentDeviceId : ",
@@ -137,6 +138,15 @@ function CodeInput({
 			});
 	};
 
+	const getCodeInputScreenName = () => {
+		if (showTextInput === true && showCodeInput === false) {
+			return "display-none";
+		} else if (showTextInput === false && showCodeInput === true) {
+			return "alternative__code__input__screen";
+		} else if (showTextInput === true && showCodeInput === true) {
+			return "code__input__screen";
+		}
+	};
 	useEffect(() => {
 		console.log("codeInputValue", codeInputValue);
 
@@ -148,11 +158,12 @@ function CodeInput({
 	}, [codeInputValue]);
 	return (
 		<div
-			className={
-				showTextInput
-					? "code__input__screen"
-					: "alternative__code__input__screen"
-			}>
+			// className={
+			// 	showTextInput
+			// 		? "code__input__screen"
+			// 		: "alternative__code__input__screen"
+			// }>
+			className={getCodeInputScreenName()}>
 			<div className="form__div">
 				<form className="code__form" onSubmit={onGenerateMessage}>
 					<label>

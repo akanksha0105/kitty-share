@@ -10,6 +10,7 @@ function ButtonsGroup(props) {
 		currentDeviceName,
 		isDeviceSubscribed,
 		displayErrorMessage,
+		displayCodeInputComponent,
 	} = props;
 
 	const [buttonOneDisabled, setButtonOneDisabled] = useState(false);
@@ -53,6 +54,7 @@ function ButtonsGroup(props) {
 
 	const sendConnectionsEnabled = (event) => {
 		event.preventDefault();
+		displayCodeInputComponent();
 		console.log("In the sendConnectionsComponentEnabled");
 		if (sharedInput.length <= 0) {
 			displayErrorMessage();
@@ -66,6 +68,7 @@ function ButtonsGroup(props) {
 
 	const keyGeneratedEnabled = (event) => {
 		event.preventDefault();
+		displayCodeInputComponent();
 		if (sharedInput.length <= 0) {
 			displayErrorMessage();
 			return;

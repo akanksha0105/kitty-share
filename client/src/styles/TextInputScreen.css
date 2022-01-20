@@ -7,6 +7,14 @@
 	align-items: center;
 }
 
+.alternative__text__input__form {
+	border: 1px solid yellow;
+	width: 80%;
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+}
 .text__input__form > form {
 	/* border: 1px solid royalblue; */
 	display: flex;
@@ -110,6 +118,15 @@ button:focus {
 	width: 100%;
 	align-items: center;
 	justify-content: center;
+	margin-bottom: 2em;
+}
+
+.form__one__div {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	text-align: center;
 }
 .button__1,
 .button__2 {
