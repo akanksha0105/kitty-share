@@ -9,6 +9,7 @@ function ButtonsGroup(props) {
 		currentDeviceId,
 		currentDeviceName,
 		isDeviceSubscribed,
+		displayErrorMessage,
 	} = props;
 
 	const [buttonOneDisabled, setButtonOneDisabled] = useState(false);
@@ -53,6 +54,10 @@ function ButtonsGroup(props) {
 	const sendConnectionsEnabled = (event) => {
 		event.preventDefault();
 		console.log("In the sendConnectionsComponentEnabled");
+		if (sharedInput.length <= 0) {
+			displayErrorMessage();
+			return;
+		}
 		setButtonOneDisabled(true);
 
 		setButtonTwoDisabled(true);
@@ -61,6 +66,10 @@ function ButtonsGroup(props) {
 
 	const keyGeneratedEnabled = (event) => {
 		event.preventDefault();
+		if (sharedInput.length <= 0) {
+			displayErrorMessage();
+			return;
+		}
 		setGenerateKeyButtonText("Generating key ...");
 		setIsGenerateKeyButtonDisabled(true);
 		generateSecretKey();
@@ -85,19 +94,23 @@ function ButtonsGroup(props) {
 				{/* <div> */}
 				<button
 					onClick={keyGeneratedEnabled}
-					className={buttonOneDisabled ? "display-none" : "button__1"}
+					// className={buttonOneDisabled ? "display-none" : "button__1"}
+					className="button__1"
 					type="submit"
 					// disabled={sharedInput.length > 0 ? false : true}>
-					disabled={isGenerateKeyButtonDisabled}>
+					// disabled={isGenerateKeyButtonDisabled}
+				>
 					{generateKeyButtonText}
 				</button>
 				{/* </div> */}
 				{/* <div> */}
 				<button
 					onClick={sendConnectionsEnabled}
-					className={buttonTwoDisabled ? "display-none" : "button__2"}
+					// className={buttonTwoDisabled ? "display-none" : "button__2"}
+					className="button__2"
 					type="submit"
-					disabled={sharedInput.length > 0 ? false : true}>
+					// disabled={sharedInput.length > 0 ? false : true}
+				>
 					Send to Connections
 				</button>
 				{/* </div> */}

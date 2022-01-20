@@ -18,6 +18,9 @@ function HomeScreen({
 		setShowTextInput(false);
 	};
 
+	const displayErrorMessage = () => {
+		setSharedInput("Please enter the text...");
+	};
 	console.log(
 		"In the HomeSreenComponent with the currentDeviceId : ",
 		currentDeviceId,
@@ -51,6 +54,7 @@ function HomeScreen({
 							currentDeviceId={currentDeviceId}
 							currentDeviceName={currentDeviceName}
 							isDeviceSubscribed={isDeviceSubscribed}
+							displayErrorMessage={displayErrorMessage}
 						/>
 					</form>
 				</div>

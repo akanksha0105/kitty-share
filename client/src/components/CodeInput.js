@@ -45,6 +45,10 @@ function CodeInput({
 
 	const onGenerateMessage = (event) => {
 		event.preventDefault();
+
+		if (codeInputValue.length <= 0) {
+			setCodeInputValue("Please enter the text...");
+		}
 		setIsRetrieveMessageButtonDisabled(true);
 		setRetriveMessageButtonText("Retrieving...");
 		setNewDeviceAdded("");
@@ -168,7 +172,8 @@ function CodeInput({
 						onClick={displayTextInputComponent}
 						className="button__1"
 						type="submit"
-						disabled={isRetrieveMessageButtonDisabled}>
+						// disabled={isRetrieveMessageButtonDisabled}
+					>
 						{retrieveMessageButtonText}
 					</button>
 				</form>
