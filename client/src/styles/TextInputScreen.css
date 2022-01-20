@@ -8,7 +8,7 @@
 }
 
 .alternative__text__input__form {
-	border: 1px solid yellow;
+	/* border: 1px solid yellow; */
 	width: 80%;
 	display: flex;
 	text-align: center;
