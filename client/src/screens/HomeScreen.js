@@ -66,7 +66,7 @@ function HomeScreen({
 							/>
 							<div className="label-text">Enter the text to be shared</div>
 						</label>
-						<br />
+						{/* <br /> */}
 						<ButtonsGroup
 							sharedInput={sharedInput}
 							currentDeviceId={currentDeviceId}

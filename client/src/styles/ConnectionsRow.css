@@ -11,6 +11,7 @@
 .left__side {
 	flex: 3;
 	justify-content: flex-start;
+	display: flex;
 
 	/* border: 1px solid salmon; */
 }

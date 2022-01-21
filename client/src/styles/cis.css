@@ -22,7 +22,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	/* gap: 1em; */
+
 	text-align: center;
 }
 .form__div {
@@ -31,7 +31,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	gap: 1em;
+	/* gap: 2em; */
 	width: 80%;
 }
 
@@ -46,9 +46,9 @@
 	gap: 1em;
 }
 
-.alternative__code__input__screen > .form__div {
-	gap: 1em;
-}
+/* .alternative__code__input__screen > .form__div > .code__form > .button__1 {
+	margin-top: 0.5em;
+} */
 
 .message__retrieval__screen {
 	display: flex;

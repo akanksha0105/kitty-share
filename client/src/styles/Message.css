@@ -60,6 +60,9 @@
 	justify-content: center;
 	line-height: 1.8;
 }
+/* .no__text__error__message {
+	border: 1px solid yellow;
+} */
 
 .message__content {
 	border: none;

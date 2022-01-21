@@ -5,7 +5,7 @@ import Video2 from "../videos/video2.mp4";
 import Video__one__image from "../images/Video1__image.jpg";
 import { Player } from "video-react";
 import PlayProgressBar from "video-react/lib/components/control-bar/PlayProgressBar";
-
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 function Demo() {
 	const [displayVideo1, setDisplayVideo1] = useState(true);
 	const [displayVideo2, setDisplayVideo2] = useState(false);
@@ -30,6 +30,9 @@ function Demo() {
 							Get to know how you can share URL by generating code
 						</div>
 					</div>
+					<div className="arrow__icon__one">
+						<ArrowRightAltIcon />
+					</div>
 					<div className="video__display__one">
 						<video
 							width="400"
@@ -39,6 +42,13 @@ function Demo() {
 							// poster={Video__one__image}
 							controls></video>
 						{/* <Player className="video__player" src={Video1} /> */}
+						{/* <iframe
+							src={Video1}
+							frameborder="0"
+							allow="autoplay; encrypted-media"
+							allowfullscreen
+							title="video"
+						/> */}
 					</div>
 				</div>
 				<div className="video__option__two">
@@ -46,6 +56,9 @@ function Demo() {
 						<div className="video__description">
 							Get to know how you can share URL by connecting multiple devices
 						</div>
+					</div>
+					<div className="arrow__icon__two">
+						<ArrowRightAltIcon />
 					</div>
 					<div className="video__display__two">
 						<video

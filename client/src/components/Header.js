@@ -23,6 +23,10 @@ function Header(props) {
 	const onLogoClick = (event) => {
 		setLinkClicked(false);
 		setLinkTwoClicked(false);
+
+		if (window.location.href === "http://localhost:3000/") {
+			window.location.reload();
+		}
 		// console.log("loc", window.location.origin);
 		// setLogoClick({});
 	};

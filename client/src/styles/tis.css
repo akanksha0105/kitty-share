@@ -29,6 +29,7 @@
 label {
 	display: block;
 	letter-spacing: 0.3em;
+	/* padding-top: 30px; */
 	text-align: center;
 	margin-top: 0px;
 	color: white;
@@ -80,13 +81,20 @@ label input:focus + .label-text {
 	-webkit-transform: translateY(-5em);
 	transform: translateY(-5em);
 }
-label input:valid + .label-text {
+/* label input:valid + .label-text {
 	font-size: 13px;
 	-moz-transform: translateY(-74px);
 	-ms-transform: translateY(-74px);
 	-webkit-transform: translateY(-74px);
 	transform: translateY(-74px);
 
+	-moz-transform: translateY(-5em);
+	-ms-transform: translateY(-5em);
+	-webkit-transform: translateY(-5em);
+	transform: translateY(-5em);
+} */
+
+label input:valid + .label-text {
 	-moz-transform: translateY(-5em);
 	-ms-transform: translateY(-5em);
 	-webkit-transform: translateY(-5em);
@@ -122,7 +130,7 @@ button:focus {
 	gap: 1em;
 }
 .alternative__text__input__form > .form__one__div {
-	gap: 1em;
+	gap: 0;
 }
 .button__1,
 .button__2 {

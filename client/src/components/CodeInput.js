@@ -39,7 +39,7 @@ function CodeInput({
 	const [retrieveMessageButtonText, setRetriveMessageButtonText] = useState(
 		"Retrieve the Message",
 	);
-
+	const [noTextErrorMessage, setNoTextErrorMessage] = useState("");
 	const hideModal = () => {
 		setShow(false);
 	};
@@ -48,7 +48,8 @@ function CodeInput({
 		event.preventDefault();
 
 		if (codeInputValue.length <= 0) {
-			setCodeInputValue("Please enter the text...");
+			setNoTextErrorMessage("Please fill in the above field");
+			return;
 		}
 		setIsRetrieveMessageButtonDisabled(true);
 		setRetriveMessageButtonText("Retrieving...");
@@ -148,13 +149,14 @@ function CodeInput({
 		}
 	};
 	useEffect(() => {
-		console.log("codeInputValue", codeInputValue);
+		// console.log("codeInputValue", codeInputValue);
 
-		if (codeInputValue.length > 0) {
-			setIsRetrieveMessageButtonDisabled(false);
-		} else {
-			setIsRetrieveMessageButtonDisabled(true);
-		}
+		// if (codeInputValue.length > 0) {
+		// 	setIsRetrieveMessageButtonDisabled(false);
+		// } else {
+		// 	setIsRetrieveMessageButtonDisabled(true);
+		// }
+		if (codeInputValue.length > 0) setNoTextErrorMessage("");
 	}, [codeInputValue]);
 	return (
 		<div
@@ -173,12 +175,17 @@ function CodeInput({
 							type="text"
 							value={codeInputValue}
 							onChange={(event) => setCodeInputValue(event.target.value)}
-							required
+
+							// required
 						/>
 						<div className="label-text">Enter the Input Key</div>
 					</label>
-					<br />
-
+					{/* <br /> */}
+					{noTextErrorMessage ? (
+						<div className="no__text__error__message">
+							<ErrorMessage message={noTextErrorMessage} />
+						</div>
+					) : null}
 					<button
 						onClick={displayTextInputComponent}
 						className="button__1"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SendToConnections from "./SendToConnections";
 import KeyGeneratedScreen from "./KeyGeneratedScreen";
+import ErrorMessage from "./ErrorMessage";
 
 function ButtonsGroup(props) {
 	const {
@@ -25,6 +26,7 @@ function ButtonsGroup(props) {
 
 	const [isGenerateKeyButtonDisabled, setIsGenerateKeyButtonDisabled] =
 		useState(true);
+	const [noTextErrorMessage, setNoTextErrorMessage] = useState("");
 
 	const generateSecretKey = async () => {
 		let valueOfTheURL = sharedInput;
@@ -56,8 +58,10 @@ function ButtonsGroup(props) {
 		event.preventDefault();
 		displayCodeInputComponent();
 		console.log("In the sendConnectionsComponentEnabled");
+		setKeyGeneratedComponentEnabled(false);
 		if (sharedInput.length <= 0) {
-			displayErrorMessage();
+			// displayErrorMessage();
+			setNoTextErrorMessage("Please fill in the above field");
 			return;
 		}
 		setButtonOneDisabled(true);
@@ -69,8 +73,10 @@ function ButtonsGroup(props) {
 	const keyGeneratedEnabled = (event) => {
 		event.preventDefault();
 		displayCodeInputComponent();
+		setConnectionsComponentEnabled(false);
 		if (sharedInput.length <= 0) {
-			displayErrorMessage();
+			// displayErrorMessage();
+			setNoTextErrorMessage("Please fill in the above field");
 			return;
 		}
 		setGenerateKeyButtonText("Generating key ...");
@@ -84,17 +90,24 @@ function ButtonsGroup(props) {
 	useEffect(() => {
 		console.log("sharedInput", sharedInput);
 
-		if (sharedInput.length > 0) {
-			setIsGenerateKeyButtonDisabled(false);
-		} else {
-			setIsGenerateKeyButtonDisabled(true);
-		}
+		// if (sharedInput.length <= 0) {
+		// 	setNoTextErrorMessage("Please fill in the above field");
+		// } else {
+		// 	setNoTextErrorMessage("");
+		// }
+
+		if (sharedInput.length > 0) setNoTextErrorMessage("");
 	}, [sharedInput]);
 
 	return (
 		<>
 			<div className="text__input__screen__buttons">
 				{/* <div> */}
+				{noTextErrorMessage ? (
+					<div className="no__text__error__message">
+						<ErrorMessage message={noTextErrorMessage} />
+					</div>
+				) : null}
 				<button
 					onClick={keyGeneratedEnabled}
 					// className={buttonOneDisabled ? "display-none" : "button__1"}
