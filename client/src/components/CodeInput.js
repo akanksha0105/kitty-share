@@ -175,8 +175,7 @@ function CodeInput({
 							type="text"
 							value={codeInputValue}
 							onChange={(event) => setCodeInputValue(event.target.value)}
-
-							// required
+							required
 						/>
 						<div className="label-text">Enter the Input Key</div>
 					</label>
