@@ -2,7 +2,7 @@
 	/* margin-top: 30px;
 	margin-bottom: 30px; */
 	border: 1px solid white;
-	width: 500px;
+	width: 400px;
 	text-align: center;
 	height: 180px;
 	display: flex;
@@ -10,7 +10,9 @@
 	border-radius: 0.1em;
 	color: black;
 	background-color: #202020;
+	background-color: #101010;
 	border: 1px solid #505050;
+	border: 1px solid #202020;
 	box-shadow: #505050;
 	transition: all 0.4s;
 }
@@ -32,11 +34,12 @@
 	font-family: "ABeeZee", sans-serif;
 	color: white;
 	justify-content: center;
-	letter-spacing: 0.1em;
+	letter-spacing: 0.2em;
 	line-height: 1.8;
 	align-items: center;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
+	font-family: "Open Sans Condensed";
 }
 
 .display-block {
