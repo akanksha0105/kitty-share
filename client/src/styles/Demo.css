@@ -149,9 +149,9 @@ video {
 	color: white;
 } */
 @media screen and (max-width: 900px) {
-	/* .demo {
-		gap: 2em;
-	} */
+	.demo {
+		gap: 3em;
+	}
 	.video__description__one,
 	.video__description__two {
 		display: flex;
@@ -170,7 +170,7 @@ video {
 		align-items: center;
 		justify-content: center;
 		display: flex;
-		gap: 2em;
+		gap: 1.5em;
 	}
 	.displayVideo1 {
 		width: 300px;
