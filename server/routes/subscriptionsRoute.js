@@ -254,6 +254,7 @@ router.post("/sendnotification", async (req, res) => {
 					content: urlTobeShared,
 					newCode: null,
 					isURL: true,
+					// senderDeviceId: senderDeviceId,
 				});
 
 				return {
@@ -275,6 +276,7 @@ router.post("/sendnotification", async (req, res) => {
 							content: urlTobeShared,
 							newCode: checkOrGenerateCodeForTextResponse,
 							isURL: false,
+							// senderDeviceId: senderDeviceId,
 						});
 
 						return {
