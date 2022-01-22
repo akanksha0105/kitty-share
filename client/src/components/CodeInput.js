@@ -13,8 +13,6 @@ import Message from "./Message";
 import RetrievedMessageScreen from "./RetrievedMessageScreen";
 import ErrorMessage from "./ErrorMessage";
 import SuccessMessage from "./SuccessMessage";
-import "../styles/x.css";
-
 function CodeInput({
 	currentDeviceId,
 	displayTextInputComponent,

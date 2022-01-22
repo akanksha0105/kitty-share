@@ -35,10 +35,11 @@
 /* Generated code */
 .retrieved__output__box {
 	color: floralwhite;
-	font-size: 1.5rem;
+	font-size: 1em;
 	letter-spacing: 0.1em;
 	padding: 20px;
-	font-family: var(--secondaryFont);
+	font-family: var(--retrievedDataFont);
+	line-height: 1.5;
 }
 
 @media screen and (max-width: 800px) {
