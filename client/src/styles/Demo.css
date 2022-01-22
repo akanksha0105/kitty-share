@@ -169,6 +169,8 @@ video {
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		display: flex;
+		gap: 2em;
 	}
 	.displayVideo1 {
 		width: 300px;
