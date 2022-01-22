@@ -170,7 +170,7 @@ video {
 		align-items: center;
 		justify-content: center;
 		display: flex;
-		gap: 1.5em;
+		gap: 1em;
 	}
 	.displayVideo1 {
 		width: 300px;
