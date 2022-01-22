@@ -24,7 +24,7 @@ function Header(props) {
 		setLinkClicked(false);
 		setLinkTwoClicked(false);
 
-		if (window.location.href === "http://localhost:3000/") {
+		if (window.location.href === "https://kittyshare.xyz/") {
 			window.location.reload();
 		}
 		// console.log("loc", window.location.origin);
