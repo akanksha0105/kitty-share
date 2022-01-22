@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Demo.css";
-import Video1 from "../videos/video1.mov";
+import Video1 from "../videos/video1.mp4";
 import Video2 from "../videos/video2.mp4";
 import Video__one__image from "../images/Video1__image.jpg";
 import { Player } from "video-react";
@@ -43,7 +43,8 @@ function Demo() {
 							controls></video>
 						{/* <Player className="video__player" src={Video1} /> */}
 						{/* <iframe
-							src={Video1}
+							src={}
+							width="400"
 							frameborder="0"
 							allow="autoplay; encrypted-media"
 							allowfullscreen
