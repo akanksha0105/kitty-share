@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import SendToConnections from "./SendToConnections";
 import KeyGeneratedScreen from "./KeyGeneratedScreen";
 import ErrorMessage from "./ErrorMessage";
+import { client, config } from "../axios/axios";
 
-function ButtonsGroup(props) {
+interface ButtonsGroupProps {
+	sharedInput: string,
+	currentDeviceId: string,
+	currentDeviceName: string,
+	isDeviceSubscribed: boolean,
+	displayErrorMessage: () => void,
+	displayCodeInputComponent: () => void,
+}
+
+const ButtonsGroup: React.FC<ButtonsGroupProps> = (props) => {
 	const {
 		sharedInput,
 		currentDeviceId,
@@ -29,35 +39,27 @@ function ButtonsGroup(props) {
 	const [noTextErrorMessage, setNoTextErrorMessage] = useState("");
 
 	const generateSecretKey = async () => {
-		let valueOfTheURL = sharedInput;
-		let senderDeviceId = currentDeviceId;
-		let secretKeyPromise = axios.post("/api/code/postthevalue", {
-			valueOfTheURL,
-			senderDeviceId,
-		});
+		try {
+			let valueOfTheURL = sharedInput;
+			let senderDeviceId = currentDeviceId;
+			let secretKey: AxiosResponse = await client.post("/api/code/postthevalue", {
+				valueOfTheURL,
+				senderDeviceId,
+			}, config);
 
-		secretKeyPromise
-			.then((response) => {
-				setGeneratedCode(response.data.data);
-				console.log("response", response.data);
-				setGenerateKeyButtonText("Generate Key again");
-				setIsGenerateKeyButtonDisabled(false);
-				console.log("Generated Key provided by the server");
-			})
-			.catch((error) => {
-				const { code } = error.response.data;
-				if (code === 102) {
-					return console.error("Code does not exist");
-				}
+			setGeneratedCode(secretKey.data.data);
+			setGenerateKeyButtonText("Generate Key again");
+			setIsGenerateKeyButtonDisabled(false);
 
-				console.error("Unable to generate code");
-			});
+		} catch (error) {
+			console.error(error);
+		}
+
 	};
 
-	const sendConnectionsEnabled = (event) => {
+	const sendConnectionsEnabled = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault();
 		displayCodeInputComponent();
-		console.log("In the sendConnectionsComponentEnabled");
 		setKeyGeneratedComponentEnabled(false);
 		if (sharedInput.length <= 0) {
 			// displayErrorMessage();
@@ -70,7 +72,7 @@ function ButtonsGroup(props) {
 		setConnectionsComponentEnabled(true);
 	};
 
-	const keyGeneratedEnabled = (event) => {
+	const keyGeneratedEnabled = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault();
 		displayCodeInputComponent();
 		setConnectionsComponentEnabled(false);
@@ -88,14 +90,6 @@ function ButtonsGroup(props) {
 	};
 
 	useEffect(() => {
-		console.log("sharedInput", sharedInput);
-
-		// if (sharedInput.length <= 0) {
-		// 	setNoTextErrorMessage("Please fill in the above field");
-		// } else {
-		// 	setNoTextErrorMessage("");
-		// }
-
 		if (sharedInput.length > 0) setNoTextErrorMessage("");
 	}, [sharedInput]);
 
@@ -110,22 +104,17 @@ function ButtonsGroup(props) {
 				) : null}
 				<button
 					onClick={keyGeneratedEnabled}
-					// className={buttonOneDisabled ? "display-none" : "button__1"}
 					className="button__1"
 					type="submit"
-					// disabled={sharedInput.length > 0 ? false : true}>
-					// disabled={isGenerateKeyButtonDisabled}
+
 				>
 					{generateKeyButtonText}
 				</button>
-				{/* </div> */}
-				{/* <div> */}
+
 				<button
 					onClick={sendConnectionsEnabled}
-					// className={buttonTwoDisabled ? "display-none" : "button__2"}
 					className="button__2"
 					type="submit"
-					// disabled={sharedInput.length > 0 ? false : true}
 				>
 					Send to Connections
 				</button>
@@ -146,6 +135,6 @@ function ButtonsGroup(props) {
 			) : null}
 		</>
 	);
-}
+};
 
 export default ButtonsGroup;

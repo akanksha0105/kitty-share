@@ -19,9 +19,6 @@ self.addEventListener("activate", function (event) {
 			return Promise.all(
 				cacheNames
 					.filter(function (cacheName) {
-						// Return true if you want to remove this cache,
-						// but remember that caches are shared across
-						// the whole origin
 					})
 					.map(function (cacheName) {
 						return caches.delete(cacheName);
@@ -58,12 +55,6 @@ self.addEventListener("notificationclick", (event) => {
 
 	console.log("Closed notification: " + notification);
 
-	// let x = validURL(url);
-	// console.log("Is it a valid URL : ", x);
-	// if (x === true) {
-	// 	clients.openWindow(url);
-	// 	return;
-	// }
 
 	if (isURL === true) {
 		event.notification.close();
@@ -75,15 +66,11 @@ self.addEventListener("notificationclick", (event) => {
 	console.log("desiredURL", desiredURL);
 	clients.openWindow(desiredURL);
 
-	// clients.postMessage(url);
-	// openDB(url).then((response) => {
-	// 	console.log("Let's do this :", response);
-	// 	clients.openWindow("http://localhost:3000/showmessage");
-	// });
+
 
 	return;
 
-	// event.notification.close();
+
 });
 
 async function openDB(textnote) {

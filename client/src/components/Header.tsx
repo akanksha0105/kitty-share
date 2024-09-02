@@ -1,37 +1,39 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Header.css";
 import { Link } from "react-router-dom";
-import { Avatar } from "@material-ui/core";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
-function Header(props) {
-	const {
-		currentDeviceId,
-		currentDeviceName,
-		isDeviceSubscribed,
-		onNotificationsPermission,
-		isSubscribeButtonDisabled,
-	} = props;
-	const [linkClicked, setLinkClicked] = useState(false);
-	const [linkTwoClicked, setLinkTwoClicked] = useState(false);
-	const [logoClick, setLogoClick] = useState();
+interface HeaderProps {
+	currentDeviceId: string,
+	currentDeviceName: string,
+	isDeviceSubscribed: boolean,
+	onNotificationsPermission: () => void,
+	isSubscribeButtonDisabled: boolean,
+}
 
-	console.log("isDeviceSubscribed in Header: ", isDeviceSubscribed);
+const Header: React.FC<HeaderProps> = ({
+	currentDeviceId,
+	currentDeviceName,
+	isDeviceSubscribed,
+	onNotificationsPermission,
+	isSubscribeButtonDisabled,
+}) => {
+	const [linkClicked, setLinkClicked] = useState<boolean>(false);
+	const [linkTwoClicked, setLinkTwoClicked] = useState<boolean>(false);
 
-	const onLogoClick = (event) => {
+	const onLogoClick = () => {
 		setLinkClicked(false);
 		setLinkTwoClicked(false);
 
 		if (window.location.href === "https://kittyshare.xyz/") {
 			window.location.reload();
 		}
-		// console.log("loc", window.location.origin);
-		// setLogoClick({});
+
 	};
 
-	const onLinkOneClick = (e) => {
+	const onLinkOneClick = () => {
 		setLinkClicked(true);
 		setLinkTwoClicked(false);
 	};
@@ -83,26 +85,8 @@ function Header(props) {
 						<HelpOutlineIcon />
 					</div>
 				</Link>
-				{currentDeviceId ? (
-					<div className="avatar__div">
-						<Avatar
-							className="avatar"
-							alt="Remy Sharp"
-							src={`https://avatars.dicebear.com/api/human/${currentDeviceId}.svg`}
-						/>{" "}
-					</div>
-				) : null}
 
 				{currentDeviceName ? <div> {currentDeviceName}</div> : null}
-
-				{/* {currentDeviceId &&
-				localStorage.getItem("notificationsServicePossible") ? (
-					<div
-						className={
-							localStorage.getItem("device saved") === true
-								? "subscription__button"
-								: null
-						}> */}
 
 				<div className="subscription__button">
 					<button
@@ -120,6 +104,6 @@ function Header(props) {
 			</div>
 		</div>
 	);
-}
+};
 
 export default Header;

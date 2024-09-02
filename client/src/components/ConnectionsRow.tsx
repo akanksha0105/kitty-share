@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import "../styles/ConnectionsRow.css";
 import axios from "axios";
 
-const ConnectionsRow = (props) => {
+interface ConnectionsRowProps {
+	receiverDeviceId: string,
+	currentDeviceId: string,
+	urlTobeShared: string,
+	currentDeviceName: string,
+}
+const ConnectionsRow: React.FC<ConnectionsRowProps> = (props) => {
 	const {
 		receiverDeviceId,
 		currentDeviceId,
@@ -12,10 +18,6 @@ const ConnectionsRow = (props) => {
 
 	const [recieverName, setReceiverName] = useState("");
 	const [buttonText, setButtonText] = useState("Send");
-
-	// console.log(
-	// 	`currentDeviceId is ${currentDeviceId},  receiverDeviceId is ${receiverDeviceId}, urlToBeShared is ${urlTobeShared} and currentDeviceName is ${currentDeviceName}`,
-	// );
 
 	const onGetReceiverName = async () => {
 		console.log("In onGetReceiverName");
@@ -31,12 +33,7 @@ const ConnectionsRow = (props) => {
 				console.error(err);
 			});
 	};
-	const onSendNotificationToTheServer = (event) => {
-		// event.preventDefault();
-
-		console.log(
-			"In onSendNotificationToTheServer event handler in ConnectionsRow component ",
-		);
+	const onSendNotificationToTheServer = () => {
 
 		let notificationSendingDevice = currentDeviceName;
 		console.log(
@@ -61,7 +58,7 @@ const ConnectionsRow = (props) => {
 					setButtonText("Sent");
 				}
 
-				//Message sent component
+		
 			})
 			.catch((err) => console.error("Error in sending URL to the user", err));
 	};
@@ -82,13 +79,13 @@ const ConnectionsRow = (props) => {
 							onClick={onSendNotificationToTheServer}
 							disabled={buttonText === "Send" ? false : true}>
 							{" "}
-							{/* Send */}
+
 							{buttonText}
 						</button>
 					</div>
 				</>
 			) : null}
-			{/* <div className="receiver__id">{receiverDeviceId}</div> */}
+
 		</div>
 	);
 };

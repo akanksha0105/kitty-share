@@ -5,7 +5,10 @@ import { linkDevices } from "../functions/functions";
 import { checkReceiverDeviceName } from "../functions/codeInputScreenFunctions";
 import "../styles/LinkToDevice.css";
 
-function LinkToDeviceScreen({ currentDeviceId }) {
+interface LinkToDeviceScreenProps {
+	currentDeviceId: string,
+}
+const LinkToDeviceScreen: React.FC<LinkToDeviceScreenProps> = ({ currentDeviceId }) => {
 	const [receiverDeviceID, setReceiverDeviceID] = useState("");
 	const [linkDeviceButtonText, setLinkDeviceButtonText] = useState("Link");
 	const [isLinkDeviceButtonDisabled, setIsLinkDeviceButtonDisabled] =
@@ -13,7 +16,7 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 	const [receiverDeviceName, setReceiverDeviceName] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
 	const [successMessage, setSuccessMessage] = useState("");
-	const onLinkToNewDevice = async () => {
+	const onLinkToNewDevice = async (): Promise<void> => {
 		setErrorMessage("");
 		setSuccessMessage("");
 		console.log(
@@ -124,6 +127,6 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 			<div></div>
 		</div>
 	);
-}
+};
 
 export default LinkToDeviceScreen;

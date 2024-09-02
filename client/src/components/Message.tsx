@@ -1,6 +1,10 @@
 import React from "react";
 import "../styles/Message.css";
-function Message(props) {
+
+interface MessageProps {
+	message: string,
+}
+const Message: React.FC<MessageProps> = (props) => {
 	const { message } = props;
 
 	return (
@@ -8,6 +12,6 @@ function Message(props) {
 			<div className="message__content">{message}</div>
 		</div>
 	);
-}
+};
 
 export default Message;

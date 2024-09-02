@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from "react";
 // import { useLocation } from "react-router-dom";
-import ConnectionsRow from "../components/ConnectionsRow";
-import ErrorMessage from "../components/ErrorMessage";
+import ConnectionsRow from "./ConnectionsRow";
+import ErrorMessage from "./ErrorMessage";
 import "../styles/SendToConnections.css";
-import Loading from "../components/Loading";
+import Loading from "./Loading";
 import { Link } from "react-router-dom";
 // import ErrorMessage from "../components/ErrorMessage";
 import axios from "axios";
 import "../styles/AddDeviceModal.css";
 
-function SendToConnections(props) {
-	// const location = useLocation();
-	// const urlTobeShared = location.state?.url;
-	// const currentDeviceId = location.state?.currentDeviceId;
+interface SendToConnectionsProps {
+	currentDeviceId: string,
+	sharedInput: string,
+	currentDeviceName: string,
+	isDeviceSubscribed: boolean,
+}
+
+const SendToConnections: React.FC<SendToConnectionsProps> = (props) => {
+
 	const [show, setShow] = useState(false);
 	let displayMessage = `To send messages, you need to add a device`;
 	const {
@@ -83,14 +88,14 @@ function SendToConnections(props) {
 				}>
 				{connectionsList && isDeviceSubscribed
 					? connectionsList.map((item) => (
-							<ConnectionsRow
-								key={item}
-								receiverDeviceId={item}
-								currentDeviceId={currentDeviceId}
-								urlTobeShared={sharedInput}
-								currentDeviceName={currentDeviceName}
-							/>
-					  ))
+						<ConnectionsRow
+							key={item}
+							receiverDeviceId={item}
+							currentDeviceId={currentDeviceId}
+							urlTobeShared={sharedInput}
+							currentDeviceName={currentDeviceName}
+						/>
+					))
 					: null}
 			</div>
 			{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
@@ -117,6 +122,6 @@ function SendToConnections(props) {
 			</div>
 		</>
 	);
-}
+};
 
 export default SendToConnections;

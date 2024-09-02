@@ -5,11 +5,17 @@ import CodeInput from "../components/CodeInput";
 import ButtonsGroup from "../components/ButtonsGroup";
 import LineSeparator from "../components/LineSeparator";
 
-function HomeScreen({
+interface HomeScreenProps {
+	currentDeviceId: string,
+	currentDeviceName: string,
+	isDeviceSubscribed: boolean,
+}
+
+const HomeScreen: React.FC<HomeScreenProps> = ({
 	currentDeviceId,
 	currentDeviceName,
 	isDeviceSubscribed,
-}) {
+}) => {
 	const [sharedInput, setSharedInput] = useState("");
 	const [showTextInput, setShowTextInput] = useState(true);
 	const [showCodeInput, setShowCodeInput] = useState(true);
@@ -80,5 +86,5 @@ function HomeScreen({
 			</div>
 		</div>
 	);
-}
+};
 export default HomeScreen;
