@@ -1,8 +1,10 @@
 import React from "react";
 import "../styles/Message.css";
 
-function ErrorMessage(props) {
-	console.log("In the ErrorMessage Component");
+interface ErrorMessageProps {
+	message: string,
+}
+const ErrorMessage: React.FC <ErrorMessageProps> = (props) => {
 	const { message } = props;
 	return (
 		<div className="message error__message">

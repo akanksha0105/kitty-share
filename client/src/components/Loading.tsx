@@ -4,7 +4,7 @@ import "../styles/Loading.css";
 function Loading() {
 	return (
 		<div className="loader">
-			<div class="lds-ellipsis">
+			<div className="lds-ellipsis">
 				<div></div>
 				<div></div>
 				<div></div>

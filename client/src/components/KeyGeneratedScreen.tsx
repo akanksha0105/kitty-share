@@ -1,8 +1,12 @@
 import React from "react";
 import "../styles/KeyGeneratedScreen.css";
-import Loading from "../components/Loading";
+import Loading from "./Loading";
 
-function KeyGeneratedScreen({ generatedCode }) {
+interface KeyGeneratedScreenProps {
+	generatedCode: string
+}
+
+const KeyGeneratedScreen: React.FC<KeyGeneratedScreenProps>=({ generatedCode })=> {
 	if (generatedCode === "") return <Loading />;
 	return (
 		<div className="container__screen">

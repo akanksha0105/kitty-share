@@ -1,8 +1,9 @@
-import { useEffect, useState, React } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/ShowMessage.css";
 import ErrorMessage from "../components/ErrorMessage";
-function ShowMessage() {
+import React from "react";
+const ShowMessage: React.FC = () => {
 	const [answer, setAnswer] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
 
@@ -43,7 +44,7 @@ function ShowMessage() {
 			{errorMessage ? <ErrorMessage message={errorMessage} /> : null}
 		</div>
 	);
-}
+};
 
 export default ShowMessage;
 

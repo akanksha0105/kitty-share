@@ -12,45 +12,22 @@ import Demo from "./screens/Demo";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 import "./styles/App.css";
-function App() {
+
+const App = () => {
+
 	const [currentDeviceId, setCurrentDeviceId] = useState("");
 	const [currentDeviceName, setCurrentDeviceName] = useState("");
-	const [isSubscribedToNotifications, setIsSubscribedToNotifications] =
-		useState(false);
-	const [isSubscribeButtonDisabled, setIsSubscribeButtonDisabled] =
-		useState(false);
+	const [isSubscribedToNotifications, setIsSubscribedToNotifications] = useState(false);
+
+
 	const checkDeviceSubscribedToNotifications = () => {
-		console.log("In checkDeviceSubscribedToNotifications of App component");
-
-		let isSubscribed = JSON.parse(localStorage.getItem("isSubscribed"));
-		console.log(
-			"isSubscribed in checkDeviceSubscribedToNotifications",
-			isSubscribed,
-		);
-
-		if (isSubscribed === null) {
-			console.log("Loop 1 in App");
-			localStorage.setItem("isSubscribed", false);
-			setIsSubscribedToNotifications(false);
-			return;
-		}
-
-		if (isSubscribed === true) {
-			console.log("Loop 2 in App");
-			localStorage.setItem("isSubscribed", true);
-			setIsSubscribedToNotifications(true);
-			setIsSubscribeButtonDisabled(true);
-			return;
-		}
-
-		if (isSubscribed === false) {
-			console.log("Loop 3 in App");
-			localStorage.setItem("isSubscribed", false);
-			setIsSubscribedToNotifications(false);
-			setIsSubscribeButtonDisabled(false);
-			return;
-		}
+		let isSubscribed: boolean = JSON.parse(localStorage.getItem("isSubscribed") || "false");
+		localStorage.setItem("isSubscribed", JSON.stringify(isSubscribed));
+		setIsSubscribedToNotifications(isSubscribed);
 	};
+
+
+
 	const registerANewDevice = async () => {
 		let fetchedDeviceId = localStorage.getItem("deviceId");
 
@@ -64,9 +41,8 @@ function App() {
 				})
 				.then((response) => {
 					console.log(" new device saved in database ", response);
-					localStorage.setItem("device saved", true);
-					// setCurrentDeviceId(response.data.deviceId);
-					// return response.data.deviceId;
+					localStorage.setItem("device saved", JSON.stringify(true));
+
 					return generateNewDeviceName(response.data.deviceId);
 				})
 				.catch((err) => {
@@ -74,21 +50,23 @@ function App() {
 					return null;
 				});
 		} else {
-			setCurrentDeviceId(localStorage.getItem("deviceId"));
-			return generateNewDeviceName(localStorage.getItem("deviceId"));
+			const deviceId = localStorage.getItem("deviceId") ?? "";
+			setCurrentDeviceId(deviceId);
+			return generateNewDeviceName(deviceId);
 			// return fetchedDeviceId;
 		}
 	};
 
-	const generateNewDeviceName = async (idOfCurrentDevice) => {
+	const generateNewDeviceName = async (idOfCurrentDevice: string) => {
 		let deviceId = idOfCurrentDevice;
 		console.log(
 			"In generateNewDeviceName in App component with currentDeviceId :",
 			deviceId,
 		);
 
-		if (localStorage.getItem("deviceName") !== null) {
-			setCurrentDeviceName(localStorage.getItem("deviceName"));
+		const deviceName = localStorage.getItem("deviceName") ?? "";
+		if (deviceName?.length > 0) {
+			setCurrentDeviceName(deviceName);
 			return;
 		}
 
@@ -123,9 +101,6 @@ function App() {
 				"isSubscribed in  Loop1 onNotificationsPermission",
 				isSubscribed,
 			);
-
-			// setIsSubscribeButtonDisabled(true);
-
 			serviceWorkerRegistration
 				.subscribeToPushNotifications()
 				.then((response) => {
@@ -133,16 +108,12 @@ function App() {
 
 					if (response === true) {
 						console.log("Here");
-						localStorage.setItem("isSubscribed", true);
+						localStorage.setItem("isSubscribed", JSON.stringify(true));
 						setIsSubscribedToNotifications(true);
-						setIsSubscribeButtonDisabled(true);
-						// setSubscribeOptionButtonText("Subscribed");
 					} else {
 						console.log("Here2");
-						localStorage.setItem("isSubscribed", false);
+						localStorage.setItem("isSubscribed", JSON.stringify(false));
 						setIsSubscribedToNotifications(false);
-						setIsSubscribeButtonDisabled(false);
-						// setSubscribeOptionButtonText("Subscribe");
 					}
 				})
 				.catch((err) => {
@@ -150,10 +121,8 @@ function App() {
 						"Application not registered for the push notifications",
 						err,
 					);
-					localStorage.setItem("isSubscribed", false);
+					localStorage.setItem("isSubscribed", JSON.stringify(false));
 					setIsSubscribedToNotifications(false);
-					setIsSubscribeButtonDisabled(false);
-					// setSubscribeOptionButtonText("Subscribe");
 				});
 			return;
 		}
@@ -163,12 +132,6 @@ function App() {
 				"isSubscribed in  Loop2 onNotificationsPermission",
 				isSubscribed,
 			);
-			// localStorage.setItem("isSubscribed", false);
-			// setIsSubscribedToNotifications(false);
-			setIsSubscribeButtonDisabled(true);
-			// setSubscribeOptionButtonText("Subscribe");
-			// setOpenUnSubscriptionModal(true);
-
 			return;
 		}
 	};
@@ -191,7 +154,7 @@ function App() {
 					currentDeviceName={currentDeviceName}
 					isDeviceSubscribed={isSubscribedToNotifications}
 					onNotificationsPermission={onNotificationsPermission}
-					isSubscribeButtonDisabled={isSubscribeButtonDisabled}
+					isSubscribeButtonDisabled={isSubscribedToNotifications}
 				/>
 				{currentDeviceId ? (
 					<Switch>
@@ -219,6 +182,6 @@ function App() {
 			</Router>
 		</div>
 	);
-}
+};
 
 export default App;
