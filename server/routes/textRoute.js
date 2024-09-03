@@ -1,26 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const TextCodeModel = require("../models/textCodeModel");
+const RESPONSE_CODES = require("../constants/responseCodes");
 
+// Route refactored and checked
 router.get("/gettextnote/:newCode", (req, res) => {
-	console.log("In /gettextnote/:newCode", req.params);
 	const code = req.params.newCode;
-
-	console.log("Code against text", code);
-
 	let textGeneratedPromise = TextCodeModel.find({ code: code }).exec();
 
 	textGeneratedPromise
 		.then((textGeneratedPromiseResponse) => {
-			console.log("textGeneratedPromiseResponse", textGeneratedPromiseResponse);
-
 			if (textGeneratedPromiseResponse.length <= 0) {
 				return res
 					.status(404)
-					.json({ code: 102, data: "Code not found", messageRetrieved: false });
+					.json({ code: RESPONSE_CODES.CODE_NOT_FOUND, data: "Code not found", messageRetrieved: false });
 			}
 
 			res.status(200).json({
+				code: RESPONSE_CODES.SUCCESS,
 				data: textGeneratedPromiseResponse[0].message,
 				messageRetrieved: true,
 			});
@@ -28,7 +25,7 @@ router.get("/gettextnote/:newCode", (req, res) => {
 		.catch((err) => {
 			console.error(err);
 			res.status(500).send({
-				code: 101,
+				code: RESPONSE_CODES.SERVER_ERROR,
 				data: "Server was unable to fetch the URL for the given code",
 				messageRetrieved: false,
 			});

@@ -5,9 +5,9 @@ const dbconnection = require("./db");
 const path = require("path");
 const cors = require("cors");
 const webpush = require("web-push");
+require('dotenv').config({ path: './.env' });
 
-// const webpush = require("web-push");
-const PORT = 8080;
+const PORT = process.env.PORT;
 
 const server = require("http").Server(app);
 const morgan = require("morgan");

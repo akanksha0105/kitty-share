@@ -5,68 +5,58 @@ var mongoose = require("mongoose");
 const dbconnection = require("../db");
 const { db } = require("../models/connectionsModel");
 const getAllConnections = require("../modules/getAllConnections.module");
+const RESPONSE_CODES = require("../constants/responseCodes");
 
+//Route Refactored and Checked
 router.get("/getAllConnections/:deviceId", (req, res) => {
-	console.log(
-		"In connectionsRoute.js for getting all the deep-down connections",
-	);
-
-	const device_id = req.params.deviceId;
+	console.log("/getAllConnections/:deviceId");
+	const deviceId = req.params.deviceId;
 	getAllConnections
-		.getAllConnections(device_id)
+		.getAllConnections(deviceId)
 		.then((getAllConnectionsResponse) => {
-			console.log("getAllConnectionsResponse :", getAllConnectionsResponse);
 			let getAllConnectionsResponseArray = getAllConnectionsResponse;
-
-			console.log(
-				"getAllConnectionsResponseArray",
-				getAllConnectionsResponseArray,
-			);
-
-			console.log(
-				"getAllConnectionsResponseArrayLength",
-				getAllConnectionsResponseArray.length,
-			);
 
 			if (getAllConnectionsResponseArray.length <= 0) {
 				return res.status(404).json({
-					code: 102,
-					message: "No Connections",
+					data: [],
+					code: RESPONSE_CODES.RESOURCE_NOT_FOUND,
+					message: "No Connections for the device",
 					connectionsExits: false,
 				});
 			}
 
 			return res.status(200).json({
-				getAllConnectionsArray: getAllConnectionsResponseArray,
+				data: getAllConnectionsResponseArray,
+				code: RESPONSE_CODES.RESOURCE_NOT_FOUND,
+				message: "Connections for the given device",
 				connectionsExists: true,
 			});
 		})
 		.catch((err) => {
 			console.error(
-				"Error in getting all connections of the current device",
-				err,
+				err
 			);
 
 			return res.status(500).json({
-				code: 101,
+				data: [],
+				code: RESPONSE_CODES.SERVER_ERROR,
 				message: "Error in getting all connections of the current devi",
 				connectionsExits: false,
 			});
 		});
 });
 
+//Route Refactored and Checked
 const getConnectionsOfCurrentDevice = async (device_id) => {
-	console.log(
-		"In getConnectionsOfCurrentDevice function for getting connections",
-	);
 
 	return ConnectionsModel.find({ deviceId: device_id })
 		.then((connectionsModelResponse) => {
-			console.log("connectionsModelResponse", connectionsModelResponse);
 
 			if (connectionsModelResponse.length <= 0) {
 				console.log("No connections found");
 				return {
+					connectionsList: [],
+					code: RESPONSE_CODES.RESOURCE_NOT_FOUND,
 					connectionsListExist: false,
 					message: "No connections found",
 				};
@@ -74,55 +64,59 @@ const getConnectionsOfCurrentDevice = async (device_id) => {
 
 			return {
 				connectionsList: connectionsModelResponse[0].connections,
+				code: RESPONSE_CODES.SUCCESS,
 				connectionsListExist: true,
+				message: "connections exist for the device"
 			};
 		})
 		.catch((err) => {
 			console.error("Error in retrieving connections", err);
 			return {
 				connectionsListExist: false,
+				connectionsList: [],
+				code: RESPONSE_CODES.SERVER_ERROR,
 				message: "Error in retrieving connections",
 			};
 		});
 };
+
+//Route Refactored and Checked
 router.get("/:deviceId", (req, res) => {
-	console.log("In connectionsRoute.js for getting connections");
+
 	const device_id = req.params.deviceId;
-	console.log("connectionsModel retrieve", device_id);
+
 	ConnectionsModel.find({ deviceId: device_id })
 		.then((connectionsModelResponse) => {
-			console.log("connectionsModelResponse", connectionsModelResponse);
 
 			if (connectionsModelResponse.length <= 0) {
-				console.log("No connections found");
 				return res
 					.status(404)
-					.json({ code: 102, message: "No connnections found" });
+					.json({ code: RESPONSE_CODES.RESOURCE_NOT_FOUND, message: "No connnections found", data: [] });
 			}
 
 			//let numberOfConnections = connectionsModelResponse[0].connections.length;
 			let connectionsList = connectionsModelResponse[0].connections;
 			console.log(connectionsList);
 
-			return res.status(200).json({ code: 101, message: connectionsList });
+			return res.status(200).json({ code: RESPONSE_CODES.SUCCESS, message: "Connections retrieved successfully", data: connectionsList });
 		})
 		.catch((err) => {
 			console.error("Problem in connections", err);
 			res.status(500).json({
-				code: 101,
+				code: RESPONSE_CODES.SERVER_ERROR,
+				data: [],
 				message: "Issue encountered in retrieving the connections of device ",
 			});
 		});
 });
 
+// TODO
 router.get("/checkifconnected/:deviceId/:receiverdeviceId", (req, res) => {
-	console.log("****************** In checkifconnected route ***************");
+
 	const currentDeviceId = req.params.deviceId;
 	const receiverDeviceID = req.params.receiverdeviceId;
 
-	console.log("currentDeviceId in Route server side", currentDeviceId);
 
-	console.log("receiverDeviceID in Route server side", receiverDeviceID);
 
 	checkIfConnectionExistsPromise = checkIfConnectionExists(
 		currentDeviceId,
@@ -130,16 +124,8 @@ router.get("/checkifconnected/:deviceId/:receiverdeviceId", (req, res) => {
 	);
 	checkIfConnectionExistsPromise
 		.then((result) => {
-			console.log(
-				"checkIfConnectionExistsPromise Response on server side",
-				result,
-			);
-			// if (result == true)
-			// 	return res
-			// 		.status(200)
-			// 		.json({ checked: true, connectionexists: result });
-
-			return res.status(200).json({ checked: true, connectionexists: result });
+			//need to add the case for 404
+			return res.status(200).json({ code: RESPONSE_CODES.SUCCESS, checked: true, connectionexists: result });
 		})
 		.catch((err) => {
 			console.error(
@@ -147,39 +133,34 @@ router.get("/checkifconnected/:deviceId/:receiverdeviceId", (req, res) => {
 				err,
 			);
 			return res.status(500).json({
-				checked: false,
-				connectionexists: "Unable to check if both the devices are connected",
+				code: RESPONSE_CODES.SERVER_ERROR, checked: true, connectionexists: result
 			});
 		});
 });
 
+
+//Checked and Refactored
 const checkIfConnectionExists = async (currentDeviceId, receiverDeviceID) => {
-	console.log(
-		" currentDeviceId In checkIfConnectionExists function on server side",
-		currentDeviceId,
-	);
-	console.log(
-		"receiverDeviceID In checkIfConnectionExists function on server side",
-		receiverDeviceID,
-	);
+
 	return ConnectionsModel.find(
 		{ deviceId: currentDeviceId },
 		{
 			connections: { $elemMatch: { deviceId: receiverDeviceID } },
 		},
-	).then((checking) => {
-		console.log("checking", checking);
+	).then((response) => {
 
-		if (checking.length > 0 && checking[0].connections.length > 0) {
-			//What status code needs be here
-
+		if (response && response[0].connections.length > 0) {
 			console.log("Connection already exists in the device list");
 			return true;
 		}
 		return false;
+	}).catch(error => {
+		console.error(error);
+		return false;
 	});
 };
 
+//Checked and Refactored
 const updateConnections = async (currentDeviceId, receiverDeviceID, data) => {
 	return ConnectionsModel.find(
 		{ deviceId: currentDeviceId },
@@ -218,13 +199,11 @@ const updateConnections = async (currentDeviceId, receiverDeviceID, data) => {
 	});
 };
 
+//Checked and Refactored
 const updateOrSaveConnection = async (currentDeviceId, receiverDeviceID) => {
-	console.log("In updateOrSaveConnection function");
 	let data;
 	return ConnectionsModel.find({ deviceId: currentDeviceId })
 		.then((connectionsModelResponse) => {
-			console.log("connectionsModelResponse", connectionsModelResponse);
-
 			if (connectionsModelResponse.length <= 0) {
 				return saveNewConnection(currentDeviceId, receiverDeviceID, data);
 			} else {
@@ -240,28 +219,26 @@ const updateOrSaveConnection = async (currentDeviceId, receiverDeviceID) => {
 		});
 };
 
+//Checked and Refactored
 const saveNewConnection = async (currentDeviceId, receiverDeviceID, data) => {
 	let connectionsArray = [];
 	connectionsArray.push({ deviceId: receiverDeviceID });
-	console.log("connections Array", connectionsArray);
 	const newDeviceConnections = new ConnectionsModel({
 		deviceId: currentDeviceId,
 		connections: connectionsArray,
 	});
 
 	return newDeviceConnections.save().then((record) => {
-		console.log("new Device's Connections saved in Database", record);
 		let message = "New connection created";
 		data = { message: message, connected: true };
 		return data;
 	});
 };
 
+
+//Checked and Refactored
 router.post("/:deviceId", (req, res) => {
-	console.log(
-		"********************************************************************************",
-	);
-	console.log("In connectionsRoute.js for adding connections");
+
 	const currentDeviceId = req.params.deviceId;
 	const receiverDeviceID = req.body.receivingDeviceId;
 
@@ -271,28 +248,22 @@ router.post("/:deviceId", (req, res) => {
 	);
 	updateOrSaveConnectionPromise
 		.then((updateOrSaveConnectionPromiseResponse) => {
-			console.log(
-				"In updateOrSaveConnectionPromiseResponse",
-				updateOrSaveConnectionPromiseResponse,
-			);
-			//console.log(updateOrSaveConnectionPromiseResponse);
+
 			res.status(200).json({
+				code: RESPONSE_CODES.SUCCESS,
 				data: updateOrSaveConnectionPromiseResponse.message,
 				connected: updateOrSaveConnectionPromiseResponse.connected,
 			});
 		})
 		.catch((err) => {
-			console.error(
-				"error in saving or updating the connection in database",
-				err,
-			);
 			return res.status(500).json({
-				data: "error in saving or updating the connection in database",
+				code: RESPONSE_CODES.SERVER_ERROR,
+				data: err,
 				connected: false,
 			});
 		});
 });
-
+// FIXME: Need to check this
 router.get("/deleteconnections/:deviceId", (req, res) => {
 	console.log("In connectionsRoute.js for deleting connections");
 	const currentDeviceId = req.params.deviceId;

@@ -3,40 +3,31 @@ const router = express.Router();
 const CodeModel = require("../models/codeModel");
 const generateCodes = require("../generateCodes");
 var mongoose = require("mongoose");
-// const ObjectId = require("mongo-objectid");
+const RESPONSE_CODES = require("../constants/responseCodes");
 
+//Router Refactored and Checked
 //Router for retrieving the URL - need to give the code to get the url
 router.get("/geturl/:codedMessage", (req, res) => {
 	const code = req.params.codedMessage;
-	console.log(
-		`In codeRoute router for retrieving the URL by passing the code ${code}`,
-	);
-
 	let codeGeneratedPromise = CodeModel.find({ code: code }).exec();
 
 	codeGeneratedPromise
 		.then((response) => {
-			console.log(
-				"Response for retrieving the URL from the code in router",
-				response,
-			);
 			if (response.length <= 0) {
-				return res.status(404).json({ code: 102, data: "Code not found" });
+				return res.status(404).json({ code: RESPONSE_CODES.RESOURCE_NOT_FOUND, data: "Code not found", device: "" });
 			}
 
 			res.status(200).json({
+				code: RESPONSE_CODES.SUCCESS,
 				data: response[0].message,
 				device: response[0].deviceId,
 			});
 		})
 		.catch((err) => {
-			console.error(
-				"Server was unable to fetch the URL for the given code",
-				err.message,
-			);
 			res.status(500).send({
-				code: 101,
+				code: RESPONSE_CODES.SERVER_ERROR,
 				data: "Server was unable to fetch the URL for the given code",
+				device: "",
 			});
 		});
 });
@@ -49,15 +40,9 @@ const checkOrGenerateCode = async (url, currentDeviceId) => {
 			return queryResults[0].code;
 		}
 
-		// const id = new ObjectId().toString();
-
 		return generateCodes
 			.getUnusedCode()
 			.then((generateIdPromiseResponse) => {
-				console.log("generateIdPromiseResponse", generateIdPromiseResponse);
-
-				// if(generateIdPromiseResponse.combinationGenerated === true)
-
 				const newCodePair = new CodeModel({
 					deviceId: currentDeviceId,
 					code: generateIdPromiseResponse.code,
@@ -67,16 +52,18 @@ const checkOrGenerateCode = async (url, currentDeviceId) => {
 				return newCodePair.save();
 			})
 			.then((newCodePairSavedResponse) => {
-				console.log("new codePair saved", newCodePairSavedResponse);
-				return newCodePairSavedResponse.code;
+				return { data: newCodePairSavedResponse.code, code: RESPONSE_CODES.SUCCESS };
 			})
 			.catch((err) => {
 				console.error("Error in checking and generating code in route", err);
+				return {
+					data: "", code: RESPONSE_CODES.SERVER_ERROR
+				};
 			});
 	});
 };
 
-//Router for generating code
+//Router refactored and checked
 router.post("/postthevalue", (req, res) => {
 	const url = req.body.valueOfTheURL;
 	const currentDeviceId = req.body.senderDeviceId;
@@ -89,48 +76,19 @@ router.post("/postthevalue", (req, res) => {
 
 	codePromise
 		.then((code) => {
-			console.log(
-				"Response for generating the secret key for the entered URL",
-				code,
-			);
 
-			res.status(200).json({ data: code });
+			res.status(200).json({ data: code, code: RESPONSE_CODES.SUCCESS, message: "Successfully generated code" });
 		})
 
 		.catch((err) => {
-			console.error(
-				"Server was not able to generate the secret code for the URL",
-				err.message,
-			);
+
 			res.status(500).send({
-				code: 201,
+				code: RESPONSE_CODES.SERVER_ERROR,
 				message: "Server was not able to generate the secret code for the URL",
+				data: "",
 			});
 		});
 });
 
 module.exports = router;
 
-// const checkOrGenerateCode = async (url, currentDeviceId) => {
-// 	let codeQueryPromise = CodeModel.find({ message: url }).exec();
-
-// 	return codeQueryPromise.then((queryResults) => {
-// 		if (queryResults.length > 0) {
-// 			return queryResults[0].code;
-// 		}
-
-// 		const id = new ObjectId().toString();
-
-// 		const code = id;
-// 		const newCodePair = new CodeModel({
-// 			deviceId: currentDeviceId,
-// 			code: code,
-// 			message: url,
-// 			createdAt: new Date(),
-// 		});
-// 		return newCodePair.save().then((record) => {
-// 			console.log("record is", record);
-// 			return record.code;
-// 		});
-// 	});
-// };

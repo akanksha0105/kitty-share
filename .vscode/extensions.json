@@ -2,6 +2,9 @@
     "recommendations": [
         "esbenp.prettier-vscode",
         "simonsiefke.prettier-vscode",
-        "dsznajder.es7-react-js-snippets"
+        "dsznajder.es7-react-js-snippets",
+        "wayou.vscode-todo-highlight",
+        "willasm.comment-highlighter",
+        "donjayamanne.githistory"
     ]
 }

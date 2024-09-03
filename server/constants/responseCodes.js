@@ -1,0 +1,7 @@
+const RESPONSE_CODES = {
+    RESOURCE_NOT_FOUND: 102,
+    SERVER_ERROR: 101,
+    SUCCESS: 200,
+};
+
+module.exports = RESPONSE_CODES;

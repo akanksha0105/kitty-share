@@ -7,28 +7,29 @@ var mongoose = require("mongoose");
 
 const webpush = require("web-push");
 const { UUID } = require("bson");
+const RESPONSE_CODES = require("../constants/responseCodes");
 
+
+//Router Checked and Refactored
 router.get("/subscribeddevice/:deviceid", (req, res) => {
-	console.log(
-		"In susbscriptionsRoute.js for checking whether the receiver device is subscribed to notifications",
-	);
-	const device_id = req.params.deviceid;
 
-	SubscriptionsModel.find({ deviceId: device_id })
+	const deviceId = req.params.deviceid;
+
+	SubscriptionsModel.find({ deviceId: deviceId })
 		.then((subscriptionsModelResponse) => {
-			console.log("subscriptionsModelResponse", subscriptionsModelResponse);
 
 			if (subscriptionsModelResponse.length <= 0) {
-				console.log("The receiver device is not subscribed to notifications");
 				return res.status(404).json({
-					code: 102,
+					code: RESPONSE_CODES.CODE_NOT_FOUND,
 					message: "The receiver device is not subscribed to notifications",
+					subscribed: false,
 				});
 			}
 
 			return res.status(200).json({
-				code: 101,
+				code: RESPONSE_CODES.SUCCESS,
 				message: "The receiver's device is already subscribed to notifications",
+				subscribed: true,
 			});
 		})
 		.catch((err) => {
@@ -37,31 +38,32 @@ router.get("/subscribeddevice/:deviceid", (req, res) => {
 				err,
 			);
 			return res.status(500).json({
-				code: 101,
+				code: RESPONSE_CODES.SERVER_ERROR,
 				message:
-					"Encountered problem on server side in checking the receiver's device validation of subscriptions Modal ",
+					"Encountered problem on server side in checking the receiver's device validation of subscriptions Modal " || err,
+				subscribed: false,
 			});
 		});
 });
 
+//Router Checked and Refactored
 router.delete("/subscribeddevice/:subscriptionId", async (req, res) => {
-	console.log("In delete subscription route");
+	console.log("In delete subscription route to delete subscribed route");
 	const subscriptionId = req.params.subscriptionId;
-	console.log("subscriptionId", subscriptionId);
+
 	SubscriptionsModel.findOneAndDelete({ deviceId: subscriptionId })
 		.then((deletedSubscription) => {
-			console.log(
-				"Subscription deleted from the database",
-				deletedSubscription,
-			);
+
 
 			if (deletedSubscription)
 				return res.status(200).json({
+					code: RESPONSE_CODES.SUCCESS,
 					message: "subscription Deleted from the database",
 					isSubscriptionDeleted: true,
 				});
 
 			return res.status(404).json({
+				code: RESPONSE_CODES.CODE_NOT_FOUND,
 				message: "Subscription not found",
 				isSubscriptionDeleted: false,
 			});
@@ -69,16 +71,17 @@ router.delete("/subscribeddevice/:subscriptionId", async (req, res) => {
 		.catch((err) => {
 			console.error(err);
 			return res.status(500).json({
+				code: RESPONSE_CODES.SERVER_ERROR,
 				message: "Unable to delete the subscription from the database",
 				isSubscriptionDeleted: false,
 			});
 		});
 });
 
-//Route Checked
+//  TODO: need to check this route
+
 router.post("/savesubscription", async (req, res) => {
 	const subscription = req.body.body;
-	console.log("Subscription at server", subscription);
 
 	const searchedDeviceId = subscription.subscribedDeviceId;
 	console.log("searchedDeviceEndpoint", searchedDeviceId);
@@ -105,16 +108,16 @@ router.post("/savesubscription", async (req, res) => {
 						console.log("Subscription saved in Database");
 						console.log(record);
 						res.status(200).json({
+							code: RESPONSE_CODES.SUCCESS,
 							data: record,
 							message: "Subscription saved in Database",
 						});
 					})
 					.catch((err) => {
-						console.error(
-							"Server unable to store the subscription object",
-							err,
-						);
+
 						res.status(500).json({
+							code: RESPONSE_CODES.SERVER_ERROR,
+							data: {},
 							message: "Server unable to store the subscription object",
 						});
 					});
@@ -141,17 +144,15 @@ router.post("/savesubscription", async (req, res) => {
 				$set: newValues,
 			})
 				.then((updatedSubscription) => {
-					console.log(
-						"Subscription model successfully updated",
-						updatedSubscription,
-					);
+
 					res
 						.status(200)
-						.json({ data: "Subscription updated and saved in database" });
+						.json({ code: RESPONSE_CODES.SUCCESS, message: "Subscription updated and saved in database" });
 				})
 				.catch((err) => {
 					console.error("Unable to update SubscriptionModel", err);
 					res.status(500).json({
+						code: RESPONSE_CODES.SERVER_ERROR,
 						message:
 							"Unable to update the subscription in Subscriptions database",
 					});
@@ -162,16 +163,17 @@ router.post("/savesubscription", async (req, res) => {
 const validURL = (str) => {
 	var pattern = new RegExp(
 		"^(https?:\\/\\/)?" + // protocol
-			"((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-			"((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-			"(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-			"(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-			"(\\#[-a-z\\d_]*)?$",
+		"((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+		"((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+		"(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+		"(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+		"(\\#[-a-z\\d_]*)?$",
 		"i",
 	); // fragment locator
 	return !!pattern.test(str);
 };
 
+//Checked and Refactored
 const checkOrGenerateCodeForText = async (urlTobeShared) => {
 	return TextCodeModel.find({ message: urlTobeShared })
 		.then((messageFoundResponse) => {
@@ -197,6 +199,7 @@ const checkOrGenerateCodeForText = async (urlTobeShared) => {
 					})
 					.catch((err) => {
 						console.error("Error in newTextCodeSavedResponse ", err);
+						return "";
 					});
 			}
 		})
@@ -204,33 +207,23 @@ const checkOrGenerateCodeForText = async (urlTobeShared) => {
 			console.error("Error in messageFoundResponse ", err);
 		});
 };
+
+//Router Checked and Refactored
 router.post("/sendnotification", async (req, res) => {
-	console.log("Reaching send Notification route...");
-	// console.log(req.body.currentDeviceId);
-	console.log(req.body);
-	// const senderDeviceId = req.body.currentDeviceId.currentDeviceId;
+
 	const senderDeviceId = req.body.currentDeviceId;
-	const receiverDeviceID = req.body.receiverDeviceId;
+	const receiverDeviceId = req.body.receiverDeviceId;
 	const urlTobeShared = req.body.urlTobeShared;
 	const notificationSendingDevice = req.body.notificationSendingDevice;
 
-	const subscription = SubscriptionsModel.find({ deviceId: receiverDeviceID });
+	const subscription = SubscriptionsModel.find({ deviceId: receiverDeviceId });
 	subscription
 		.then((subscriptionsModelRecord) => {
-			console.log(
-				"Response with respect to the request of receiver's device_id ",
-				subscriptionsModelRecord,
-			);
-
-			//This block of syntax can be avoided
 			if (subscriptionsModelRecord.length <= 0) {
-				// return res
-				// 	.status(404)
-				// 	.json({ message: "No receiver_id exists like this..." });
 
 				return res
 					.status(404)
-					.json({ message: "No receiver_id exists like this...", sent: false });
+					.json({ code: RESPONSE_CODES.RESOURCE_NOT_FOUND, message: "No receiver_id exists like this", sent: false });
 			}
 
 			//console.log(subscriptionsModelRecord[0].subscriptionObject.endpoint);
@@ -242,10 +235,6 @@ router.post("/sendnotification", async (req, res) => {
 				keys: subscriptionsModelRecord[0].subscriptionObject.keys,
 			};
 
-			console.log(
-				"pushSubscriptionObject in sendnotifications route",
-				pushSubscriptionObject,
-			);
 
 			let newCode, isURL, payload;
 			if (validURL(urlTobeShared) === true) {
@@ -266,10 +255,6 @@ router.post("/sendnotification", async (req, res) => {
 
 				return checkOrGenerateCodeForText(urlTobeShared).then(
 					(checkOrGenerateCodeForTextResponse) => {
-						console.log(
-							"checkOrGenerateCodeForTextResponse",
-							checkOrGenerateCodeForTextResponse,
-						);
 
 						payload = JSON.stringify({
 							title: `Notification by ${notificationSendingDevice}`,
@@ -300,16 +285,17 @@ router.post("/sendnotification", async (req, res) => {
 					console.log("webpush Notification sent", webpushNotificationResponse);
 					res.setHeader("Content-Type", "application/json");
 					// res.json({ message: "message sent" });
-					res.status(200).json({ message: "message sent", sent: true });
+					res.status(200).json({ code: RESPONSE_CODES.SUCCESS, message: "message sent", sent: true });
 				})
 				.catch((err) => {
 					console.error("Error in webpush", err);
-					res.status(500).json({ message: "Error in webpush", sent: false });
+					res.status(500).json({ code: RESPONSE_CODES.SERVER_ERROR, message: "Error in webpush", sent: false });
 				});
 		})
 		.catch((err) => {
 			console.error("Unable to fetch subscription from database", err);
 			res.status(500).json({
+				code: RESPONSE_CODES.SERVER_ERROR,
 				message: "Unable to fetch subscription from database",
 				sent: false,
 			});

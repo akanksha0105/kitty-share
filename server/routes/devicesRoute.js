@@ -3,13 +3,13 @@ const router = express.Router();
 const DevicesModel = require("../models/devicesModel");
 var mongoose = require("mongoose");
 const generateDeviceNameModule = require("../modules/generateDeviceName.module");
-//Route checked
+const RESPONSE_CODES = require("../constants/responseCodes");
+
+//Route checked and refactored
 router.post("/newdevice", async (req, res) => {
-	console.log("In route for registering of new device");
 
 	const deviceId = req.body.senderDeviceId;
 
-	console.log("req.body.senderDeviceId", req.body.senderDeviceId);
 	const newDevicePair = new DevicesModel({
 		deviceId: deviceId,
 		deviceName: null,
@@ -18,37 +18,33 @@ router.post("/newdevice", async (req, res) => {
 	newDevicePair
 		.save()
 		.then((record) => {
-			console.log("record is", record);
-			console.log("record.deviceId", record.deviceId);
-			res.status(200).json({ deviceId: record.deviceId });
+
+			res.status(200).json({ code: RESPONSE_CODES.SUCCESS, message: "successfully created new device", deviceId: record.deviceId });
 		})
 		.catch((err) => {
 			console.error("Problem encountered in saving new device's id", err);
 			res
 				.status(500)
-				.json({ message: "Problem encountered in saving new device's id" });
+				.json({ code: RESPONSE_CODES.SERVER_ERROR, message: "Problem encountered in saving new device's id", deviceId: "" });
 		});
 });
 
+//Route checked and refactored
 router.post("/newdevice/devicename/:deviceId", (req, res) => {
-	console.log(
-		"In route for updating the device's device name with specified current device id",
-	);
 
 	const deviceId = req.params.deviceId;
-	console.log("deviceId here :", deviceId);
+
 	let deviceName;
 
 	generateDeviceNameModule
 		.generateDeviceName(deviceId)
 		.then((queryResult) => {
-			console.log("generateDeviceNamePromiseResponse :", queryResult);
+
 			deviceName = queryResult;
 
 			return DevicesModel.find({ deviceId: deviceId });
 		})
 		.then((deviceRecord) => {
-			console.log("Device Record : ", deviceRecord);
 
 			let oldDeviceRecord = {
 				deviceId: deviceRecord[0].deviceId,
@@ -67,19 +63,15 @@ router.post("/newdevice/devicename/:deviceId", (req, res) => {
 			console.log("updatedDeviceModelRecord", updatedDeviceModelRecord);
 			return res
 				.status(200)
-				.json({ updatedDeviceName: true, deviceName: deviceName });
+				.json({ code: RESPONSE_CODES.SUCCESS, updatedDeviceName: true, deviceName: deviceName, message: "device name updated" });
 		})
 		.catch((err) => {
-			console.error(
-				"Error encountered on the server side in updating the device name of the current device: ",
-				err,
-			);
-			return res.status(500).json({ updatedDeviceName: false });
+			return res.status(500).json({ code: RESPONSE_CODES.SERVER_ERROR, updatedDeviceName: false, deviceName: "", message: err });
 		});
 });
 
+//Route checked and refactored
 router.get("/newdevice/:deviceName", (req, res) => {
-	console.log("In route for registering of new device name");
 
 	const deviceName = req.params.deviceName;
 
@@ -89,31 +81,28 @@ router.get("/newdevice/:deviceName", (req, res) => {
 			if (findDeviceNameResponse.length > 0)
 				return res
 					.status(200)
-					.json({ deviceNameChecked: true, deviceNameExists: true });
+					.json({ code: RESPONSE_CODES.SUCCESS, deviceNameChecked: true, deviceNameExists: true });
 
 			if (findDeviceNameResponse.length <= 0)
 				return res.status(404).json({
-					code: 102,
+					code: RESPONSE_CODES.RESOURCE_NOT_FOUND,
 					deviceNameChecked: true,
 					deviceNameExists: false,
 				});
 		})
 		.catch((err) => {
-			console.error(
-				"Error in finding the device with the specified device name",
-				err,
-			);
+
 			return res
 				.status(500)
-				.json({ code: 101, deviceNameChecked: false, deviceNameExists: false });
+				.json({ code: RESPONSE_CODES.SERVER_ERROR, deviceNameChecked: false, deviceNameExists: false });
 		});
 });
 
-//Route checked
+//Route checked and refactored
 router.post("/deviceidvalid", (req, res) => {
-	console.log("In the deviceidvalid route");
+
 	const deviceIdToBeChecked = req.body.deviceIdToBeChecked;
-	console.log("device id to be checked", deviceIdToBeChecked);
+
 	DevicesModel.find({ deviceId: deviceIdToBeChecked })
 		.exec()
 		.then((deviceIdRecord) => {
@@ -122,45 +111,41 @@ router.post("/deviceidvalid", (req, res) => {
 				//No such device_id is present
 				return res
 					.status(404)
-					.json({ code: 102, message: "No such device_id exist" });
+					.json({ code: RESPONSE_CODES.RESOURCE_NOT_FOUND, message: "No such device_id exist", deviceidvalid: false });
 			}
 
-			//Later on we will be adding device name in the message
+			//TODO: Later on we will be adding device name in the message
 
-			res.status(200).json({ message: "receiver device exists" });
+			res.status(200).json({ code: RESPONSE_CODES.SUCCESS, message: "receiver device exists", deviceidvalid: true });
 		})
 		.catch((err) => {
-			console.error(
-				"Server unable to check for device_id in the devices database",
-				err,
-			);
+
 			res.status(500).json({
-				code: 101,
+				code: RESPONSE_CODES.SERVER_ERROR,
 				message: "Server unable to check for device_id in the devices database",
+				deviceidvalid: false,
 			});
 		});
 });
 
+//Route checked and refactored
 router.get("/searchdevicename/:deviceId", (req, res) => {
-	console.log(
-		"In route for getting the device's device name with specified current device id",
-	);
 
 	const deviceId = req.params.deviceId;
 
-	console.log(`deviceId in get : ${deviceId}`);
-
 	DevicesModel.find({ deviceId: deviceId })
 		.then((deviceRecord) => {
-			console.log("Device Name : ", deviceRecord[0].deviceName);
+
 
 			if (deviceRecord.length <= 0) {
 				return res.status(404).json({
-					code: 102,
+					code: RESPONSE_CODES.RESOURCE_NOT_FOUND,
 					retrievedDeviceName: false,
+					deviceName: "",
 				});
 			}
 			return res.status(200).json({
+				code: RESPONSE_CODES.SUCCESS,
 				deviceName: deviceRecord[0].deviceName,
 				retrievedDeviceName: true,
 			});
@@ -170,28 +155,32 @@ router.get("/searchdevicename/:deviceId", (req, res) => {
 				"Error encountered on the server side in deriving the device name of the current device: ",
 				err,
 			);
-			return res.status(500).json({ code: 101, retrievedDeviceName: false });
+			return res.status(500).json({
+				code: RESPONSE_CODES.SERVER_ERROR,
+				retrievedDeviceName: false,
+				deviceName: "",
+			});
 		});
 });
 
+//Route checked and refactored
 router.get("/searchdeviceid/:deviceName", (req, res) => {
-	console.log("In route for getting the device's device id with deviceName ");
 
 	const deviceName = req.params.deviceName;
-
-	console.log(`deviceName in get : ${deviceName}`);
 
 	DevicesModel.find({ deviceName: deviceName })
 		.then((deviceRecord) => {
 			if (deviceRecord.length <= 0) {
 				return res.status(404).json({
-					code: 102,
+					code: RESPONSE_CODES.RESOURCE_NOT_FOUND,
 					retrievedDeviceId: false,
+					deviceId: "",
 				});
 			}
 
 			console.log("Device Id : ", deviceRecord[0].deviceId);
 			return res.status(200).json({
+				code: RESPONSE_CODES.SUCCESS,
 				deviceId: deviceRecord[0].deviceId,
 				retrievedDeviceId: true,
 			});
@@ -201,7 +190,11 @@ router.get("/searchdeviceid/:deviceName", (req, res) => {
 				"Error encountered on the server side in deriving the device name of the current device: ",
 				err,
 			);
-			return res.status(500).json({ code: 101, retrievedDeviceId: false });
+			return res.status(500).json({
+				code: RESPONSE_CODES.SERVER_ERROR,
+				deviceId: "",
+				retrievedDeviceId: false,
+			});
 		});
 });
 
