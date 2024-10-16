@@ -5,6 +5,7 @@ const dbconnection = require("./db");
 const path = require("path");
 const cors = require("cors");
 const webpush = require("web-push");
+require('dotenv').config();
 
 // const webpush = require("web-push");
 const PORT = 8080;
@@ -21,8 +22,8 @@ var textRoute = require("./routes/textRoute");
 // const vapidKeys = webpush.generateVAPIDKeys();
 const vapidKeys = {
 	publicKey:
-		"BHMKkSsulVHdqMkkdLM3wkbxA2_c7JV5oQ5f8WAiUHTrp_XrNgjQC5dA1HHSqrSTTGNOGrj_1V-qZ5lv8QAgrGc",
-	privateKey: "MgIq6o5nZTzMnyBVeBIDT2yw_GuFX-WkMz6KaFOEDCM",
+		process.env.PUBLIC_KEY,
+	privateKey: process.env.PRIVATE_KEY,
 };
 
 webpush.setVapidDetails(
