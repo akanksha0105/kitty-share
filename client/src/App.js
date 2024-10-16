@@ -9,48 +9,20 @@ import HomeScreen from "./screens/HomeScreen";
 import ShowMessage from "./screens/ShowMessage";
 import WebsiteLoader from "./screens/WebsiteLoader";
 import Demo from "./screens/Demo";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+// import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 import "./styles/App.css";
+import { subscribeUserToPush } from "./pushNotification";
 function App() {
 	const [currentDeviceId, setCurrentDeviceId] = useState("");
 	const [currentDeviceName, setCurrentDeviceName] = useState("");
 	const [isSubscribedToNotifications, setIsSubscribedToNotifications] =
-		useState(false);
-	const [isSubscribeButtonDisabled, setIsSubscribeButtonDisabled] =
-		useState(false);
-	const checkDeviceSubscribedToNotifications = () => {
-		console.log("In checkDeviceSubscribedToNotifications of App component");
+		useState(JSON.parse(localStorage.getItem("isSubscribed")) || false);
+	// const [isSubscribeButtonDisabled, setIsSubscribeButtonDisabled] =
+	// 	useState(false);
 
-		let isSubscribed = JSON.parse(localStorage.getItem("isSubscribed"));
-		console.log(
-			"isSubscribed in checkDeviceSubscribedToNotifications",
-			isSubscribed,
-		);
+	console.log("debug", isSubscribedToNotifications);
 
-		if (isSubscribed === null) {
-			console.log("Loop 1 in App");
-			localStorage.setItem("isSubscribed", false);
-			setIsSubscribedToNotifications(false);
-			return;
-		}
-
-		if (isSubscribed === true) {
-			console.log("Loop 2 in App");
-			localStorage.setItem("isSubscribed", true);
-			setIsSubscribedToNotifications(true);
-			setIsSubscribeButtonDisabled(true);
-			return;
-		}
-
-		if (isSubscribed === false) {
-			console.log("Loop 3 in App");
-			localStorage.setItem("isSubscribed", false);
-			setIsSubscribedToNotifications(false);
-			setIsSubscribeButtonDisabled(false);
-			return;
-		}
-	};
 	const registerANewDevice = async () => {
 		let fetchedDeviceId = localStorage.getItem("deviceId");
 
@@ -82,10 +54,6 @@ function App() {
 
 	const generateNewDeviceName = async (idOfCurrentDevice) => {
 		let deviceId = idOfCurrentDevice;
-		console.log(
-			"In generateNewDeviceName in App component with currentDeviceId :",
-			deviceId,
-		);
 
 		if (localStorage.getItem("deviceName") !== null) {
 			setCurrentDeviceName(localStorage.getItem("deviceName"));
@@ -95,11 +63,6 @@ function App() {
 		return axios
 			.post(`/api/devices/newdevice/devicename/${deviceId}`)
 			.then((generateNewDeviceNameResponse) => {
-				console.log(
-					"generateNewDeviceNameResponse",
-					generateNewDeviceNameResponse,
-				);
-
 				if (generateNewDeviceNameResponse.data.updatedDeviceName === true) {
 					localStorage.setItem(
 						"deviceName",
@@ -115,46 +78,49 @@ function App() {
 			});
 	};
 
-	const onNotificationsPermission = () => {
+	const onNotificationsPermission = async () => {
 		let isSubscribed = isSubscribedToNotifications;
 		console.log("isSubscribed in onNotificationsPermission", isSubscribed);
 		if (isSubscribed === false) {
-			console.log(
-				"isSubscribed in  Loop1 onNotificationsPermission",
-				isSubscribed,
-			);
+			//TODO: Uncomment it 
+			// serviceWorkerRegistration
+			// 	.subscribeToPushNotifications()
+			// 	.then((response) => {
+			// 		if (response === true) {
+			// 			localStorage.setItem("isSubscribed", true);
+			// 			setIsSubscribedToNotifications(true);
+			// 		} else {
+			// 			localStorage.setItem("isSubscribed", false);
+			// 			setIsSubscribedToNotifications(false);
+			// 		}
+			// 	})
+			// 	.catch((err) => {
+			// 		console.error(
+			// 			"Application not registered for the push notifications",
+			// 			err,
+			// 		);
+			// 		localStorage.setItem("isSubscribed", false);
+			// 		setIsSubscribedToNotifications(false);
+			// 	});
 
-			// setIsSubscribeButtonDisabled(true);
-
-			serviceWorkerRegistration
-				.subscribeToPushNotifications()
+			await subscribeUserToPush()
 				.then((response) => {
-					console.log("subscribed to push notifications", response);
-
-					if (response === true) {
-						console.log("Here");
-						localStorage.setItem("isSubscribed", true);
-						setIsSubscribedToNotifications(true);
-						setIsSubscribeButtonDisabled(true);
-						// setSubscribeOptionButtonText("Subscribed");
-					} else {
-						console.log("Here2");
+						if (response === true) {
+							localStorage.setItem("isSubscribed", true);
+							setIsSubscribedToNotifications(true);
+						} else {
+							localStorage.setItem("isSubscribed", false);
+							setIsSubscribedToNotifications(false);
+						}
+					})
+					.catch((err) => {
+						console.error(
+							"Application not registered for the push notifications",
+							err,
+						);
 						localStorage.setItem("isSubscribed", false);
 						setIsSubscribedToNotifications(false);
-						setIsSubscribeButtonDisabled(false);
-						// setSubscribeOptionButtonText("Subscribe");
-					}
-				})
-				.catch((err) => {
-					console.error(
-						"Application not registered for the push notifications",
-						err,
-					);
-					localStorage.setItem("isSubscribed", false);
-					setIsSubscribedToNotifications(false);
-					setIsSubscribeButtonDisabled(false);
-					// setSubscribeOptionButtonText("Subscribe");
-				});
+					});
 			return;
 		}
 
@@ -163,11 +129,6 @@ function App() {
 				"isSubscribed in  Loop2 onNotificationsPermission",
 				isSubscribed,
 			);
-			// localStorage.setItem("isSubscribed", false);
-			// setIsSubscribedToNotifications(false);
-			setIsSubscribeButtonDisabled(true);
-			// setSubscribeOptionButtonText("Subscribe");
-			// setOpenUnSubscriptionModal(true);
 
 			return;
 		}
@@ -177,37 +138,33 @@ function App() {
 		registerANewDevice();
 	}, [currentDeviceId, currentDeviceName]);
 
-	useEffect(() => {
-		checkDeviceSubscribedToNotifications();
-	});
-
 	if (currentDeviceId === "") return <WebsiteLoader />;
 
 	return (
-		<div className="app">
+		<div className='app'>
 			<Router>
 				<Header
 					currentDeviceId={currentDeviceId}
 					currentDeviceName={currentDeviceName}
 					isDeviceSubscribed={isSubscribedToNotifications}
 					onNotificationsPermission={onNotificationsPermission}
-					isSubscribeButtonDisabled={isSubscribeButtonDisabled}
+					// isSubscribeButtonDisabled={isSubscribeButtonDisabled}
 				/>
 				{currentDeviceId ? (
 					<Switch>
-						<Route path="/linktoanewdevice">
+						<Route path='/linktoanewdevice'>
 							<LinkToDeviceScreen currentDeviceId={currentDeviceId} />
 						</Route>
-						<Route path="/loading">
+						<Route path='/loading'>
 							<Loading />
 						</Route>
-						<Route path="/demo">
+						<Route path='/demo'>
 							<Demo />
 						</Route>
-						<Route path="/showmessage">
+						<Route path='/showmessage'>
 							<ShowMessage />
 						</Route>
-						<Route path="/">
+						<Route path='/'>
 							<HomeScreen
 								currentDeviceId={currentDeviceId}
 								currentDeviceName={currentDeviceName}

@@ -12,11 +12,10 @@ function Header(props) {
 		currentDeviceName,
 		isDeviceSubscribed,
 		onNotificationsPermission,
-		isSubscribeButtonDisabled,
+	
 	} = props;
 	const [linkClicked, setLinkClicked] = useState(false);
 	const [linkTwoClicked, setLinkTwoClicked] = useState(false);
-	const [logoClick, setLogoClick] = useState();
 
 	console.log("isDeviceSubscribed in Header: ", isDeviceSubscribed);
 
@@ -27,8 +26,6 @@ function Header(props) {
 		if (window.location.href === "https://kittyshare.xyz/") {
 			window.location.reload();
 		}
-		// console.log("loc", window.location.origin);
-		// setLogoClick({});
 	};
 
 	const onLinkOneClick = (e) => {
@@ -95,18 +92,9 @@ function Header(props) {
 
 				{currentDeviceName ? <div> {currentDeviceName}</div> : null}
 
-				{/* {currentDeviceId &&
-				localStorage.getItem("notificationsServicePossible") ? (
-					<div
-						className={
-							localStorage.getItem("device saved") === true
-								? "subscription__button"
-								: null
-						}> */}
-
 				<div className="subscription__button">
 					<button
-						disabled={isSubscribeButtonDisabled}
+						disabled={isDeviceSubscribed}
 						onClick={onNotificationsPermission}
 						className={
 							isDeviceSubscribed
