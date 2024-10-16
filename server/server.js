@@ -1,11 +1,12 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+require('dotenv').config();
 const dbconnection = require("./db");
 const path = require("path");
 const cors = require("cors");
 const webpush = require("web-push");
-require('dotenv').config();
+
 
 // const webpush = require("web-push");
 const PORT = 8080;

@@ -3,7 +3,7 @@
 const mongoose = require("mongoose");
 // const generateCodes = require("./generateCodes");
 var mongoDBURL =
-	process.env.MONGO_URI || "mongodb+srv://admin:dKBVupaayQqk30BZ@cluster0.1iec7.mongodb.net/";
+	process.env.MONGO_URI;
 
 	console.log("HERE IS THE MONGO URL ", mongoDBURL )
 	mongoose.connect(mongoDBURL, { useNewUrlParser: true, useUnifiedTopology: true })
