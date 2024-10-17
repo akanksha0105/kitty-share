@@ -16,18 +16,12 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 	const onLinkToNewDevice = async () => {
 		setErrorMessage("");
 		setSuccessMessage("");
-		console.log(
-			"In onSendingToOtherDevice event handler in LinkToDeviceScreen component",
-		);
+
 		setIsLinkDeviceButtonDisabled(true);
 		setLinkDeviceButtonText("Linking...");
 
 		checkReceiverDeviceName(receiverDeviceName)
 			.then((getReceiverDeviceNameResponse) => {
-				console.log(
-					"getReceiverDeviceNameResponseFromFunction",
-					getReceiverDeviceNameResponse,
-				);
 				if (getReceiverDeviceNameResponse.retrievedDeviceId === false) {
 					setErrorMessage(getReceiverDeviceNameResponse.message);
 					setIsLinkDeviceButtonDisabled(false);
@@ -57,7 +51,6 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 
 		linkDevices(currentDeviceId, receiverDeviceId).then(
 			(linkDevicesResponse) => {
-				console.log("linkDevicesResponse", linkDevicesResponse);
 				if (linkDevicesResponse.linked === true) {
 					setSuccessMessage("Both devices are linked");
 					setIsLinkDeviceButtonDisabled(false);
@@ -74,8 +67,6 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 	};
 
 	useEffect(() => {
-		console.log("receiverDeviceId", receiverDeviceID);
-
 		if (receiverDeviceName.length > 0) {
 			setIsLinkDeviceButtonDisabled(false);
 		} else {
@@ -86,13 +77,13 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 	if (currentDeviceId === "" || undefined) return <div>Loading device...</div>;
 
 	return (
-		<div className="link__to__a__device__screen">
+		<div className='link__to__a__device__screen'>
 			<form>
 				<div>
 					<label>
 						<input
-							id="receiver_device_id"
-							type="text"
+							id='receiver_device_id'
+							type='text'
 							value={receiverDeviceName}
 							onChange={(e) => setReceiverDeviceName(e.target.value)}
 							required
@@ -105,13 +96,13 @@ function LinkToDeviceScreen({ currentDeviceId }) {
 							onChange={(e) => setReceiverDeviceID(e.target.value)}
 							required
 						/> */}
-						<div className="label-text">Enter the Device Name</div>
+						<div className='label-text'>Enter the Device Name</div>
 					</label>
 				</div>
 
 				<button
-					className="button__1"
-					type="button"
+					className='button__1'
+					type='button'
 					disabled={isLinkDeviceButtonDisabled}
 					onClick={onLinkToNewDevice}>
 					{linkDeviceButtonText}

@@ -14,22 +14,17 @@ function HomeScreen({
 	const [showTextInput, setShowTextInput] = useState(true);
 	const [showCodeInput, setShowCodeInput] = useState(true);
 	const displayTextInputComponent = () => {
-		console.log("In displayTextInputComponent");
 		setShowTextInput(false);
 	};
 
 	const displayCodeInputComponent = () => {
-		console.log("In displayCodeInputComponent");
 		setShowCodeInput(false);
 	};
 
 	const displayErrorMessage = () => {
 		setSharedInput("Please enter the text...");
 	};
-	console.log(
-		"In the HomeSreenComponent with the currentDeviceId : ",
-		currentDeviceId,
-	);
+
 	const getTextInputScreenName = () => {
 		if (showTextInput === true && showCodeInput === false) {
 			return "alternative__text__input__form";
@@ -40,8 +35,8 @@ function HomeScreen({
 		}
 	};
 	return (
-		<div className="home__screen">
-			<div className="home">
+		<div className='home__screen'>
+			<div className='home'>
 				<CodeInput
 					displayTextInputComponent={displayTextInputComponent}
 					currentDeviceId={currentDeviceId}
@@ -54,17 +49,17 @@ function HomeScreen({
 				/>
 				{/* <div className={showTextInput ? "text__input__form" : "display-none"}> */}
 				<div className={getTextInputScreenName()}>
-					<form className="form__one__div">
+					<form className='form__one__div'>
 						<label>
 							<input
-								name="name"
-								id="name"
-								type="text"
+								name='name'
+								id='name'
+								type='text'
 								value={sharedInput}
 								onChange={(e) => setSharedInput(e.target.value)}
 								required
 							/>
-							<div className="label-text">Enter the text to be shared</div>
+							<div className='label-text'>Enter the text to be shared</div>
 						</label>
 						{/* <br /> */}
 						<ButtonsGroup

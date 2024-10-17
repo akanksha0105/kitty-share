@@ -39,10 +39,9 @@ function ButtonsGroup(props) {
 		secretKeyPromise
 			.then((response) => {
 				setGeneratedCode(response.data.data);
-				console.log("response", response.data);
+
 				setGenerateKeyButtonText("Generate Key again");
 				setIsGenerateKeyButtonDisabled(false);
-				console.log("Generated Key provided by the server");
 			})
 			.catch((error) => {
 				const { code } = error.response.data;
@@ -57,10 +56,9 @@ function ButtonsGroup(props) {
 	const sendConnectionsEnabled = (event) => {
 		event.preventDefault();
 		displayCodeInputComponent();
-		console.log("In the sendConnectionsComponentEnabled");
+
 		setKeyGeneratedComponentEnabled(false);
 		if (sharedInput.length <= 0) {
-			// displayErrorMessage();
 			setNoTextErrorMessage("Please fill in the above field");
 			return;
 		}
@@ -75,7 +73,6 @@ function ButtonsGroup(props) {
 		displayCodeInputComponent();
 		setConnectionsComponentEnabled(false);
 		if (sharedInput.length <= 0) {
-			// displayErrorMessage();
 			setNoTextErrorMessage("Please fill in the above field");
 			return;
 		}
@@ -88,34 +85,22 @@ function ButtonsGroup(props) {
 	};
 
 	useEffect(() => {
-		console.log("sharedInput", sharedInput);
-
-		// if (sharedInput.length <= 0) {
-		// 	setNoTextErrorMessage("Please fill in the above field");
-		// } else {
-		// 	setNoTextErrorMessage("");
-		// }
-
 		if (sharedInput.length > 0) setNoTextErrorMessage("");
 	}, [sharedInput]);
 
 	return (
 		<>
-			<div className="text__input__screen__buttons">
+			<div className='text__input__screen__buttons'>
 				{/* <div> */}
 				{noTextErrorMessage ? (
-					<div className="no__text__error__message">
+					<div className='no__text__error__message'>
 						<ErrorMessage message={noTextErrorMessage} />
 					</div>
 				) : null}
 				<button
 					onClick={keyGeneratedEnabled}
-					// className={buttonOneDisabled ? "display-none" : "button__1"}
-					className="button__1"
-					type="submit"
-					// disabled={sharedInput.length > 0 ? false : true}>
-					// disabled={isGenerateKeyButtonDisabled}
-				>
+					className='button__1'
+					type='submit'>
 					{generateKeyButtonText}
 				</button>
 				{/* </div> */}
@@ -123,8 +108,8 @@ function ButtonsGroup(props) {
 				<button
 					onClick={sendConnectionsEnabled}
 					// className={buttonTwoDisabled ? "display-none" : "button__2"}
-					className="button__2"
-					type="submit"
+					className='button__2'
+					type='submit'
 					// disabled={sharedInput.length > 0 ? false : true}
 				>
 					Send to Connections
