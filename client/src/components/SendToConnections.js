@@ -29,17 +29,11 @@ function SendToConnections(props) {
 	};
 
 	const onGetAllConnections = () => {
-		console.log(
-			"In onGetAllConnections function in SendToConnections component",
-		);
-
 		let deviceId = currentDeviceId;
 
 		axios
 			.get(`/api/connections/getAllConnections/${deviceId}`)
 			.then((onGetAllConnectionsResponse) => {
-				console.log("onGetAllConnectionsResponse", onGetAllConnectionsResponse);
-
 				if (onGetAllConnectionsResponse.data.connectionsExists === true)
 					setConnectionsList(
 						onGetAllConnectionsResponse.data.getAllConnectionsArray,
@@ -51,7 +45,6 @@ function SendToConnections(props) {
 					err,
 				);
 				const { code, message } = err.response.data;
-				console.log(`code is ${code}, message is ${message} `);
 
 				if (code === 102) {
 					//
@@ -100,16 +93,16 @@ function SendToConnections(props) {
 						? "add__device__modal display-block"
 						: "add__device__modal display-none"
 				}>
-				<div className="add__device__modal__header">No Connections</div>
+				<div className='add__device__modal__header'>No Connections</div>
 
-				<div className="add__device__modal__message">{displayMessage}</div>
-				<div className="add__device__modal__options">
-					<button type="button" className="button" onClick={hideModal}>
+				<div className='add__device__modal__message'>{displayMessage}</div>
+				<div className='add__device__modal__options'>
+					<button type='button' className='button' onClick={hideModal}>
 						Close
 					</button>
 
-					<Link className="add__device__button" to="/linktoanewdevice">
-						<button type="button" className="button">
+					<Link className='add__device__button' to='/linktoanewdevice'>
+						<button type='button' className='button'>
 							Add Device
 						</button>
 					</Link>

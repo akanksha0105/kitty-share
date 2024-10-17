@@ -5,11 +5,6 @@ import axios from "axios";
 // 	const deviceIdToBeChecked = receiverDeviceID;
 
 export const checkDeviceIsSubscribed = async (deviceIdToBeChecked) => {
-	console.log(
-		"device that is to be checked if it is subscribed to notifications",
-		deviceIdToBeChecked,
-	);
-
 	return axios
 		.get(`/api/subscription/subscribeddevice/${deviceIdToBeChecked}`)
 		.then((isDeviceSubscribedResponse) => {
@@ -35,19 +30,8 @@ export const checkDeviceIsSubscribed = async (deviceIdToBeChecked) => {
 };
 
 export const linkDevices = async (currentDeviceId, receiverDeviceID) => {
-	console.log("In linkDevices function on client side");
-
-	// Check Sender_Device is subscribed to notifications
-	// Check Receiver is Subscribed To Notifications
-	// Add Receiver device to the  sender connections list
-	// Add Sender device to the receiver device connections list
 	return checkDeviceIsSubscribed(currentDeviceId)
 		.then((checkDeviceIsSubscribedResponse) => {
-			console.log(
-				"CheckDeviceIsSubscribedResponse - Here it is the sender device",
-				checkDeviceIsSubscribedResponse,
-			);
-
 			if (checkDeviceIsSubscribedResponse.isSubscribed === false) {
 				let response = {
 					message:
@@ -60,7 +44,6 @@ export const linkDevices = async (currentDeviceId, receiverDeviceID) => {
 			return canReceiverDeviceBeLinked(currentDeviceId, receiverDeviceID);
 		})
 		.then((linkDevicesResponse) => {
-			console.log("linkDevicesResponse", linkDevicesResponse);
 			return linkDevicesResponse;
 		})
 		.catch((err) => {
@@ -76,11 +59,6 @@ export const canReceiverDeviceBeLinked = async (
 
 	return checkDeviceIsSubscribed(receiverDeviceID)
 		.then((checkDeviceIsSubscribedResponse) => {
-			console.log(
-				"CheckDeviceIsSubscribedResponse - Here it is the receiving device",
-				checkDeviceIsSubscribedResponse,
-			);
-
 			if (checkDeviceIsSubscribedResponse.isSubscribed === false) {
 				let response = {
 					message:
@@ -109,10 +87,6 @@ export const addSenderAndReceiverToTheDeviceConnectionList = async (
 		currentDeviceId,
 		receiverDeviceID,
 	).then((addSenderToTheDeviceConnectionListResponse) => {
-		console.log(
-			"addSenderToTheDeviceConnectionListResponse",
-			addSenderToTheDeviceConnectionListResponse,
-		);
 		if (addSenderToTheDeviceConnectionListResponse.connected === false) {
 			let response = {
 				message: addSenderToTheDeviceConnectionListResponse.data,
@@ -135,12 +109,6 @@ export const addSenderToTheDeviceConnectionList = async (
 ) => {
 	let device_id = receiverDeviceID;
 	let receivingDeviceId = currentDeviceId;
-	console.log(
-		"device_id in the addSenderToTheDeviceConnectionList",
-		device_id,
-		"receivingDeviceId  in the addSenderToTheDeviceConnectionList",
-		receivingDeviceId,
-	);
 
 	return axios
 		.post(`/api/connections/${device_id}`, {
@@ -169,21 +137,11 @@ export const addReceiverToTheDeviceConnectionList = async (
 	let device_id = currentDeviceId;
 	let receivingDeviceId = receiverDeviceID;
 
-	console.log(
-		"device_id in the addReceiverToTheDeviceConnectionList",
-		device_id,
-		"receivingDeviceId  in the addReceiverToTheDeviceConnectionList",
-		receivingDeviceId,
-	);
-
 	return axios
 		.post(`/api/connections/${device_id}`, {
 			receivingDeviceId,
 		})
 		.then((addReceiverToListResponse) => {
-			console.log("addReceiverToListResponse", addReceiverToListResponse);
-			// const { data, connected } = addReceiverToListResponse.data;
-
 			if (addReceiverToListResponse.data.connected === false) {
 				let response = {
 					message: addReceiverToListResponse.data.data,
