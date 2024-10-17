@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-require('dotenv').config()
+require("dotenv").config();
 const dbconnection = require("./db");
 const path = require("path");
 const cors = require("cors");
@@ -21,9 +21,12 @@ var connectionsRoute = require("./routes/connectionsRoute");
 var textRoute = require("./routes/textRoute");
 // const vapidKeys = webpush.generateVAPIDKeys();
 const vapidKeys = {
-	publicKey:
-		process.env.PUBLIC_KEY.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''),
-		privateKey:process.env.PRIVATE_KEY.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''), 
+	publicKey: process.env.PUBLIC_KEY.replace(/\+/g, "-")
+		.replace(/\//g, "_")
+		.replace(/=+$/, ""),
+	privateKey: process.env.PRIVATE_KEY.replace(/\+/g, "-")
+		.replace(/\//g, "_")
+		.replace(/=+$/, ""),
 };
 
 webpush.setVapidDetails(
@@ -32,11 +35,23 @@ webpush.setVapidDetails(
 	vapidKeys.privateKey,
 );
 
-app.use(cors());
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, "../client/build")));
-//app.use(express.static(path.join(__dirname, "../client")));
+//Deployment usecase
+
+app.use(
+	cors({
+		origin: [process.env.APP_URL, "localhost:3000"],
+		methods: ["POST", "GET"],
+		credentials: true,
+	}),
+);
+
+app.get("/", (req, res) => {
+	res.json("Server running");
+});
+// app.use(cors());
+// app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.use("/api/code", codeRoute);
 app.use("/api/devices", devicesRoute);
