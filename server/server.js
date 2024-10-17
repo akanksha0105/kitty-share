@@ -8,7 +8,7 @@ const cors = require("cors");
 const webpush = require("web-push");
 
 // const webpush = require("web-push");
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 const server = require("http").Server(app);
 const morgan = require("morgan");
@@ -20,6 +20,7 @@ var subscriptionsRoute = require("./routes/subscriptionsRoute");
 var connectionsRoute = require("./routes/connectionsRoute");
 var textRoute = require("./routes/textRoute");
 // const vapidKeys = webpush.generateVAPIDKeys();
+
 const vapidKeys = {
 	publicKey: process.env.PUBLIC_KEY.replace(/\+/g, "-")
 		.replace(/\//g, "_")
@@ -36,20 +37,19 @@ webpush.setVapidDetails(
 );
 
 app.use(bodyParser.json());
-
-//Deployment usecase
-
 app.use(
 	cors({
-		origin: [process.env.APP_URL, "localhost:3000"],
+		origin: [process.env.APP_URL, "http://localhost:3000"],
 		methods: ["POST", "GET"],
 		credentials: true,
 	}),
 );
 
+// Routes
 app.get("/", (req, res) => {
-	res.json("Server running");
+	res.json({ message: "Server running" });
 });
+
 // app.use(cors());
 // app.use(express.static(path.join(__dirname, "../client/build")));
 
@@ -59,8 +59,10 @@ app.use("/api/subscription", subscriptionsRoute);
 app.use("/api/connections", connectionsRoute);
 app.use("/api/text", textRoute);
 
-app.get("/*", function (req, res) {
-	res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+// Global error handling
+app.use((err, req, res, next) => {
+	console.error(err.stack);
+	res.status(500).json({ error: "Something went wrong!" });
 });
 
 app.listen(PORT, () => {
