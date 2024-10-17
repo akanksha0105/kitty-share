@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/ConnectionsRow.css";
 import axios from "axios";
+import { baseURL } from "../helper";
 
 const ConnectionsRow = (props) => {
 	const {
@@ -16,7 +17,7 @@ const ConnectionsRow = (props) => {
 	const onGetReceiverName = async () => {
 		let deviceId = receiverDeviceId;
 		return axios
-			.get(`/api/devices/searchdevicename/${deviceId}`)
+			.get(`${baseURL}/api/devices/searchdevicename/${deviceId}`)
 			.then((onGetReceiverNameResponse) => {
 				if (onGetReceiverNameResponse.data.retrievedDeviceName === true)
 					setReceiverName(onGetReceiverNameResponse.data.deviceName);
@@ -31,7 +32,7 @@ const ConnectionsRow = (props) => {
 		let notificationSendingDevice = currentDeviceName;
 
 		axios
-			.post("/api/subscription/sendnotification", {
+			.post(`${baseURL}/api/subscription/sendnotification`, {
 				currentDeviceId,
 				receiverDeviceId,
 				urlTobeShared,

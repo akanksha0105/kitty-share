@@ -1,11 +1,12 @@
 import axios from "axios";
 import { checkDeviceIsSubscribed } from "../functions/functions";
+import { baseURL } from "../helper";
 
 export const getReceiverDeviceName = async (receiverDeviceId) => {
 	let deviceId = receiverDeviceId;
 
 	return axios
-		.get(`/api/devices/searchdevicename/${deviceId}`)
+		.get(`${baseURL}/api/devices/searchdevicename/${deviceId}`)
 		.then((getReceiverDeviceNameResponse) => {
 			return {
 				receiverDeviceName: getReceiverDeviceNameResponse.data.deviceName,
@@ -32,7 +33,7 @@ export const getReceiverDeviceName = async (receiverDeviceId) => {
 export const checkReceiverDeviceName = async (receiverDeviceName) => {
 	const deviceName = receiverDeviceName;
 	return axios
-		.get(`/api/devices/searchdeviceid/${deviceName}`)
+		.get(`${baseURL}/api/devices/searchdeviceid/${deviceName}`)
 		.then((receiverDeviceNameResponse) => {
 			return {
 				receiverDeviceId: receiverDeviceNameResponse.data.deviceId,
@@ -59,7 +60,7 @@ export const retrieveMessage = async (codeInputValue) => {
 	const codedMessage = codeInputValue;
 
 	return axios
-		.get(`/api/code/geturl/${codedMessage}`)
+		.get(`${baseURL}/api/code/geturl/${codedMessage}`)
 		.then((retrievedMessagePromiseResponse) => {
 			const { data, device } = retrievedMessagePromiseResponse.data;
 			let successMessage = {
@@ -138,7 +139,9 @@ export const checkDeviceIsAnExistingConnection = async (
 	let receiverDeviceID = device;
 
 	return axios
-		.get(`/api/connections/checkifconnected/${device_id}/${receiverDeviceID}`)
+		.get(
+			`${baseURL}/api/connections/checkifconnected/${device_id}/${receiverDeviceID}`,
+		)
 
 		.then((connectionExistsResponse) => {
 			if (

@@ -1,8 +1,9 @@
 import axios from "axios";
+import { baseURL } from "../helper";
 
 export const getConnections = async (device_id) => {
 	return await axios
-		.get(`/api/connections/getAllConnections/${device_id} `)
+		.get(`${baseURL}/api/connections/getAllConnections/${device_id} `)
 		.then((getConnectionsResponse) => {
 			let data = getConnectionsResponse.data.message;
 

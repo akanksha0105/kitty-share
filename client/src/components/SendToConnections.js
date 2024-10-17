@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 // import ErrorMessage from "../components/ErrorMessage";
 import axios from "axios";
 import "../styles/AddDeviceModal.css";
+import { baseURL } from "../helper";
 
 function SendToConnections(props) {
 	// const location = useLocation();
@@ -32,7 +33,7 @@ function SendToConnections(props) {
 		let deviceId = currentDeviceId;
 
 		axios
-			.get(`/api/connections/getAllConnections/${deviceId}`)
+			.get(`${baseURL}/api/connections/getAllConnections/${deviceId}`)
 			.then((onGetAllConnectionsResponse) => {
 				if (onGetAllConnectionsResponse.data.connectionsExists === true)
 					setConnectionsList(

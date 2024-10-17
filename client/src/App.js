@@ -12,6 +12,7 @@ import Demo from "./screens/Demo";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 import "./styles/App.css";
+import { baseURL } from "./helper";
 function App() {
 	const [currentDeviceId, setCurrentDeviceId] = useState("");
 	const [currentDeviceName, setCurrentDeviceName] = useState("");
@@ -50,7 +51,7 @@ function App() {
 			localStorage.setItem("deviceId", newDeviceIdGenerated);
 			let senderDeviceId = localStorage.getItem("deviceId");
 			return await axios
-				.post("/api/devices/newdevice", {
+				.post(`${baseURL}/api/devices/newdevice`, {
 					senderDeviceId,
 				})
 				.then((response) => {
@@ -77,7 +78,7 @@ function App() {
 		}
 
 		return axios
-			.post(`/api/devices/newdevice/devicename/${deviceId}`)
+			.post(`${baseURL}/api/devices/newdevice/devicename/${deviceId}`)
 			.then((generateNewDeviceNameResponse) => {
 				if (generateNewDeviceNameResponse.data.updatedDeviceName === true) {
 					localStorage.setItem(

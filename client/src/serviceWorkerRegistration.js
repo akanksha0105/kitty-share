@@ -1,4 +1,5 @@
 import axios from "axios";
+import { baseURL } from "./helper";
 const isLocalhost = Boolean(
 	window.location.hostname === "localhost" ||
 		// [::1] is the IPv6 localhost address.
@@ -143,7 +144,7 @@ const sendSubscriptionToTheServer = async (subscriptionObject) => {
 		return;
 	}
 	return await axios
-		.post("/api/subscription/savesubscription", {
+		.post(`${baseURL}/api/subscription/savesubscription`, {
 			body: { subscriptionObject, subscribedDeviceId },
 			Headers: {
 				"Content-type": "application/json",

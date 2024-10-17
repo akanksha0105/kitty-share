@@ -1,12 +1,13 @@
 //Functions for linkToDeviceScreen
 import axios from "axios";
+import { baseURL } from "../helper";
 
 // export const checkReceiverDeviceIsSubscribed = async (receiverDeviceID) => {
 // 	const deviceIdToBeChecked = receiverDeviceID;
 
 export const checkDeviceIsSubscribed = async (deviceIdToBeChecked) => {
 	return axios
-		.get(`/api/subscription/subscribeddevice/${deviceIdToBeChecked}`)
+		.get(`${baseURL}/api/subscription/subscribeddevice/${deviceIdToBeChecked}`)
 		.then((isDeviceSubscribedResponse) => {
 			const { message } = isDeviceSubscribedResponse.data;
 			let successMessage = { message: message, isSubscribed: true };
@@ -111,7 +112,7 @@ export const addSenderToTheDeviceConnectionList = async (
 	let receivingDeviceId = currentDeviceId;
 
 	return axios
-		.post(`/api/connections/${device_id}`, {
+		.post(`${baseURL}/api/connections/${device_id}`, {
 			receivingDeviceId,
 		})
 		.then((addSenderToListResponse) => {
@@ -138,7 +139,7 @@ export const addReceiverToTheDeviceConnectionList = async (
 	let receivingDeviceId = receiverDeviceID;
 
 	return axios
-		.post(`/api/connections/${device_id}`, {
+		.post(`${baseURL}/api/connections/${device_id}`, {
 			receivingDeviceId,
 		})
 		.then((addReceiverToListResponse) => {

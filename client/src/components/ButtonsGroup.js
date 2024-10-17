@@ -3,6 +3,7 @@ import axios from "axios";
 import SendToConnections from "./SendToConnections";
 import KeyGeneratedScreen from "./KeyGeneratedScreen";
 import ErrorMessage from "./ErrorMessage";
+import { baseURL } from "../helper";
 
 function ButtonsGroup(props) {
 	const {
@@ -31,7 +32,7 @@ function ButtonsGroup(props) {
 	const generateSecretKey = async () => {
 		let valueOfTheURL = sharedInput;
 		let senderDeviceId = currentDeviceId;
-		let secretKeyPromise = axios.post("/api/code/postthevalue", {
+		let secretKeyPromise = axios.post(`${baseURL}/api/code/postthevalue`, {
 			valueOfTheURL,
 			senderDeviceId,
 		});

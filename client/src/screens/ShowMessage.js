@@ -2,6 +2,7 @@ import { useEffect, useState, React } from "react";
 import axios from "axios";
 import "../styles/ShowMessage.css";
 import ErrorMessage from "../components/ErrorMessage";
+import { baseURL } from "../helper";
 function ShowMessage() {
 	const [answer, setAnswer] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
@@ -12,7 +13,7 @@ function ShowMessage() {
 		let newCode = array[1];
 
 		axios
-			.get(`/api/text/gettextnote/${newCode}`)
+			.get(`${baseURL}/api/text/gettextnote/${newCode}`)
 			.then((retrieveTextNoteResponse) => {
 				const { data, messageRetrieved } = retrieveTextNoteResponse.data;
 
