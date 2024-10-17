@@ -20,23 +20,15 @@ function App() {
 	const [isSubscribeButtonDisabled, setIsSubscribeButtonDisabled] =
 		useState(false);
 	const checkDeviceSubscribedToNotifications = () => {
-		console.log("In checkDeviceSubscribedToNotifications of App component");
-
 		let isSubscribed = JSON.parse(localStorage.getItem("isSubscribed"));
-		console.log(
-			"isSubscribed in checkDeviceSubscribedToNotifications",
-			isSubscribed,
-		);
 
 		if (isSubscribed === null) {
-			console.log("Loop 1 in App");
 			localStorage.setItem("isSubscribed", false);
 			setIsSubscribedToNotifications(false);
 			return;
 		}
 
 		if (isSubscribed === true) {
-			console.log("Loop 2 in App");
 			localStorage.setItem("isSubscribed", true);
 			setIsSubscribedToNotifications(true);
 			setIsSubscribeButtonDisabled(true);
@@ -44,7 +36,6 @@ function App() {
 		}
 
 		if (isSubscribed === false) {
-			console.log("Loop 3 in App");
 			localStorage.setItem("isSubscribed", false);
 			setIsSubscribedToNotifications(false);
 			setIsSubscribeButtonDisabled(false);
@@ -63,10 +54,8 @@ function App() {
 					senderDeviceId,
 				})
 				.then((response) => {
-					console.log(" new device saved in database ", response);
 					localStorage.setItem("device saved", true);
-					// setCurrentDeviceId(response.data.deviceId);
-					// return response.data.deviceId;
+
 					return generateNewDeviceName(response.data.deviceId);
 				})
 				.catch((err) => {
@@ -76,16 +65,11 @@ function App() {
 		} else {
 			setCurrentDeviceId(localStorage.getItem("deviceId"));
 			return generateNewDeviceName(localStorage.getItem("deviceId"));
-			// return fetchedDeviceId;
 		}
 	};
 
 	const generateNewDeviceName = async (idOfCurrentDevice) => {
 		let deviceId = idOfCurrentDevice;
-		console.log(
-			"In generateNewDeviceName in App component with currentDeviceId :",
-			deviceId,
-		);
 
 		if (localStorage.getItem("deviceName") !== null) {
 			setCurrentDeviceName(localStorage.getItem("deviceName"));
@@ -95,11 +79,6 @@ function App() {
 		return axios
 			.post(`/api/devices/newdevice/devicename/${deviceId}`)
 			.then((generateNewDeviceNameResponse) => {
-				console.log(
-					"generateNewDeviceNameResponse",
-					generateNewDeviceNameResponse,
-				);
-
 				if (generateNewDeviceNameResponse.data.updatedDeviceName === true) {
 					localStorage.setItem(
 						"deviceName",
@@ -117,32 +96,19 @@ function App() {
 
 	const onNotificationsPermission = () => {
 		let isSubscribed = isSubscribedToNotifications;
-		console.log("isSubscribed in onNotificationsPermission", isSubscribed);
+
 		if (isSubscribed === false) {
-			console.log(
-				"isSubscribed in  Loop1 onNotificationsPermission",
-				isSubscribed,
-			);
-
-			// setIsSubscribeButtonDisabled(true);
-
 			serviceWorkerRegistration
 				.subscribeToPushNotifications()
 				.then((response) => {
-					console.log("subscribed to push notifications", response);
-
 					if (response === true) {
-						console.log("Here");
 						localStorage.setItem("isSubscribed", true);
 						setIsSubscribedToNotifications(true);
 						setIsSubscribeButtonDisabled(true);
-						// setSubscribeOptionButtonText("Subscribed");
 					} else {
-						console.log("Here2");
 						localStorage.setItem("isSubscribed", false);
 						setIsSubscribedToNotifications(false);
 						setIsSubscribeButtonDisabled(false);
-						// setSubscribeOptionButtonText("Subscribe");
 					}
 				})
 				.catch((err) => {
@@ -159,10 +125,6 @@ function App() {
 		}
 
 		if (isSubscribed === true) {
-			console.log(
-				"isSubscribed in  Loop2 onNotificationsPermission",
-				isSubscribed,
-			);
 			// localStorage.setItem("isSubscribed", false);
 			// setIsSubscribedToNotifications(false);
 			setIsSubscribeButtonDisabled(true);
@@ -184,7 +146,7 @@ function App() {
 	if (currentDeviceId === "") return <WebsiteLoader />;
 
 	return (
-		<div className="app">
+		<div className='app'>
 			<Router>
 				<Header
 					currentDeviceId={currentDeviceId}
@@ -195,19 +157,19 @@ function App() {
 				/>
 				{currentDeviceId ? (
 					<Switch>
-						<Route path="/linktoanewdevice">
+						<Route path='/linktoanewdevice'>
 							<LinkToDeviceScreen currentDeviceId={currentDeviceId} />
 						</Route>
-						<Route path="/loading">
+						<Route path='/loading'>
 							<Loading />
 						</Route>
-						<Route path="/demo">
+						<Route path='/demo'>
 							<Demo />
 						</Route>
-						<Route path="/showmessage">
+						<Route path='/showmessage'>
 							<ShowMessage />
 						</Route>
-						<Route path="/">
+						<Route path='/'>
 							<HomeScreen
 								currentDeviceId={currentDeviceId}
 								currentDeviceName={currentDeviceName}

@@ -1,5 +1,4 @@
 const ignored = self.__WB_MANIFEST;
-console.log("I am there. My name is Service Worker");
 
 let url;
 let newCode;
@@ -13,16 +12,11 @@ self.addEventListener("install", (event) => {
 });
 
 self.addEventListener("activate", function (event) {
-	console.log("Service Worker activated");
 	event.waitUntil(
 		caches.keys().then(function (cacheNames) {
 			return Promise.all(
 				cacheNames
-					.filter(function (cacheName) {
-						// Return true if you want to remove this cache,
-						// but remember that caches are shared across
-						// the whole origin
-					})
+					.filter(function (cacheName) {})
 					.map(function (cacheName) {
 						return caches.delete(cacheName);
 					}),
@@ -33,9 +27,6 @@ self.addEventListener("activate", function (event) {
 self.addEventListener("push", (event) => {
 	if (event.data) {
 		const data = event.data.json();
-		console.log("What the heck is event object here");
-		console.log(data.title);
-		console.log("Push event!! ", data);
 
 		url = data.content;
 		newCode = data.newCode;
@@ -52,18 +43,7 @@ self.addEventListener("push", (event) => {
 });
 
 self.addEventListener("notificationclick", (event) => {
-	console.log("On notification click");
-
 	var notification = event.notification;
-
-	console.log("Closed notification: " + notification);
-
-	// let x = validURL(url);
-	// console.log("Is it a valid URL : ", x);
-	// if (x === true) {
-	// 	clients.openWindow(url);
-	// 	return;
-	// }
 
 	if (isURL === true) {
 		event.notification.close();
@@ -72,44 +52,32 @@ self.addEventListener("notificationclick", (event) => {
 	}
 
 	let desiredURL = `https://kittyshare.xyz/showmessage/${newCode}`;
-	console.log("desiredURL", desiredURL);
+
 	clients.openWindow(desiredURL);
 
-	// clients.postMessage(url);
-	// openDB(url).then((response) => {
-	// 	console.log("Let's do this :", response);
-	// 	clients.openWindow("http://localhost:3000/showmessage");
-	// });
-
 	return;
-
-	// event.notification.close();
 });
 
 async function openDB(textnote) {
-	// ask to open the db
 	const openRequest = self.indexedDB.open(dbName, 1);
 
 	openRequest.onerror = function (event) {
-		console.log(
+		console.error(
 			"Everyhour isn't allowed to use IndexedDB?!" + event.target.errorCode,
 		);
 	};
 
-	// upgrade needed is called when there is a new version of you db schema that has been defined
 	openRequest.onupgradeneeded = function (event) {
 		db = event.target.result;
 
 		if (!db.objectStoreNames.contains(storeName)) {
-			// if there's no store of 'storeName' create a new object store
-			db.createObjectStore(storeName, { autoIncrement: true }); //some use keyPath: "id" (basically the primary key) - unsure why yet
+			db.createObjectStore(storeName, { autoIncrement: true });
 		}
 	};
 
 	openRequest.onsuccess = function (event) {
 		db = event.target.result;
-		console.log("Hey I am db's result", db);
-		console.log("textnote : ", textnote);
+
 		addToStore(textnote, db);
 	};
 }
@@ -160,7 +128,7 @@ async function addToStore(value, db) {
 
 async function getFromStore(key) {
 	const request = store.get(key);
-	console.log("request : ", request);
+
 	request.onsuccess = function (event) {
 		return request;
 		// if (callback) {
