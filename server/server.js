@@ -35,16 +35,22 @@ webpush.setVapidDetails(
 	vapidKeys.privateKey,
 );
 
-app.use(cors());
 app.use(bodyParser.json());
 
 //Deployment usecase
+
 app.use(
 	cors({
-		origin: process.env.APP_URL,
-		methods: ["GET", "POST", "PUT", "DELETE"],
+		origin: [process.env.APP_URL, "localhost:3000"],
+		methods: ["POST", "GET"],
+		credentials: true,
 	}),
 );
+
+app.get("/", (req, res) => {
+	res.json("Server running");
+});
+// app.use(cors());
 // app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.use("/api/code", codeRoute);
