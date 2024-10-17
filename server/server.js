@@ -1,12 +1,11 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-require('dotenv').config();
+require('dotenv').config()
 const dbconnection = require("./db");
 const path = require("path");
 const cors = require("cors");
 const webpush = require("web-push");
-
 
 // const webpush = require("web-push");
 const PORT = 8080;
@@ -23,8 +22,8 @@ var textRoute = require("./routes/textRoute");
 // const vapidKeys = webpush.generateVAPIDKeys();
 const vapidKeys = {
 	publicKey:
-		process.env.PUBLIC_KEY,
-	privateKey: process.env.PRIVATE_KEY,
+		process.env.PUBLIC_KEY.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''),
+		privateKey:process.env.PRIVATE_KEY.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''), 
 };
 
 webpush.setVapidDetails(
