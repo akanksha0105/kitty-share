@@ -7,21 +7,14 @@ export const getReceiverDeviceName = async (receiverDeviceId) => {
 	return axios
 		.get(`/api/devices/searchdevicename/${deviceId}`)
 		.then((getReceiverDeviceNameResponse) => {
-			console.log(
-				"getReceiverDeviceNameResponse",
-				getReceiverDeviceNameResponse,
-			);
-
 			return {
 				receiverDeviceName: getReceiverDeviceNameResponse.data.deviceName,
 				retrievedDeviceName: true,
 			};
 		})
 		.catch((err) => {
-			console.log("Hey");
 			// console.error(err);
 			const { code } = err.response.data;
-			console.log(`code is: ${code}`);
 
 			if (code === 101) {
 				return {
@@ -41,11 +34,6 @@ export const checkReceiverDeviceName = async (receiverDeviceName) => {
 	return axios
 		.get(`/api/devices/searchdeviceid/${deviceName}`)
 		.then((receiverDeviceNameResponse) => {
-			console.log("receiverDeviceNameResponse", receiverDeviceNameResponse);
-			console.log(
-				"receiverDeviceNameResponse.data.deviceId",
-				receiverDeviceNameResponse.data.deviceId,
-			);
 			return {
 				receiverDeviceId: receiverDeviceNameResponse.data.deviceId,
 				retrievedDeviceId: true,
@@ -73,11 +61,6 @@ export const retrieveMessage = async (codeInputValue) => {
 	return axios
 		.get(`/api/code/geturl/${codedMessage}`)
 		.then((retrievedMessagePromiseResponse) => {
-			console.log(
-				"retrievedMessagePromiseResponse",
-				retrievedMessagePromiseResponse,
-			);
-
 			const { data, device } = retrievedMessagePromiseResponse.data;
 			let successMessage = {
 				data: data,
@@ -107,10 +90,6 @@ export const checkIfDeviceCanBeAddedAsConnection = (
 	// check if there is a connection already present between both the devices
 	return checkDeviceIsAnExistingConnection(currentDeviceId, device)
 		.then((checkDeviceIsAnExistingConnectionResponse) => {
-			console.log(
-				"checkDeviceIsAnExistingConnectionResponse",
-				checkDeviceIsAnExistingConnectionResponse,
-			);
 			if (checkDeviceIsAnExistingConnectionResponse === true)
 				return { canBeAddedAsConnection: false };
 			return areBothSenderAndReceiverSubscribed(currentDeviceId, device);
@@ -126,13 +105,7 @@ export const checkIfDeviceCanBeAddedAsConnection = (
 const areBothSenderAndReceiverSubscribed = async (currentDeviceId, device) => {
 	return checkDeviceIsSubscribed(currentDeviceId)
 		.then((checkDeviceIsSubscribedResponse) => {
-			console.log(
-				"CheckDeviceIsSubscribedResponse - Here it is the sender device",
-				checkDeviceIsSubscribedResponse,
-			);
-
 			if (checkDeviceIsSubscribedResponse.isSubscribed === false) {
-				console.log("The sending device is not subscribed to notifications");
 				return { canBeAddedAsConnection: false };
 			}
 			return checkReceiverDeviceIsSubscribed(device);
@@ -146,13 +119,7 @@ const areBothSenderAndReceiverSubscribed = async (currentDeviceId, device) => {
 const checkReceiverDeviceIsSubscribed = async (device) => {
 	return checkDeviceIsSubscribed(device)
 		.then((checkDeviceIsSubscribedResponse) => {
-			console.log(
-				"Receiver device subscription to notifications response",
-				checkDeviceIsSubscribedResponse,
-			);
-
 			if (checkDeviceIsSubscribedResponse.isSubscribed === false) {
-				console.log("The receiving device is not subscribed to notifications");
 				return { canBeAddedAsConnection: false };
 			}
 			return { canBeAddedAsConnection: true, deviceToBeAdded: device };
@@ -169,22 +136,11 @@ export const checkDeviceIsAnExistingConnection = async (
 ) => {
 	let device_id = currentDeviceId;
 	let receiverDeviceID = device;
-	console.log(
-		"device_id in the checktheConnection function on client side",
-		device_id,
-	);
-	console.log(
-		" receiverDeviceIDin the checktheConnection function on client side",
-		receiverDeviceID,
-	);
+
 	return axios
 		.get(`/api/connections/checkifconnected/${device_id}/${receiverDeviceID}`)
 
 		.then((connectionExistsResponse) => {
-			console.log(
-				"connectionExistsResponse on client side in checktheConnection function ",
-				connectionExistsResponse,
-			);
 			if (
 				connectionExistsResponse.data.checked === true &&
 				connectionExistsResponse.data.connectionexists === true

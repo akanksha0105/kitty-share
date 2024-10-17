@@ -12,12 +12,11 @@ function Header(props) {
 		currentDeviceName,
 		isDeviceSubscribed,
 		onNotificationsPermission,
-	
+		isSubscribeButtonDisabled,
 	} = props;
 	const [linkClicked, setLinkClicked] = useState(false);
 	const [linkTwoClicked, setLinkTwoClicked] = useState(false);
-
-	console.log("isDeviceSubscribed in Header: ", isDeviceSubscribed);
+	const [logoClick, setLogoClick] = useState();
 
 	const onLogoClick = (event) => {
 		setLinkClicked(false);
@@ -38,14 +37,14 @@ function Header(props) {
 		setLinkClicked(false);
 	};
 	return (
-		<div className="header">
-			<div className="header__left">
+		<div className='header'>
+			<div className='header__left'>
 				<Link
 					className={
 						linkClicked ? "header__link__left__clicked" : "header__link__left"
 					}
-					to="/linktoanewdevice">
-					<div onClick={onLinkOneClick} className="header__left__option">
+					to='/linktoanewdevice'>
+					<div onClick={onLinkOneClick} className='header__left__option'>
 						Add Device
 					</div>
 				</Link>
@@ -56,35 +55,35 @@ function Header(props) {
 							? "header__link__left__clicked"
 							: "header__link__left"
 					}
-					to="/demo">
-					<div onClick={onLinkTwoClick} className="header__left__option">
+					to='/demo'>
+					<div onClick={onLinkTwoClick} className='header__left__option'>
 						How It Works
 					</div>
 				</Link>
 			</div>
 
-			<Link className="header__link" to="/">
-				<div onClick={onLogoClick} className="logo">
+			<Link className='header__link' to='/'>
+				<div onClick={onLogoClick} className='logo'>
 					kittyshare
 				</div>
 			</Link>
 
-			<div className="header__right">
-				<Link className="header__link__left" to="/linktoanewdevice">
-					<div className="header__right__icon">
+			<div className='header__right'>
+				<Link className='header__link__left' to='/linktoanewdevice'>
+					<div className='header__right__icon'>
 						<AddCircleIcon />
 					</div>
 				</Link>
-				<Link className="header__link__left" to="/demo">
-					<div className="header__right__icon">
+				<Link className='header__link__left' to='/demo'>
+					<div className='header__right__icon'>
 						<HelpOutlineIcon />
 					</div>
 				</Link>
 				{currentDeviceId ? (
-					<div className="avatar__div">
+					<div className='avatar__div'>
 						<Avatar
-							className="avatar"
-							alt="Remy Sharp"
+							className='avatar'
+							alt='Remy Sharp'
 							src={`https://avatars.dicebear.com/api/human/${currentDeviceId}.svg`}
 						/>{" "}
 					</div>
@@ -92,9 +91,18 @@ function Header(props) {
 
 				{currentDeviceName ? <div> {currentDeviceName}</div> : null}
 
-				<div className="subscription__button">
+				{/* {currentDeviceId &&
+				localStorage.getItem("notificationsServicePossible") ? (
+					<div
+						className={
+							localStorage.getItem("device saved") === true
+								? "subscription__button"
+								: null
+						}> */}
+
+				<div className='subscription__button'>
 					<button
-						disabled={isDeviceSubscribed}
+						disabled={isSubscribeButtonDisabled}
 						onClick={onNotificationsPermission}
 						className={
 							isDeviceSubscribed

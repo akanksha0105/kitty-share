@@ -4,11 +4,6 @@ export const getConnections = async (device_id) => {
 	return await axios
 		.get(`/api/connections/getAllConnections/${device_id} `)
 		.then((getConnectionsResponse) => {
-			console.log(
-				"In getting connections on client side in sendToConnections component",
-				getConnectionsResponse,
-			);
-
 			let data = getConnectionsResponse.data.message;
 
 			let getConnectionsOutput = { data: data, connectionsExists: true };

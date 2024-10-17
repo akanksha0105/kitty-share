@@ -19,11 +19,6 @@ function CodeInput({
 	showTextInput,
 	showCodeInput,
 }) {
-	console.log(
-		"In CodeInputScreen Component with currentDeviceId : ",
-		currentDeviceId,
-	);
-
 	const [codeInputValue, setCodeInputValue] = useState("");
 	const [retrievedMessage, setRetrievedMessage] = useState("");
 	const [deviceToBeAdded, setDeviceToBeAdded] = useState("");
@@ -57,7 +52,6 @@ function CodeInput({
 
 		retrieveMessage(codeInputValue)
 			.then((retrieveMessageResponse) => {
-				console.log("retrieveMessageResponse", retrieveMessageResponse);
 				if (retrieveMessageResponse.messageRetrieved === false) {
 					setErrorMessage(retrieveMessageResponse.data);
 					setIsRetrieveMessageButtonDisabled(false);
@@ -75,11 +69,6 @@ function CodeInput({
 				return checkIfDeviceCanBeAddedAsConnection(currentDeviceId, device);
 			})
 			.then((checkIfDeviceCanBeAddedAsConnectionResponse) => {
-				console.log(
-					"checkIfDeviceCanBeAddedAsConnectionResponse",
-					checkIfDeviceCanBeAddedAsConnectionResponse,
-				);
-
 				if (
 					checkIfDeviceCanBeAddedAsConnectionResponse.canBeAddedAsConnection ===
 					false
@@ -115,14 +104,11 @@ function CodeInput({
 	//Event handler for adding the device that stored the code to the connections
 	const addDevice = () => {
 		hideModal();
-		console.log("In addToDevice function of CodeInputScreen component");
 
 		let receiverDeviceID = deviceToBeAdded;
 
 		linkDevices(currentDeviceId, receiverDeviceID)
 			.then((linkDevicesResponse) => {
-				console.log("linkDevicesResponse", linkDevicesResponse);
-
 				if (linkDevicesResponse.linked === true) {
 					// setNewDeviceAdded("Both the devices are connected");
 					setSuccessMessage("Both the devices are connected");
@@ -147,46 +133,33 @@ function CodeInput({
 		}
 	};
 	useEffect(() => {
-		// console.log("codeInputValue", codeInputValue);
-
-		// if (codeInputValue.length > 0) {
-		// 	setIsRetrieveMessageButtonDisabled(false);
-		// } else {
-		// 	setIsRetrieveMessageButtonDisabled(true);
-		// }
 		if (codeInputValue.length > 0) setNoTextErrorMessage("");
 	}, [codeInputValue]);
 	return (
-		<div
-			// className={
-			// 	showTextInput
-			// 		? "code__input__screen"
-			// 		: "alternative__code__input__screen"
-			// }>
-			className={getCodeInputScreenName()}>
-			<div className="form__div">
-				<form className="code__form" onSubmit={onGenerateMessage}>
+		<div className={getCodeInputScreenName()}>
+			<div className='form__div'>
+				<form className='code__form' onSubmit={onGenerateMessage}>
 					<label>
 						<input
-							name="name"
-							id="name"
-							type="text"
+							name='name'
+							id='name'
+							type='text'
 							value={codeInputValue}
 							onChange={(event) => setCodeInputValue(event.target.value)}
 							required
 						/>
-						<div className="label-text">Enter the Input Key</div>
+						<div className='label-text'>Enter the Input Key</div>
 					</label>
 					{/* <br /> */}
 					{noTextErrorMessage ? (
-						<div className="no__text__error__message">
+						<div className='no__text__error__message'>
 							<ErrorMessage message={noTextErrorMessage} />
 						</div>
 					) : null}
 					<button
 						onClick={displayTextInputComponent}
-						className="button__1"
-						type="submit"
+						className='button__1'
+						type='submit'
 						// disabled={isRetrieveMessageButtonDisabled}
 					>
 						{retrieveMessageButtonText}
@@ -197,17 +170,17 @@ function CodeInput({
 					<RetrievedMessageScreen retrievedMessage={retrievedMessage} />
 				) : null}
 				<div className={show ? "modal display-block" : "modal display-none"}>
-					<div className="modal__message">{addDeviceMessage}</div>
-					<div className="modal__options">
+					<div className='modal__message'>{addDeviceMessage}</div>
+					<div className='modal__options'>
 						<button
-							type="button"
-							className="choice__button"
+							type='button'
+							className='choice__button'
 							onClick={hideModal}>
 							No
 						</button>
 						<button
-							type="button"
-							className="choice__button"
+							type='button'
+							className='choice__button'
 							onClick={addDevice}>
 							Yes
 						</button>

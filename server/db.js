@@ -2,13 +2,12 @@
 // const { response } = require("express");
 const mongoose = require("mongoose");
 // const generateCodes = require("./generateCodes");
-var mongoDBURL =
-	process.env.MONGO_URI;
+var mongoDBURL = process.env.MONGO_URL;
 
-	console.log("HERE IS THE MONGO URL ", mongoDBURL )
-	mongoose.connect(mongoDBURL, { useNewUrlParser: true, useUnifiedTopology: true })
-	.then(() => console.log("MongoDB connected"))
-	.catch((err) => console.error("MongoDB connection error: ", err));
+mongoose.connect(mongoDBURL, {
+	useUnifiedTopology: true,
+	useNewUrlParser: true,
+});
 
 var dbconnect = mongoose.connection;
 
@@ -18,8 +17,9 @@ dbconnect.on("error", () => {
 
 dbconnect.on("connected", () => {
 	console.log("MongoDB Connected");
+
+	// setInterval(checkAndGenerateCodes, 10000);
+	// generateCodes.getUnusedCode();
 });
-
-
 
 module.exports = mongoose;

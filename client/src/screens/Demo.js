@@ -13,59 +13,47 @@ function Demo() {
 	const onDisplayVideoOne = () => {
 		setDisplayVideo1(true);
 		setDisplayVideo2(false);
-		console.log("clicked video 1");
 	};
 
 	const onDisplayVideoTwo = () => {
 		setDisplayVideo1(false);
 		setDisplayVideo2(true);
-		console.log("clicked video 2");
 	};
 	return (
-		<div className="demo__screen">
-			<div className="demo">
-				<div className="video__option__one">
-					<div className="video__description__one">
-						<div className="video__description">
+		<div className='demo__screen'>
+			<div className='demo'>
+				<div className='video__option__one'>
+					<div className='video__description__one'>
+						<div className='video__description'>
 							Get to know how you can share URL by generating code
 						</div>
 					</div>
-					<div className="arrow__icon__one">
+					<div className='arrow__icon__one'>
 						<ArrowRightAltIcon />
 					</div>
-					<div className="video__display__one">
+					<div className='video__display__one'>
 						<video
-							width="400"
-							className="displayVideo1 "
+							width='400'
+							className='displayVideo1 '
 							src={Video1}
-							type="video/mp4"
-							// poster={Video__one__image}
+							type='video/mp4'
 							controls></video>
-						{/* <Player className="video__player" src={Video1} /> */}
-						{/* <iframe
-							src={}
-							width="400"
-							frameborder="0"
-							allow="autoplay; encrypted-media"
-							allowfullscreen
-							title="video"
-						/> */}
 					</div>
 				</div>
-				<div className="video__option__two">
-					<div className="video__description__two">
-						<div className="video__description">
+				<div className='video__option__two'>
+					<div className='video__description__two'>
+						<div className='video__description'>
 							Get to know how you can share URL by connecting multiple devices
 						</div>
 					</div>
-					<div className="arrow__icon__two">
+					<div className='arrow__icon__two'>
 						<ArrowRightAltIcon />
 					</div>
-					<div className="video__display__two">
+					<div className='video__display__two'>
 						<video
-							className="displayVideo1 "
+							className='displayVideo1 '
 							src={Video2}
-							type="video/mp4"
+							type='video/mp4'
 							controls></video>
 					</div>
 				</div>
