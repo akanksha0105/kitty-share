@@ -37,20 +37,20 @@ webpush.setVapidDetails(
 );
 
 app.use(bodyParser.json());
-// app.use(
-// 	cors({
-// 		origin: [process.env.APP_URL, "http://localhost:3000"],
-// 		methods: ["POST", "GET"],
-// 		credentials: true,
-// 	}),
-// );
+app.use(
+	cors({
+		origin: [process.env.APP_URL],
+		methods: ["POST", "GET"],
+		credentials: true,
+	}),
+);
 
 // Routes
 app.get("/", (req, res) => {
 	res.json({ message: "Server running" });
 });
 
-app.use(cors());
+// app.use(cors());
 // app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.use("/api/code", codeRoute);
